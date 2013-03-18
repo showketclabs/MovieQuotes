@@ -1,0 +1,93 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:id="@+id/rv"
+android:layout_width="480px"
+android:layout_height="800px" >
+<RelativeLayout 
+     android:id="@+id/mainlayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/just_shake_it_bg"
+    tools:context=".UIActivity" >
+    
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="150px"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true" >
+        
+
+        <Button
+            android:id="@+id/btnhlp"
+            android:layout_width="180px"
+            android:layout_height="70.5px"
+            android:layout_marginLeft="300px"
+            android:layout_marginTop="9px"
+            android:background="@drawable/btn_help" />
+        
+
+        <Button
+            android:id="@+id/btnshake"
+            android:layout_width="192px"
+            android:layout_height="90px"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="1.5px"
+            android:background="@drawable/btn_shake" />
+        
+
+        <Button
+            android:id="@+id/btnsearch"
+            android:layout_width="118.5px"
+            android:layout_height="72px"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="120px"
+            android:background="@drawable/btn_search" />
+        
+
+        <Button
+            android:id="@+id/btnmore"
+            android:layout_width="120px"
+            android:layout_height="72px"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="358.5px"
+            android:background="@drawable/btn_more" />
+        
+
+        <Button
+            android:id="@+id/btnfav"
+            android:layout_width="118.5px"
+            android:layout_height="72px"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="240px"
+            android:background="@drawable/btn_press" />
+        
+
+        <Button
+            android:id="@+id/btnlist"
+            android:layout_width="118.5px"
+            android:layout_height="72px"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/btn_list" />
+        
+
+        <Button
+            android:id="@+id/btnback"
+            android:layout_width="180px"
+            android:layout_height="70.5px"
+            android:layout_alignParentLeft="true"
+            android:layout_alignTop="@+id/btnhlp"
+            android:background="@drawable/btn_back"
+            android:visibility="invisible" />
+    
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+    </ScrollView>
+
+</RelativeLayout>
+</FrameLayout>

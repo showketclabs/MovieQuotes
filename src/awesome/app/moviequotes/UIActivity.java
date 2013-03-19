@@ -92,7 +92,7 @@ public class UIActivity extends Activity {
 					alertDialog.setTitle("Upgrade App");
 
 					// Setting Dialog Message
-					alertDialog.setMessage("About app");
+					alertDialog.setMessage("Do you want to Upgrade your app to enable Search options ?");
 
 					// Setting Icon to Dialog
 					// alertDialog.setIcon(R.drawable.delete);

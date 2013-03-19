@@ -28,6 +28,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
+import com.google.ads.AdRequest;
+import com.google.ads.AdView;
 
 
 public class RevealInfo extends Activity  {
@@ -69,16 +71,24 @@ public class RevealInfo extends Activity  {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.revealinfo);
-		FrameLayout frameLayout = (FrameLayout) findViewById(R.id.flayout);
+		AdView adview = (AdView)findViewById(R.id.ad);
 		SharedPreferences sharedPreferences = getSharedPreferences("MY",
 				MODE_PRIVATE);
 		String strSavedMem1 = sharedPreferences.getString("MEM2", "");
 		
 		if (strSavedMem1 == "") {
-			frameLayout.setVisibility(View.VISIBLE);
+			adview.setVisibility(adview.VISIBLE);
 		} else {
-			frameLayout.setVisibility(View.INVISIBLE);
+			adview.setVisibility(adview.INVISIBLE);
 		}
+		try{
+			
+			AdRequest re = new AdRequest();
+			re.setTesting(true);
+			adview.loadAd(re);}
+			catch(Exception e){
+				//Log.v("add",e.toString());
+			}
 		fl=(FrameLayout)findViewById(R.id.rv);
 		new AndroidScreenSize(RevealInfo.this,fl,800,480);
 		movie1=Global.movie.split("~, ");
@@ -114,7 +124,7 @@ public class RevealInfo extends Activity  {
 		fav = (Button) findViewById(R.id.btnfav);
 		back = (Button) findViewById(R.id.btnback);
 		 b = (Button) findViewById(R.id.button1);
-		 b.setEnabled(false);
+		
 	
 		tv = (TextView) findViewById(R.id.movie);
 		temp = 0;
@@ -134,9 +144,9 @@ public class RevealInfo extends Activity  {
 					String q1=quote1[index].replaceAll("~", " ");
 					String y1=year1[index].replaceAll("~", " ");
 					String m1=movie1[index].replaceAll("~", " ");
-				revdata=q1.substring(1,q1.length())+ "\n" + "~" + "\n"
-						+ m1.substring(1,m1.length()) + "\n" + "~" + "\n"
-						+ y1.substring(1,y1.length());
+				revdata=q1+ "\n" + "~" + "\n"
+						+ m1 + "\n" + "~" + "\n"
+						+ y1;
 				rdata=revdata.split("~");
 				Log.v("revdata",revdata+"");
 				
@@ -203,7 +213,7 @@ public class RevealInfo extends Activity  {
 					alertDialog.setTitle("Upgrade App");
 
 					// Setting Dialog Message
-					alertDialog.setMessage("About app");
+					alertDialog.setMessage("Do you want to Upgrade your app to enable Search options ?");
 
 					// Setting Icon to Dialog
 					// alertDialog.setIcon(R.drawable.delete);
@@ -339,7 +349,7 @@ public class RevealInfo extends Activity  {
 
 								creatdatabase();
 
-								b.setEnabled(false);
+								
 
 							}
 
@@ -370,17 +380,17 @@ public class RevealInfo extends Activity  {
 								}
 
 								// CHECK IF ALREADY ADDED
-								String randomdata = movie.getText().toString();
-								String[] rando_arr = randomdata.split("~");
-								Log.v("one", rando_arr[0] + "");
-								Log.v("two", rando_arr[1] + "");
-								Log.v("three", rando_arr[2] + "");
+//								String randomdata = movie.getText().toString();
+//								String[] rando_arr = randomdata.split("~");
+//								Log.v("one", rando_arr[0] + "");
+//								Log.v("two", rando_arr[1] + "");
+//								Log.v("three", rando_arr[2] + "");
 								try {
 
 									String sql = "SELECT * FROM fav1 WHERE movie == '"
-											+ rando_arr[1] + "' and quote=='"
-											+ rando_arr[0].replaceAll("'", "`")
-											+ "' and year=='" + rando_arr[2] + "'";
+											+ rdata[1] + "' and quote=='"
+											+ rdata[0].replaceAll("'", "`")
+											+ "' and year=='" + rdata[2] + "'";
 									Cursor data = db.rawQuery(sql, null);
 									if (data.moveToFirst()) {
 										// Toast.makeText(getApplicationContext(),
@@ -389,13 +399,13 @@ public class RevealInfo extends Activity  {
 									} else {
 
 										try {
-
+											
 											String Insert_Data = "INSERT INTO fav1 VALUES('"
-													+ rando_arr[1].toString()
+													+ rdata[1].toString()
 													+ "','"
-													+ rando_arr[2].toString()
+													+ rdata[2].toString()
 													+ "','"
-													+ rando_arr[0].replaceAll("'", "`")
+													+ rdata[0].replaceAll("'", "`")
 															.toString() + "');";
 
 											db.execSQL(Insert_Data);
@@ -426,23 +436,26 @@ public class RevealInfo extends Activity  {
 		});
 
 		sharebtn = (Button) findViewById(R.id.shareb);
-		sharebtn.setEnabled(false);
+		
 		sharebtn.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
+				
+				
 				String[] myStringArray = new String[1];
 				String datatoshare[] = tv.getText().toString()
 						.replaceAll("\n", "").split("~");
 				myStringArray[0] = tv.getText().toString();
+			//	Toast.makeText(getApplicationContext(), ""+myStringArray[0], 500).show();
 				ArrayList<String> data = new ArrayList<String>();
 				ArrayList<String> tdata = new ArrayList<String>();
 				for (int i = 0; i < myStringArray.length; i++) {
 
-					tdata.add("Quote:  " + datatoshare[0] + "\n\n" + "Movie:  "
-							+ datatoshare[1] + "\n\n" + "Year:  "
-							+ datatoshare[2] + "\n\n");
-					data.add("Quote:  " + datatoshare[0] + "\n\n\n"
+					tdata.add("Quote:  " + rdata[0] + "\n\n" + "Movie:  "
+							+ rdata[1] + "\n\n" + "Year:  "
+							+ rdata[2] + "\n\n");
+					data.add("Quote:  " + rdata[0] + "\n\n\n"
 							+ "Guess The Movie Name..?");
 				}
 				Global global = new Global(data, tdata);
@@ -476,8 +489,8 @@ public class RevealInfo extends Activity  {
 				tv.setText(rdata[0] + "~" + rdata[1] + "~"
 						+ rdata[2]);
 			//	reveal.setEnabled(false);
-				b.setEnabled(true);
-				sharebtn.setEnabled(true);
+				//b.setEnabled(true);
+				
 			}
 		});
 	}

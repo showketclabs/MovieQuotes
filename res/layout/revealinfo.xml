@@ -2,13 +2,14 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:tools="http://schemas.android.com/tools"
 android:id="@+id/rv"
+android:background="#000000"
 android:layout_width="480px"
 android:layout_height="800px" >
 <RelativeLayout 
     android:id="@+id/id1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/screen5bg"
+    android:background="@drawable/screen_5_1"
     android:orientation="vertical" >
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -111,7 +112,7 @@ android:layout_height="800px" >
             android:layout_marginLeft="6px"
             android:layout_marginTop="79.5px"
             android:visibility="invisible"
-            android:enabled="false"
+           
             android:background="@drawable/btn_fav" />
 
        
@@ -162,13 +163,13 @@ android:layout_height="800px" >
             android:textStyle="bold" />
     </ScrollView>
 
-    <FrameLayout
-        android:id="@+id/flayout"
+    <com.google.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
+        android:id="@+id/ad"
         android:layout_width="fill_parent"
-        android:layout_height="75px"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true" >
-    </FrameLayout>
+        android:layout_height="wrap_content"
+        ads:adSize="SMART_BANNER"
+        ads:adUnitId="a1513d779a8f2c4" />
 
 </RelativeLayout>
 </FrameLayout>

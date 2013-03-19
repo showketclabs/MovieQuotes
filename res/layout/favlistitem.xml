@@ -62,9 +62,9 @@
             android:layout_marginLeft="337.5px"
             android:layout_marginTop="30px"
            android:visibility="invisible"
-             android:text="Delete"
+            
              android:textColor="#ffffff"
-            android:background="@drawable/deletebtn" />
+            android:background="@drawable/btn_cancel" />
 
         <TextView
             android:id="@+id/textView2"

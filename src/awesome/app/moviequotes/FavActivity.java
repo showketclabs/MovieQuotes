@@ -150,7 +150,7 @@ public class FavActivity extends Activity {
 					alertDialog.setTitle("Upgrade App");
 
 					// Setting Dialog Message
-					alertDialog.setMessage("Do you want to upgrade your app enable Search options ?");
+					alertDialog.setMessage("Do you want to Upgrade your app to enable Search options ?");
 
 					// Setting Icon to Dialog
 					// alertDialog.setIcon(R.drawable.delete);
@@ -363,6 +363,7 @@ public class FavActivity extends Activity {
 m.clear();
 y.clear();
 q.clear();
+adapter=null;
 //m=new ArrayList<String>();
 //y=new ArrayList<String>();
 //q=new ArrayList<String>();

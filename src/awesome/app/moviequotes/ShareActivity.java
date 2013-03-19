@@ -202,7 +202,7 @@ public class ShareActivity extends Activity {
 				alertDialog.setTitle("Upgrade App");
 
 				// Setting Dialog Message
-				alertDialog.setMessage("About app");
+				alertDialog.setMessage("Do you want to Upgrade your app to enable Search options ?");
 
 				// Setting Icon to Dialog
 				// alertDialog.setIcon(R.drawable.delete);
@@ -319,7 +319,7 @@ public class ShareActivity extends Activity {
 			switch (view.getId()) {
 
 			case R.id.btnemail:
-				alertDialog.setTitle("Share Activity");
+				alertDialog.setTitle("Send As Email");
 				alertDialog.setMessage("Click Yes to share..");
 				alertDialog.setPositiveButton("Yes",
 						new DialogInterface.OnClickListener() {
@@ -340,7 +340,11 @@ public class ShareActivity extends Activity {
 														.toString() + "\n\n";
 								}
 								
-								new emai_s().execute();
+								try {
+									new emai_s().execute();
+								} catch (Exception e) {
+									Toast.makeText(getApplicationContext(), "No Email Support on Your device.",500).show();
+								}
 					
 							}
 						});
@@ -360,7 +364,7 @@ public class ShareActivity extends Activity {
 			case R.id.btnfb:
 
 				postdata = null;
-				alertDialog.setTitle("Share Activity");
+				alertDialog.setTitle("Share To Facebook");
 				alertDialog.setMessage("Click Yes to share..");
 				alertDialog.setPositiveButton("Yes",
 						new DialogInterface.OnClickListener() {
@@ -410,7 +414,7 @@ public class ShareActivity extends Activity {
 			case R.id.btntext:
 				try {
 					postdata = null;
-					alertDialog.setTitle("Share Activity");
+					alertDialog.setTitle("Send As Text");
 					alertDialog.setMessage("Click Yes to share..");
 					alertDialog.setPositiveButton("Yes",
 							new DialogInterface.OnClickListener() {
@@ -430,12 +434,16 @@ public class ShareActivity extends Activity {
 													+ "\n\n";
 									}
 									String msgg = postdata;
-									postdata = null;
-									Intent intentsms = new Intent(
-											Intent.ACTION_VIEW, Uri.parse("sms:"
-													+ ""));
-									intentsms.putExtra("sms_body", msgg);
-									startActivity(intentsms);
+									try {
+										postdata = null;
+										Intent intentsms = new Intent(
+												Intent.ACTION_VIEW, Uri.parse("sms:"
+														+ ""));
+										intentsms.putExtra("sms_body", msgg);
+										startActivity(intentsms);
+									} catch (Exception e) {
+										Toast.makeText(getApplicationContext(), "No Text Support on Your device.",500).show();
+									}
 									txt.setEnabled(true);
 								}
 
@@ -461,7 +469,7 @@ public class ShareActivity extends Activity {
 				break;
 			case R.id.btntw:
 				postdata = null;
-				alertDialog.setTitle("Share Activity");
+				alertDialog.setTitle("Share To Twitter");
 				alertDialog.setMessage("Click Yes to share..");
 				alertDialog.setPositiveButton("Yes",
 						new DialogInterface.OnClickListener() {

@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:tools="http://schemas.android.com/tools"
 android:id="@+id/rv"
+android:background="#000000"
 android:layout_width="480px"
 android:layout_height="800px" >
 <RelativeLayout 
@@ -93,14 +94,6 @@ android:layout_height="800px" >
         android:layout_marginTop="54px" >
 
         <Button
-            android:id="@+id/btntw"
-            android:layout_width="187.5px"
-            android:layout_height="75px"
-            android:layout_marginLeft="225px"
-            android:layout_marginTop="57px"
-            android:background="@drawable/btn_twitter" />
-
-        <Button
             android:id="@+id/btnfb"
             android:layout_width="187.5px"
             android:layout_height="75px"
@@ -117,12 +110,23 @@ android:layout_height="800px" >
             android:background="@drawable/btn_email" />
 
         <Button
+            android:id="@+id/btntw"
+            android:layout_width="187.5px"
+            android:layout_height="75px"
+            android:layout_alignBaseline="@+id/btnfb"
+            android:layout_alignBottom="@+id/btnfb"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/btn_twitter" />
+
+        <Button
             android:id="@+id/btntext"
             android:layout_width="187.5px"
             android:layout_height="75px"
-            android:layout_marginLeft="225px"
-            android:layout_marginTop="142.5px"
+            android:layout_alignBaseline="@+id/btnemail"
+            android:layout_alignBottom="@+id/btnemail"
+            android:layout_alignLeft="@+id/btntw"
             android:background="@drawable/btn_text" />
+
     </RelativeLayout>
 
 </RelativeLayout>

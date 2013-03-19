@@ -8,11 +8,13 @@ package awesome.app.moviequotes;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -24,6 +26,7 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
+import awesome.app.moviequotes.SplashScreen.myAsyncTask1;
 
 import com.flurry.android.FlurryAgent;
 import com.google.ads.AdRequest;
@@ -42,7 +45,7 @@ public class MoreActivity extends Activity {
 
 	  ProgressBar loadingProgressBar,loadingTitle;
 	  String MY_KEY="MWZY29QZHHSWXYQS8DYN";
-
+	  ProgressDialog mDialog;
 	private FrameLayout fl;
 		@Override
 		protected void onStart() {
@@ -59,6 +62,8 @@ public class MoreActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.more_activity);
+		 mDialog = new ProgressDialog(MoreActivity.this);
+         mDialog.setMessage("Loading...");
 		SharedPreferences sharedPreferences = getSharedPreferences("MY",
 				MODE_PRIVATE);
 		String strSavedMem1 = sharedPreferences.getString("MEM2", "");
@@ -143,7 +148,7 @@ public class MoreActivity extends Activity {
 					alertDialog.setTitle("Upgrade App");
 
 					// Setting Dialog Message
-					alertDialog.setMessage("About app");
+					alertDialog.setMessage("Do you want to Upgrade your app to enable Search options ?");
 
 					// Setting Icon to Dialog
 					// alertDialog.setIcon(R.drawable.delete);
@@ -252,6 +257,25 @@ public class MoreActivity extends Activity {
 
 			}
 		});
+		Handler mHandler = new Handler();
+
+		mHandler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				// frameAnimation.stop();
+			//	mDialog.hide();
+				mDialog.hide();
+				
+
+			}
+		}, 2000);
+		try {
+			 mDialog.show();
+			 mDialog.setCanceledOnTouchOutside(false);
+          
+		} catch (Exception e) {
+			Log.v("responce", e.toString());
+		}
 		
 		   mWebView = (WebView) findViewById(R.id.webview);
 		   mWebView.getSettings().setJavaScriptEnabled(true);
@@ -261,32 +285,11 @@ public class MoreActivity extends Activity {
 		   mWebView.setHorizontalScrollBarEnabled(false);
 
 		   mWebView.setVerticalScrollBarEnabled(true);
-		   loadingProgressBar=(ProgressBar)findViewById(R.id.progressbar_Horizontal); 
+		  
 		   
 		   mWebView.setWebChromeClient(new WebChromeClient() {
 
-		   // this will be called on page loading progress
-
-		   @Override
-
-		   public void onProgressChanged(WebView view, int newProgress) {
-
-		   super.onProgressChanged(view, newProgress);
-
-
-		   loadingProgressBar.setProgress(newProgress);
-		   //loadingTitle.setProgress(newProgress);
-		   // hide the progress bar if the loading is complete
-
-		   if (newProgress == 100) {
-		   loadingProgressBar.setVisibility(View.GONE);
-		   
-		   } else{
-		   loadingProgressBar.setVisibility(View.VISIBLE);
-		   
-		   }
-
-		   }
+		  
 
 		   });
 

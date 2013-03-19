@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,7 +87,7 @@ public class mylistadapter4 extends BaseAdapter {
 						+ "~" + "\n" + mListe.get(position).getTexte3();
 				// Toast.makeText(c, randomdata, 500).show();
 				// InfoActivity.data=randomdata;
-
+Log.v("", randomdata);
 				Global global = new Global(1, randomdata);
 				randomdata=null;
 				System.gc();

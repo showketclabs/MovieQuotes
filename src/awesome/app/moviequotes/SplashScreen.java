@@ -42,7 +42,7 @@ public class SplashScreen extends Activity {
 
 
 	ProgressBar bar;
-	public String s,serverres;
+	public String s=null,serverres=null;
 	TextView t, m, y, q, loading;
 	String movie="";
 	String quotes="";
@@ -95,11 +95,11 @@ public class SplashScreen extends Activity {
 		
 		loading = (TextView) findViewById(R.id.textView1);
 		loading.setVisibility(View.INVISIBLE);
-	
+	    //SavePreferences("MEM1", "");
 		if(haveNetworkConnection())
-		{
+		{   
 			LoadPreferences();
-			if (serverres!=null) {
+			if (serverres!="") {
 				Handler mHandler = new Handler();
 
 				mHandler.postDelayed(new Runnable() {
@@ -121,14 +121,15 @@ public class SplashScreen extends Activity {
 				} catch (Exception e) {
 					Log.v("responce", e.toString());
 				}
-				if(flag==1){
-					Toast.makeText(getApplicationContext(), "Check Your Network Service.!", 500).show();
-				}
-				parse();
+//				if(flag==1){
+//					Toast.makeText(getApplicationContext(), "Check Your Network Service.!", 500).show();
+//				}
+				//parse();
 
 			} else {
 				try {
 					new myAsyncTask().execute();
+				//	parse();
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					Log.v("responce", e.toString());
@@ -165,7 +166,7 @@ public class SplashScreen extends Activity {
 		private void LoadPreferences() {
 			Global.sharedPreferences = getPreferences(MODE_PRIVATE);
 			serverres = Global.sharedPreferences.getString("MEM1", "");
-			//serverres = s;
+			//s=serverres;
 		
 		}
 	private boolean haveNetworkConnection() {
@@ -278,6 +279,7 @@ public class SplashScreen extends Activity {
 		@Override
 		protected void onPreExecute() {
 			 mDialog.show();
+			 mDialog.setCanceledOnTouchOutside(false);
 //			bar.setVisibility(View.VISIBLE);
 //			loading.setVisibility(loading.VISIBLE);
 		}
@@ -286,7 +288,7 @@ public class SplashScreen extends Activity {
 		protected String doInBackground(Void... arg) {
 			
 			s = getUrlResponse("http://54.235.203.216/movies-quotes/movies.php");
-		
+			SavePreferences("MEM1", s);
 			return null;
 		}
 
@@ -298,9 +300,17 @@ public class SplashScreen extends Activity {
 //			loading.setVisibility(loading.INVISIBLE);
 //	
 			 try{
-			parse();
-			finish();
-			startActivity(new Intent(SplashScreen.this, UIActivity.class));
+				 Log.v("s", s+"");
+				 if(s!=null)
+				 {
+					   parse();
+						finish();
+						startActivity(new Intent(SplashScreen.this, UIActivity.class));
+					
+			}else{
+				
+				 Toast.makeText(getApplicationContext(), "Server Error...", 500).show();	
+			}
 			
 			
 			 rt=Runtime.getRuntime();
@@ -335,7 +345,7 @@ public class SplashScreen extends Activity {
 
 
 	public void parse() {
-		//LoadPreferences();
+		LoadPreferences();
 		
 	
 

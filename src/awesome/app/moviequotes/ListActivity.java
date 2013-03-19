@@ -33,6 +33,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
 import com.google.ads.AdRequest;
@@ -139,7 +140,7 @@ public class ListActivity extends Activity{
 					alertDialog.setTitle("Upgrade App");
 
 					// Setting Dialog Message
-					alertDialog.setMessage("About app");
+					alertDialog.setMessage("Do you want to Upgrade your app to enable Search options ?");
 
 					// Setting Icon to Dialog
 					// alertDialog.setIcon(R.drawable.delete);
@@ -240,12 +241,12 @@ public class ListActivity extends Activity{
 
 				// Setting Dialog Message
 				alertDialog
-						.setMessage("Are we missing quotes from your favorite movie? "
+						.setMessage("Are we missing quotes from your favorite 'Movie' ? "
 								+ "Or misssing one of your fav 'Movie Quotes' ? Let us know!"
-								+ "We are constantly updating our database.Send us an email and we will add it.");
+								+ "We 're constantly updating our database. Send us an email and we 'll add it.");
 
 				
-				alertDialog.setPositiveButton("Yes",
+				alertDialog.setPositiveButton("Ok",
 						new DialogInterface.OnClickListener() {
 
 //					
@@ -253,7 +254,11 @@ public class ListActivity extends Activity{
 							public void onClick(DialogInterface dialog,
 									int which) {
 //								
-								new emai_s().execute();
+								try {
+									new emai_s().execute();
+								} catch (Exception e) {
+									Toast.makeText(getApplicationContext(), "No Email Support on Your device.",500).show();
+								}
 							
 								
 							}
@@ -270,7 +275,7 @@ public class ListActivity extends Activity{
 
 				// Setting Negative "NO" Button
 
-				alertDialog.setNegativeButton("No",
+				alertDialog.setNegativeButton("No Thanks",
 						new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog,

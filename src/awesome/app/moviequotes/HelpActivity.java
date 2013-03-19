@@ -104,74 +104,74 @@ public class HelpActivity extends Activity {
 		    		  		}
 		      }
 		    });
-		search.setOnClickListener(new View.OnClickListener() {
+			search.setOnClickListener(new View.OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
+				@Override
+				public void onClick(View v) {
 
-				SharedPreferences sharedPreferences = getSharedPreferences(
-						"MY", MODE_PRIVATE);
-				String strSavedMem1 = sharedPreferences.getString("MEM2", "");
-				// Toast.makeText(UIActivity.this, strSavedMem1,
-				// Toast.LENGTH_LONG)
-				// .show();
-				if (strSavedMem1 == "") {
+					SharedPreferences sharedPreferences = getSharedPreferences(
+							"MY", MODE_PRIVATE);
+					String strSavedMem1 = sharedPreferences.getString("MEM2", "");
+					// Toast.makeText(UIActivity.this, strSavedMem1,
+					// Toast.LENGTH_LONG)
+					// .show();
+					if (strSavedMem1 == "") {
 
-					AlertDialog.Builder alertDialog = new AlertDialog.Builder(
-							HelpActivity.this);
+						AlertDialog.Builder alertDialog = new AlertDialog.Builder(
+								HelpActivity.this);
 
-					// Setting Dialog Title
-					alertDialog.setTitle("Upgrade App");
+						// Setting Dialog Title
+						alertDialog.setTitle("Upgrade App");
 
-					// Setting Dialog Message
-					alertDialog.setMessage("About app");
+						// Setting Dialog Message
+						alertDialog.setMessage("Do you want to Upgrade your app to enable Search options ?");
 
-					// Setting Icon to Dialog
-					// alertDialog.setIcon(R.drawable.delete);
+						// Setting Icon to Dialog
+						// alertDialog.setIcon(R.drawable.delete);
 
-					// Setting Positive "Yes" Button
-					alertDialog.setPositiveButton("Yes",
-							new DialogInterface.OnClickListener() {
+						// Setting Positive "Yes" Button
+						alertDialog.setPositiveButton("Yes",
+								new DialogInterface.OnClickListener() {
 
-								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
-									finish();
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which) {
+										finish();
 
-									startActivity(new Intent(HelpActivity.this,
-											UpgradeActivity.class));
-								}
-							});
+										startActivity(new Intent(HelpActivity.this,
+												UpgradeActivity.class));
+									}
+								});
 
-					// Setting Negative "NO" Button
+						// Setting Negative "NO" Button
 
-					alertDialog.setNegativeButton("No",
-							new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
+						alertDialog.setNegativeButton("No",
+								new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which) {
 
-									dialog.cancel();
-								}
-							});
+										dialog.cancel();
+									}
+								});
 
-					// Showing Alert Message
-					alertDialog.show();
-				} else {
+						// Showing Alert Message
+						alertDialog.show();
+					} else {
 
-					// upgrade work here
-					// Toast.makeText(
-					// getApplicationContext(),
-					// getPreferences(MODE_PRIVATE).getString("prouser",
-					// "")
-					// + "", 500).show();
+						// upgrade work here
+						// Toast.makeText(
+						// getApplicationContext(),
+						// getPreferences(MODE_PRIVATE).getString("prouser",
+						// "")
+						// + "", 500).show();
 
-					finish();
-					startActivity(new Intent(HelpActivity.this,
-							SearchActivity.class));
+						finish();
+						startActivity(new Intent(HelpActivity.this,
+								SearchActivity.class));
+					}
 				}
-			}
-		});
+			});
 		help.setOnClickListener(new View.OnClickListener() {
 
 			@Override

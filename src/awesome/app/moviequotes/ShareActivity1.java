@@ -195,7 +195,7 @@ public class ShareActivity1 extends Activity{
 					alertDialog.setTitle("Upgrade App");
 
 					// Setting Dialog Message
-					alertDialog.setMessage("About app");
+					alertDialog.setMessage("Do you want to Upgrade your app to enable Search options ?");
 
 					// Setting Icon to Dialog
 					// alertDialog.setIcon(R.drawable.delete);
@@ -328,7 +328,11 @@ public class ShareActivity1 extends Activity{
 			switch (view.getId()) {
 
 			case R.id.btnemail:
-	         new emai_s().execute();
+				try {
+					new emai_s().execute();
+				} catch (Exception e1) {
+					Toast.makeText(getApplicationContext(), "No Email Support on Your device.", 500).show();
+				}
 				break;
 			case R.id.btnfb:
 				
@@ -344,13 +348,17 @@ public class ShareActivity1 extends Activity{
 				break;
 			case R.id.btntext:
 
-				String msgg = postdata;
-				postdata = null;
-				Intent intentsms = new Intent(Intent.ACTION_VIEW,
-						Uri.parse("sms:" + ""));
-				intentsms.putExtra("sms_body", msgg);
-				startActivity(intentsms);
-				txt.setEnabled(true);
+				try {
+					String msgg = postdata;
+					postdata = null;
+					Intent intentsms = new Intent(Intent.ACTION_VIEW,
+							Uri.parse("sms:" + ""));
+					intentsms.putExtra("sms_body", msgg);
+					startActivity(intentsms);
+					txt.setEnabled(true);
+				} catch (Exception e1) {
+					Toast.makeText(getApplicationContext(), "No Text Support on Your device.",500).show();
+				}
 				break;
 			case R.id.btntw:
 				mTwitter.setListener(mTwLoginDialogListener);

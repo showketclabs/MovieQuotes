@@ -97,7 +97,7 @@ public class searchUgrade extends Activity {
 					alertDialog.setTitle("Upgrade App");
 
 					// Setting Dialog Message
-					alertDialog.setMessage("About app");
+					alertDialog.setMessage("Do you want to Upgrade your app to enable Search options ?");
 
 					// Setting Icon to Dialog
 					// alertDialog.setIcon(R.drawable.delete);
@@ -244,55 +244,7 @@ public class searchUgrade extends Activity {
 		et = (EditText) findViewById(R.id.EditText01);
 		loadlist();
 	Log.v("size",array_sort.size()+"");
-//		et.addTextChangedListener(new TextWatcher() {
-//			public void afterTextChanged(Editable s) {
-//				// Abstract Method of TextWatcher Interface.
-//			}
-//
-//			public void beforeTextChanged(CharSequence s, int start, int count,
-//					int after) {
-//				// Abstract Method of TextWatcher Interface.
-//			}
-//
-//			public void onTextChanged(CharSequence s, int start, int before,
-//					int count) {
-//				ListView listView = (ListView) findViewById(R.id.list_twoligne_itineraire);
-//				List<itemthreelinereveal> mListe = new ArrayList<itemthreelinereveal>();
-//
-//				textlength = et.getText().length();
-//				// array_sort.clear();
-//				for (int i = 0; i < array_sort.size(); i++) {
-//					if (textlength <= array_sort.get(i).length()) {
-//						if (et.getText()
-//								.toString()
-//								.equalsIgnoreCase(
-//										(String) array_sort.get(i).subSequence(
-//												0, textlength))) {
-//
-//							// array_sort.add(Global.mo_arr.get(i));
-//    String q=quote[i];
-//    String y=year[i];
-//    String m=movie[i];
-//    
-//							mListe.add(new itemthreelinereveal(q, m, y, false));
-//									}
-//					}
-//				}
-//
-//				adapter = new mylistadapter4(searchUgrade.this,
-//						mListe);
-//				listView.setAdapter(adapter);
-////				listView.setOnItemClickListener(new OnItemClickListener() {
-////					@Override
-////					public void onItemClick(AdapterView<?> arg0, View v,
-////							int position, long id) {
-////
-////					}
-////				});
-//				
-//			}
-//
-//		});
+//		
 	et.addTextChangedListener(new TextWatcher() {
 		@Override
 		public void afterTextChanged(Editable s) {
@@ -320,13 +272,7 @@ public class searchUgrade extends Activity {
 							.equalsIgnoreCase(
 									(String) array_sort.get(i).subSequence(
 											0, textlength))) {
-						// array_sort.add(Global.mo_arr.get(i));
-//						String q=quote[i];
-//					    String y=year[i];
-//					    String m=movie[i];
-					//	//String qq=quote[i];
-					//	String yy=year[i];
-					//	String mm=movie[i];
+						
 						mListe.add(new itemthreelinereveal(quote[i],movie[i],year[i]
 								, false));
 					}
@@ -343,9 +289,7 @@ public class searchUgrade extends Activity {
 
 				}
 			});
-			// lv.setAdapter(new
-			// ArrayAdapter<String>(searchUgrade.this,android.R.layout.simple_list_item_1,
-			// array_sort));
+			
 
 		}
 
@@ -377,13 +321,7 @@ public class searchUgrade extends Activity {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-       // listView.setAdapter(null);
-       // array_sort.clear();
-	   
-//		movie=null;
-//		quote=null;
-//	    year=null;
-		//adapter=null;
+      
 		System.gc();
 		Runtime rt=Runtime.getRuntime();
 		 long free = rt.freeMemory();

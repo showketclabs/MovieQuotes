@@ -29,6 +29,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
+import com.google.ads.AdRequest;
+import com.google.ads.AdView;
 
 
 public class randomquote extends Activity {
@@ -68,17 +70,25 @@ public class randomquote extends Activity {
 		setContentView(R.layout.random_quote);
 		fl=(FrameLayout)findViewById(R.id.rv);
 		new AndroidScreenSize(randomquote.this,fl,800,480);
-		FrameLayout frameLayout = (FrameLayout) findViewById(R.id.flayout);
+		AdView adview = (AdView)findViewById(R.id.ad);
 		SharedPreferences sharedPreferences = getSharedPreferences("MY",
 				MODE_PRIVATE);
 		String strSavedMem1 = sharedPreferences.getString("MEM2", "");
 		// Toast.makeText(UIActivity.this, strSavedMem1, Toast.LENGTH_LONG)
 		// .show();
 		if (strSavedMem1 == "") {
-			frameLayout.setVisibility(View.VISIBLE);
+			adview.setVisibility(adview.VISIBLE);
 		} else {
-			frameLayout.setVisibility(View.INVISIBLE);
+			adview.setVisibility(adview.INVISIBLE);
 		}
+		try{
+			
+			AdRequest re = new AdRequest();
+			re.setTesting(true);
+			adview.loadAd(re);}
+			catch(Exception e){
+				//Log.v("add",e.toString());
+			}
 		movie1=Global.movie.split("~, ");
 		year1=Global.year.split("~, ");
 		quote1=Global.quotes.split("~, ");
@@ -136,7 +146,7 @@ public class randomquote extends Activity {
 					alertDialog.setTitle("Upgrade App");
 
 					// Setting Dialog Message
-					alertDialog.setMessage("About app");
+					alertDialog.setMessage("Do you want to Upgrade your app to enable Search options ?");
 
 					// Setting Icon to Dialog
 					// alertDialog.setIcon(R.drawable.delete);

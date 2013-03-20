@@ -6,17 +6,20 @@ package awesome.app.moviequotes;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
@@ -31,6 +34,7 @@ public class HelpActivity extends Activity {
 	String MY_KEY="MWZY29QZHHSWXYQS8DYN";
 	private ShakeListener mShaker;
 	private FrameLayout fl;
+	private ProgressDialog mDialog;
 	@Override
 	protected void onStart() {
         super.onStart();
@@ -62,6 +66,9 @@ public class HelpActivity extends Activity {
 		rate = (Button) findViewById(R.id.button5);
 		help.setEnabled(false);
 		help.setBackgroundResource(R.drawable.helpp);
+		 mDialog = new ProgressDialog(HelpActivity.this);
+		
+         mDialog.setMessage("Loading...");
 		temp = 0;
 		
 		SharedPreferences sharedPreferences = getSharedPreferences("MY",
@@ -297,10 +304,29 @@ public class HelpActivity extends Activity {
 							@Override
 							public void onClick(DialogInterface dialog,
 									int which) {
+                       try {
+                    	   Handler mHandler = new Handler();
+
+                   		  mHandler.postDelayed(new Runnable() {
+                   			@Override
+                   			public void run() {
+                   				
+                   				mDialog.hide();
+                   				
+
+                   			}
+                   		}, 3000);
+                   	
+                   			 mDialog.show();
+                   			 mDialog.setCanceledOnTouchOutside(false);
+						    new AppRater();
+					} catch (Exception e) {
+						Toast.makeText(getApplicationContext(),
+								" problem in Rate this app", Toast.LENGTH_SHORT)
+								.show();
+					}
 								// Write your code here to invoke NO event
-								Toast.makeText(getApplicationContext(),
-										"Rate this app", Toast.LENGTH_SHORT)
-										.show();
+								
 							}
 						});
 

@@ -13,7 +13,7 @@ public class ShakeListener implements SensorListener
   private static final int SHAKE_COUNT = 3;
 
   private SensorManager mSensorMgr;
-  private float mLastX=-1.0f, mLastY=-1.0f, mLastZ=-1.0f;
+  private float mLastX=-1.5f, mLastY=-1.5f, mLastZ=-1.5f;
   private long mLastTime;
   private OnShakeListener mShakeListener;
   private Context mContext;

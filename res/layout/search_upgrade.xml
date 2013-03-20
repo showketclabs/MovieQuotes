@@ -44,7 +44,7 @@ android:layout_height="800px" >
             android:id="@+id/list_twoligne_itineraire"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            
+            android:background="@drawable/roundlist" 
             android:fastScrollEnabled="true"
             android:cacheColorHint="@android:color/transparent" > 
         

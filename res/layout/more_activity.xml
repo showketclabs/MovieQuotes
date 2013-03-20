@@ -22,7 +22,8 @@ android:layout_height="800px" >
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="649.5px" >
+        android:layout_height="649.5px"
+         android:id="@+id/rellay" >
 
         
 

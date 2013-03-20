@@ -126,7 +126,7 @@ public class InfoActivity extends Activity{
 		tv.setMovementMethod(new ScrollingMovementMethod());
 
 		// if (Global.cnt == 1) {
-		tv.setText((Global.datatodispaly).substring(1,(Global.datatodispaly).length()));
+		tv.setText((Global.datatodispaly));
 		// Global.cnt = 0;
 		// } else {
 		// loadquoterandom();
@@ -376,7 +376,7 @@ public class InfoActivity extends Activity{
 
 					String sql = "SELECT * FROM fav1 WHERE movie == '"
 							+ rando_arr[1] + "' and quote=='"
-							+ rando_arr[0].replaceAll("'", "`")
+							+ rando_arr[0]
 							+ "' and year=='" + rando_arr[2] + "'";
 					Cursor data = db.rawQuery(sql, null);
 					if (data.moveToFirst()) {

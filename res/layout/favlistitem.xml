@@ -30,8 +30,8 @@
             android:id="@+id/secondLine"
             android:layout_width="330px"
             android:layout_height="30px"
-            android:layout_marginLeft="60px"
-            android:layout_marginTop="42px"
+            android:layout_marginLeft="50px"
+            android:layout_marginTop="46px"
             android:gravity="center_vertical|center_horizontal|center"
             android:singleLine="true"
             android:text="TextView"
@@ -43,8 +43,8 @@
             android:id="@+id/thirdLine"
             android:layout_width="150px"
             android:layout_height="30px"
-            android:layout_marginLeft="150px"
-            android:layout_marginTop="75px"
+            android:layout_marginLeft="140px"
+            android:layout_marginTop="95px"
             android:gravity="center_vertical|center_horizontal|center"
             android:singleLine="true"
             android:text="TextView"
@@ -65,7 +65,22 @@
             
              android:textColor="#ffffff"
             android:background="@drawable/btn_cancel" />
-
+ <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="210px"
+            android:layout_marginTop="27px"
+             android:textColor="#000000"
+            android:text="~" />
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="210px"
+            android:layout_marginTop="75px"
+             android:textColor="#000000"
+            android:text="~" />
         <TextView
             android:id="@+id/textView2"
             android:layout_width="60px"
@@ -78,15 +93,6 @@
             android:text="     " />
     </RelativeLayout>
 
-   <!-- <Button
-         android:id="@+id/cb2"
-        android:layout_width="45px"
-            android:layout_height="45px"
-            android:layout_marginLeft="390.5px"
-            android:layout_marginTop="30px"
-            android:enabled="false"
-             android:visibility="invisible"
-        android:background="@drawable/arrow_onclick"
-        android:gravity="center_vertical|center_horizontal|center" /> -->
+ 
 
 </RelativeLayout>

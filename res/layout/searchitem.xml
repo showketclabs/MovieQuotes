@@ -30,8 +30,8 @@
             android:id="@+id/secondLine"
             android:layout_width="300px"
             android:layout_height="30px"
-            android:layout_marginLeft="75px"
-            android:layout_marginTop="37.5px"
+            android:layout_marginLeft="65px"
+            android:layout_marginTop="47.5px"
             android:gravity="center_vertical|center_horizontal|center"
             android:singleLine="true"
             android:text="TextView"
@@ -43,8 +43,8 @@
             android:id="@+id/thirdLine"
             android:layout_width="180px"
             android:layout_height="30px"
-            android:layout_marginLeft="100dp"
-            android:layout_marginTop="70.5px"
+            android:layout_marginLeft="95dp"
+            android:layout_marginTop="90.5px"
             android:gravity="center_vertical|center_horizontal|center"
             android:singleLine="true"
             android:text="TextView"
@@ -62,6 +62,22 @@
            android:enabled="false"
             android:button="@drawable/arrow_onclick"
             android:gravity="center_vertical|center_horizontal|center" />
+         <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="210px"
+            android:layout_marginTop="28px"
+             android:textColor="#000000"
+            android:text="~" />
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="210px"
+            android:layout_marginTop="75px"
+             android:textColor="#000000"
+            android:text="~" />
 
     </RelativeLayout>
 

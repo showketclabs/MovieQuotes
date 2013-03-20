@@ -386,16 +386,15 @@ public class RevealInfo extends Activity  {
 //								Log.v("two", rando_arr[1] + "");
 //								Log.v("three", rando_arr[2] + "");
 								try {
-
-									String sql = "SELECT * FROM fav1 WHERE movie == '"
-											+ rdata[1] + "' and quote=='"
-											+ rdata[0].replaceAll("'", "`")
+									String sql = "SELECT * FROM fav1 WHERE movie == '" + rdata[1]
+											+ "' and quote=='" + rdata[0].replaceAll("'", "`")
 											+ "' and year=='" + rdata[2] + "'";
 									Cursor data = db.rawQuery(sql, null);
 									if (data.moveToFirst()) {
-										// Toast.makeText(getApplicationContext(),
-										// "record exists", 500).show();
+										// Toast.makeText(c, "record exists", 500).show();
 
+									
+									
 									} else {
 
 										try {

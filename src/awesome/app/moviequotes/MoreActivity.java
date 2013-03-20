@@ -6,6 +6,7 @@ package awesome.app.moviequotes;
 
 
 
+import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -17,6 +18,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +28,8 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import awesome.app.moviequotes.SplashScreen.myAsyncTask1;
 
 import com.flurry.android.FlurryAgent;
@@ -40,7 +44,11 @@ public class MoreActivity extends Activity {
 	int temp = 0;
 	WebView mWebView;
 	AdView adview;
+	RelativeLayout rel;
 	private ShakeListener mShaker;
+	
+
+     
 	  String URL="http://widgets.itunes.apple.com/appstore.html?wtype=11&app_id=null&country=us&partnerId=30&affiliate_id=http%3A//click.linksynergy.com/fs-bin/stat%3Fid%3DPk5SplnlMSY%26offerid%3D146261%26type%3D3%26subid%3D0%26tmpid%3D1826%26RD_PARM1%3D&cul=FFFFFF&cur=FFFFFF&cll=FFFFFF&clr=FFFFFF&wh=382&ww=320&t=More%20Great%20Movie%20Apps&d=Available%20in%20the%20App%20Store&pl=307906541,342792525,307840047,381823315,334774848,386602645";
 
 	  ProgressBar loadingProgressBar,loadingTitle;
@@ -63,6 +71,7 @@ public class MoreActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.more_activity);
 		 mDialog = new ProgressDialog(MoreActivity.this);
+		 rel=(RelativeLayout)findViewById(R.id.rellay);
          mDialog.setMessage("Loading...");
 		SharedPreferences sharedPreferences = getSharedPreferences("MY",
 				MODE_PRIVATE);
@@ -268,7 +277,7 @@ public class MoreActivity extends Activity {
 				
 
 			}
-		}, 2000);
+		}, 3000);
 		try {
 			 mDialog.show();
 			 mDialog.setCanceledOnTouchOutside(false);
@@ -280,17 +289,18 @@ public class MoreActivity extends Activity {
 		   mWebView = (WebView) findViewById(R.id.webview);
 		   mWebView.getSettings().setJavaScriptEnabled(true);
 		   mWebView.loadUrl(URL);
-		  
+//		   rel.addView(mWebView,new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT,80));
+		
 		   mWebView.setWebViewClient(new MyWebViewClient());
 		   mWebView.setHorizontalScrollBarEnabled(false);
 
 		   mWebView.setVerticalScrollBarEnabled(true);
-		  
+		 
+
 		   
 		   mWebView.setWebChromeClient(new WebChromeClient() {
 
-		  
-
+		 
 		   });
 
 		   }

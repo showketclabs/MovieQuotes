@@ -6,6 +6,7 @@
     android:focusable="true"
     android:orientation="horizontal"
     android:clickable="true"
+    
     android:background="@drawable/relsel"
     >
 
@@ -31,8 +32,8 @@
             android:id="@+id/secondLine"
             android:layout_width="330px"
             android:layout_height="30px"
-            android:layout_marginLeft="60px"
-            android:layout_marginTop="37.5px"
+            android:layout_marginLeft="50px"
+            android:layout_marginTop="40.5px"
             android:gravity="center_vertical|center_horizontal|center"
             android:singleLine="true"
             android:text="TextView"
@@ -44,8 +45,8 @@
             android:id="@+id/thirdLine"
             android:layout_width="150px"
             android:layout_height="30px"
-            android:layout_marginLeft="150px"
-            android:layout_marginTop="70.5px"
+            android:layout_marginLeft="140px"
+            android:layout_marginTop="76.5px"
             android:gravity="center_vertical|center_horizontal|center"
             android:singleLine="true"
             android:text="TextView"
@@ -64,6 +65,23 @@
             android:button="@drawable/checkbox"
           
             android:gravity="center_vertical|center_horizontal|center" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="210px"
+            android:layout_marginTop="24px"
+             android:textColor="#000000"
+            android:text="~" />
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="210px"
+            android:layout_marginTop="58px"
+             android:textColor="#000000"
+            android:text="~" />
 
     </RelativeLayout>
 

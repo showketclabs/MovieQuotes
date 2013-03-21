@@ -344,5 +344,12 @@ public class searchUgrade extends Activity {
 		mShaker.pause();
 		super.onPause();
 	}
+	 public void onBackPressed() {
+		 finish();
+		  startActivity(new Intent(searchUgrade.this,
+					UIActivity.class));
 
+
+         return;
+     }   
 }

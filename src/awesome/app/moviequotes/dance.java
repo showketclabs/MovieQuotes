@@ -70,7 +70,7 @@ startActivity(i);
 				 * R.anim.flip_rev);
 				 */
 			}
-		}, 2000);
+		}, 3000);
 	}
 
 	@Override
@@ -84,7 +84,14 @@ startActivity(i);
 		unbindDrawables(findViewById(R.id.mainlayout));
 		System.gc();
 	}
+	 public void onBackPressed() {
+		  finish();
+		  startActivity(new Intent(dance.this,
+					UIActivity.class));
 
+
+         return;
+     }   
 	private void unbindDrawables(View view) {
 		try {
 			if (view.getBackground() != null) {

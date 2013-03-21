@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 public class Global {
-	
+
 	public static ArrayList<String> fbdata, textdata;
 	public static int cnt = 0;
 
@@ -20,23 +20,20 @@ public class Global {
 	static String datatodispaly, quotesharetofb;
 
 	public static SharedPreferences sharedPreferences;
-   public static String year,quotes,movie;
-public Global(String q,String m,String y) {
+	public static String year, quotes, movie;
 
-	
-	
-	year=y;
-	quotes=q;
-	movie=m;
+	public Global(String q, String m, String y) {
 
-	q=null;
-	m=null;
-	y=null;
-	System.gc();
-	
-	
+		year = y;
+		quotes = q;
+		movie = m;
 
-}
+		q = null;
+		m = null;
+		y = null;
+		System.gc();
+
+	}
 
 	public Global(ArrayList<String> list1, ArrayList<String> list2) {
 		fbdata = new ArrayList<String>(list1);
@@ -44,17 +41,15 @@ public Global(String q,String m,String y) {
 		list1.clear();
 		list2.clear();
 		System.gc();
-		System.gc();
+
 	}
 
 	public Global(int cnt, String datatodispaly) {
 		Global.cnt = cnt;
 		Global.datatodispaly = datatodispaly;
-		datatodispaly=null;
+		datatodispaly = null;
 		System.gc();
-		System.gc();
+
 	}
-
-
 
 }

@@ -41,6 +41,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.Toast;
+import awesome.app.moviequotes.ShareActivity.myAsyncTask;
 import awesome.app.moviequotes.TwitterApp.TwDialogListener;
 
 import com.facebook.android.DialogError;
@@ -59,8 +60,8 @@ public class ShareActivity1 extends Activity{
 	private TwitterApp mTwitter;
 	public String path;
 	public static File f;
-	private static final String CONSUMER_KEY = "6JyIkj71ZqG4wk3YF0Y4hw";
-	private static final String CONSUMER_SECRET = "sJl9aRVqlEt7nxlKvpMVK6tLULz5FSQ2KUOW0yie4";
+	private static final String CONSUMER_KEY = "uTQueLRec6kt7iQnPUdvEQ";
+	private static final String CONSUMER_SECRET = "YhVaM8wCkvsgf252BWYPL9WMzUXwkJI33CD5TnIx4M";
 
 	private enum FROM {
 		TWITTER_POST, TWITTER_LOGIN
@@ -71,7 +72,7 @@ public class ShareActivity1 extends Activity{
 	};
 
 	// facebook dec
-	private static final String APP_ID = "121195231387696";
+	private static final String APP_ID = "444315482300075";
 	private static final String[] PERMISSIONS = new String[] { "publish_stream" };
 
 	private static final String TOKEN = "access_token";
@@ -81,7 +82,7 @@ public class ShareActivity1 extends Activity{
 	private Facebook facebook;
 	private String messageToPost;
 	// String facebookMessage;
-	String postdata = "http///googleplay url";
+	String postdata = "https://play.google.com/store/apps/details?id=awesome.app.moviequotes";
 	Bundle parameters = new Bundle();
 	ArrayList<String> facebookMessage = new ArrayList<String>();
 	//Shaker shaker;
@@ -432,11 +433,18 @@ public class ShareActivity1 extends Activity{
 
 	public void post(String d) {
 
-		parameters.putString("message", d);
+		
+		parameters.putString("message","Check out this great app.'Gazillion Movie Quote'  https://play.google.com/store/apps/details?id=awesome.app.moviequotes");
 		// parameters.putStringArrayList("message", data);
 		parameters.putString("picture", "http://i45.tinypic.com/36b6s.png");
-		parameters.putString("description", "topic share");
+		parameters.putString("link", "https://play.google.com/store/apps/details?id=awesome.app.moviequotes");
+		parameters.putString("name", "Gazillion Movie Quotes");
+		
+		parameters.putString("caption", "play.google.com");
+		
+		parameters.putString("description", "Get Gazillion Movie Quotes on the Play Store.See screen shots,rates and customer reviews");
 		new myAsyncTask().execute();
+//		
 	}
 
 	class myAsyncTask extends AsyncTask<Void, Void, String> {
@@ -588,6 +596,14 @@ public class ShareActivity1 extends Activity{
 	    mShaker.pause();
 	    super.onPause();
 	  }
+	  public void onBackPressed() {
+		  finish();
+		  startActivity(new Intent(ShareActivity1.this,
+					UIActivity.class));
+
+
+          return;
+      }   
 	private void unbindDrawables(View view) {
 		try {
 			if (view.getBackground() != null) {

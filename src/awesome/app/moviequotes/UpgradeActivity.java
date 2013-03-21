@@ -6,10 +6,17 @@ package awesome.app.moviequotes;
 
 import java.util.ArrayList;
 
+import net.robotmedia.billing.BillingController;
+import net.robotmedia.billing.BillingRequest.ResponseCode;
+import net.robotmedia.billing.helper.AbstractBillingObserver;
+import net.robotmedia.billing.model.Transaction.PurchaseState;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
@@ -48,6 +55,23 @@ public class UpgradeActivity extends Activity {
         super.onStop();
         FlurryAgent.onEndSession(this);
     }
+    
+    
+    private static final int DIALOG_BILLING_NOT_SUPPORTED_ID = 2;
+
+	private String mSku;
+
+	private AbstractBillingObserver mBillingObserver;
+
+	public void onBillingChecked(boolean supported) {
+	 if (supported) {
+
+	  // mBuyButton.setEnabled(true);
+	 } else {
+	  showDialog(DIALOG_BILLING_NOT_SUPPORTED_ID);
+	 }
+	}
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -62,6 +86,10 @@ public class UpgradeActivity extends Activity {
 		back = (Button) findViewById(R.id.btnback);
 		upgrade = (Button) findViewById(R.id.button2);
 		temp = 0;
+		
+		
+		
+		
 		 final Vibrator vibe = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
 
 		    mShaker = new ShakeListener(this);
@@ -113,17 +141,16 @@ public class UpgradeActivity extends Activity {
 			public void onClick(View v) {
 				//startActivity(new Intent(UpgradeActivity.this,com.blundell.test.AppMainTest.class));
 			//	finish();
-				int count = 1;
-				if (count == 1) {
-					SavePreferences("MEM2", "pro");
-					LoadPreferences();
-					startActivity(new Intent(UpgradeActivity.this,
-							SearchActivity.class));
-					finish();
-				} else {
+				if (haveNetworkConnection()) {
+					Log.v("billl", "billing");
+					   try {
+						BillingController.requestPurchase(getApplicationContext(),
+						     "remove_ads");
+					} catch (Exception e) {
+						Log.v("billl", "billing"+e.toString());
+					}
 
-					// code to return without purchase
-				}
+					  }
 			}
 
 		});
@@ -142,13 +169,64 @@ public class UpgradeActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				startActivity(new Intent(UpgradeActivity.this, UIActivity.class));
-				finish();
+				if (haveNetworkConnection()) {
+					Log.v("billl", "billing");
+					   BillingController.requestPurchase(getApplicationContext(),
+					     "remove_ads");
+
+					  }
 
 			}
 		});
 
 		// loadfavlist
+		
+		
+		
+		mBillingObserver = new AbstractBillingObserver(UpgradeActivity.this) {
+
+			  public void onBillingChecked(boolean supported) {
+				  UpgradeActivity.this.onBillingChecked(supported);
+
+			  }
+
+			  public void onPurchaseStateChanged(String itemId,
+			    PurchaseState state) {
+
+				  UpgradeActivity.this.onPurchaseStateChanged(itemId, state);
+			   // Toast.makeText(coin1.this,state+"",
+			   // Toast.LENGTH_LONG).show();
+			  }
+
+			  public void onRequestPurchaseResponse(String itemId,
+			    ResponseCode response) {
+				  UpgradeActivity.this.onRequestPurchaseResponse(itemId, response);
+			   if (response == ResponseCode.RESULT_OK) {
+
+				   SavePreferences("MEM2", "pro");
+					LoadPreferences();
+					startActivity(new Intent(UpgradeActivity.this,
+							SearchActivity.class));
+					finish();
+
+			  
+			    // code to remove ads parmanent
+
+			   } else {
+			    // Toast.makeText(Settings_ads.this, response + "",
+			    // Toast.LENGTH_LONG).show();
+			   }
+			  }
+
+			  public void onSubscriptionChecked(boolean supported) {
+			   // TODO Auto-generated method stub
+
+			  }
+			 };
+			 
+			 
+			 BillingController.registerObserver(mBillingObserver);
+			 BillingController.checkBillingSupported(UpgradeActivity.this);
 
 	}
 
@@ -172,6 +250,7 @@ public class UpgradeActivity extends Activity {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+		 BillingController.unregisterObserver(mBillingObserver);
 		//shaker.close();
 		unbindDrawables(findViewById(R.id.mainlayout));
 		System.gc();
@@ -198,6 +277,14 @@ public class UpgradeActivity extends Activity {
 	    mShaker.pause();
 	    super.onPause();
 	  }
+	  public void onBackPressed() {
+			 finish();
+			  startActivity(new Intent(UpgradeActivity.this,
+						UIActivity.class));
+
+
+	         return;
+	     }   
 	private void unbindDrawables(View view) {
 		try {
 			if (view.getBackground() != null) {
@@ -218,6 +305,33 @@ public class UpgradeActivity extends Activity {
 
 		}
 	}
+	
 
+	public void onPurchaseStateChanged(String itemId, PurchaseState state) {
+	 Log.i("billing", "onPurchaseStateChanged() itemId: " + itemId);
+	 // updateOwnedItems();
+	}
+
+	public void onRequestPurchaseResponse(String itemId, ResponseCode response) {
+	 Log.d("onRequestPurchaseResponse", response + " ");
+	}
+
+	public boolean haveNetworkConnection() {
+	 boolean haveConnectedWifi = false;
+	 boolean haveConnectedMobile = false;
+
+	 ConnectivityManager cm = (ConnectivityManager) getApplicationContext()
+	   .getSystemService(Context.CONNECTIVITY_SERVICE);
+	 NetworkInfo[] netInfo = cm.getAllNetworkInfo();
+	 for (NetworkInfo ni : netInfo) {
+	  if (ni.getTypeName().equalsIgnoreCase("WIFI"))
+	   if (ni.isConnected())
+	    haveConnectedWifi = true;
+	  if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
+	   if (ni.isConnected())
+	    haveConnectedMobile = true;
+	 }
+	 return haveConnectedWifi || haveConnectedMobile;
+	}
 
 }

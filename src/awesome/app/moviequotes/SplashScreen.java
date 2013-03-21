@@ -17,6 +17,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Document;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -95,6 +96,12 @@ public class SplashScreen extends Activity {
 		
 		loading = (TextView) findViewById(R.id.textView1);
 		loading.setVisibility(View.INVISIBLE);
+		
+		/////////
+		
+		
+		
+		
 	    //SavePreferences("MEM1", "");
 		if(haveNetworkConnection())
 		{   
@@ -121,10 +128,7 @@ public class SplashScreen extends Activity {
 				} catch (Exception e) {
 					Log.v("responce", e.toString());
 				}
-//				if(flag==1){
-//					Toast.makeText(getApplicationContext(), "Check Your Network Service.!", 500).show();
-//				}
-				//parse();
+				
 
 			} else {
 				try {
@@ -210,7 +214,14 @@ public class SplashScreen extends Activity {
 		System.gc();
 		
 	}
-
+//	 public void onBackPressed() {
+//		 finish();
+//		  startActivity(new Intent(SplashScreen.this,
+//					SplashScreen.class));
+//
+//
+//         return;
+//     }   
 	private void unbindDrawables(View view) {
 		try {
 			if (view.getBackground() != null) {
@@ -303,12 +314,12 @@ public class SplashScreen extends Activity {
 				 Log.v("s", s+"");
 				 if(s!=null)
 				 {
-					   parse();
+					    parse();
 						finish();
 						startActivity(new Intent(SplashScreen.this, UIActivity.class));
 					
 			}else{
-				
+				 
 				 Toast.makeText(getApplicationContext(), "Server Error...", 500).show();	
 			}
 			
@@ -400,8 +411,8 @@ public class SplashScreen extends Activity {
 			movie=mov1+"";
 			year=year1+"";
 			quotes=quo1+"";
-			Log.v("year",year+"");
-	//	Global global = new Global(mov1,year1, quo1);
+			//Log.v("year",year+"");
+	
 			
 			
 		Global global = new Global(quotes.substring(1, quotes.length()-2),movie.substring(1, movie.length()-2), year.substring(1, year.length()-2));

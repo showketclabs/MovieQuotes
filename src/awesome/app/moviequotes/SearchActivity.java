@@ -284,6 +284,14 @@ FrameLayout fl;
 	    mShaker.pause();
 	    super.onPause();
 	  }
+	  public void onBackPressed() {
+			 finish();
+			  startActivity(new Intent(SearchActivity.this,
+						UIActivity.class));
+
+
+	         return;
+	     }   
 	private void unbindDrawables(View view) {
 		try {
 			if (view.getBackground() != null) {

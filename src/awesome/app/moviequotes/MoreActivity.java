@@ -46,7 +46,6 @@ public class MoreActivity extends Activity {
 	AdView adview;
 	RelativeLayout rel;
 	private ShakeListener mShaker;
-	
 
      
 	  String URL="http://widgets.itunes.apple.com/appstore.html?wtype=11&app_id=null&country=us&partnerId=30&affiliate_id=http%3A//click.linksynergy.com/fs-bin/stat%3Fid%3DPk5SplnlMSY%26offerid%3D146261%26type%3D3%26subid%3D0%26tmpid%3D1826%26RD_PARM1%3D&cul=FFFFFF&cur=FFFFFF&cll=FFFFFF&clr=FFFFFF&wh=382&ww=320&t=More%20Great%20Movie%20Apps&d=Available%20in%20the%20App%20Store&pl=307906541,342792525,307840047,381823315,334774848,386602645";
@@ -109,11 +108,7 @@ public class MoreActivity extends Activity {
 		      @Override
 			public void onShake()
 		      {
-//		        vibe.vibrate(100);
-//		        new AlertDialog.Builder(UIActivity.this)
-//		          .setPositiveButton(android.R.string.ok, null)
-//		          .setMessage("Shooken!")
-//		          .show();
+	      
 		    	  if (temp == 0)
 		    		  
 		    		  		{
@@ -268,40 +263,60 @@ public class MoreActivity extends Activity {
 		});
 		Handler mHandler = new Handler();
 
-		mHandler.postDelayed(new Runnable() {
+		mHandler.post(new Runnable() {
 			@Override
 			public void run() {
 				// frameAnimation.stop();
 			//	mDialog.hide();
-				mDialog.hide();
+				mDialog.show();
+				
+			
 				
 
 			}
-		}, 3000);
+		});
 		try {
-			 mDialog.show();
+			
 			 mDialog.setCanceledOnTouchOutside(false);
           
+			   mWebView = (WebView) findViewById(R.id.webview);
+			   mWebView.getSettings().setJavaScriptEnabled(true);
+			   mWebView.loadUrl(URL);
+//			   rel.addView(mWebView,new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT,80));
+			
+			   mWebView.setWebViewClient(new MyWebViewClient());
+			   mWebView.setHorizontalScrollBarEnabled(false);
+
+			   mWebView.setVerticalScrollBarEnabled(true);
+			 
+			   mWebView.setWebViewClient(new WebViewClient(){
+
+		            @Override
+		            public void onPageFinished(WebView view, final String url) {
+
+		            	mDialog.hide();
+
+
+		            }
+		          
+		      });
+//			   
+//			   mWebView.setWebChromeClient(new WebChromeClient() {
+//				   
+//				   
+//		            public void onPageFinished(WebView view, final String url) {
+//
+//		               
+//
+//		            }
+//			 
+//			   });
+			
 		} catch (Exception e) {
 			Log.v("responce", e.toString());
 		}
 		
-		   mWebView = (WebView) findViewById(R.id.webview);
-		   mWebView.getSettings().setJavaScriptEnabled(true);
-		   mWebView.loadUrl(URL);
-//		   rel.addView(mWebView,new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT,80));
-		
-		   mWebView.setWebViewClient(new MyWebViewClient());
-		   mWebView.setHorizontalScrollBarEnabled(false);
-
-		   mWebView.setVerticalScrollBarEnabled(true);
-		 
-
-		   
-		   mWebView.setWebChromeClient(new WebChromeClient() {
-
-		 
-		   });
+		  
 
 		   }
 		
@@ -335,6 +350,14 @@ public class MoreActivity extends Activity {
 	    mShaker.pause();
 	    super.onPause();
 	  }
+	  public void onBackPressed() {
+			 finish();
+			  startActivity(new Intent(MoreActivity.this,
+						UIActivity.class));
+
+
+	         return;
+	     }   
 	private void unbindDrawables(View view) {
 		try {
 			if (view.getBackground() != null) {

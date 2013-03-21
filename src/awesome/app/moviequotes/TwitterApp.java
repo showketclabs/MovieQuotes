@@ -45,13 +45,13 @@ public class TwitterApp {
 	// public static final String CALLBACK_URL =
 	// "http://abhinavasblog.blogspot.com/";
 
-	static String base_link_url = "http://www.google.co.in/";
+	static String base_link_url = "https://play.google.com/store/apps/details?id=awesome.app.moviequotes/";
 	private static final String TWITTER_ACCESS_TOKEN_URL = "http://api.twitter.com/oauth/access_token";
 	private static final String TWITTER_AUTHORZE_URL = "https://api.twitter.com/oauth/authorize";
 	private static final String TWITTER_REQUEST_URL = "https://api.twitter.com/oauth/request_token";
 	static String mydate = java.text.DateFormat.getDateTimeInstance().format(
 			Calendar.getInstance().getTime());
-	public static final String MESSAGE = "Hello Everyone...." + base_link_url
+	public static final String MESSAGE = "Check out this great app.'Gazillion Movie Quote'" + base_link_url
 			+ " posted on " + mydate;
 
 	public TwitterApp(Activity context, String consumerKey, String secretKey) {

@@ -505,6 +505,14 @@ public class InfoActivity extends Activity{
 	    mShaker.pause();
 	    super.onPause();
 	  }
+	  public void onBackPressed() {
+			 finish();
+			  startActivity(new Intent(InfoActivity.this,
+						UIActivity.class));
+
+
+	         return;
+	     }   
 	private void unbindDrawables(View view) {
 		try {
 			if (view.getBackground() != null) {

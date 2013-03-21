@@ -351,7 +351,14 @@ public class ListActivity extends Activity{
 	    mShaker.pause();
 	    super.onPause();
 	  }
+	  public void onBackPressed() {
+			 finish();
+			  startActivity(new Intent(ListActivity.this,
+						UIActivity.class));
 
+
+	         return;
+	     }   
 	
 	  public class emai_s extends AsyncTask<Void, Void, String> {
 

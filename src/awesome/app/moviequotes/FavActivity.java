@@ -391,6 +391,13 @@ Runtime rt=Runtime.getRuntime();
 	    mShaker.pause();
 	    super.onPause();
 	  }
+	  public void onBackPressed() {
+			 finish();
+			  startActivity(new Intent(FavActivity.this,
+						UIActivity.class));
 
+
+	         return;
+	     }   
 
 }

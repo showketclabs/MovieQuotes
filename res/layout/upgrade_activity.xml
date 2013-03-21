@@ -13,32 +13,32 @@ android:layout_height="800px" >
     android:orientation="vertical" >
     <FrameLayout
         android:layout_width="fill_parent"
-        android:layout_height="50dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="0dp" >
+        android:layout_height="75.00px"
+        android:layout_marginLeft="0px"
+        android:layout_marginTop="0px" >
    </FrameLayout>
     
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="100dp"
+        android:layout_height="150px"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true" >
         
 
         <Button
             android:id="@+id/btnhlp"
-            android:layout_width="120dp"
-            android:layout_height="47dp"
-            android:layout_marginLeft="200dp"
-            android:layout_marginTop="6dp"
+            android:layout_width="180.00px"
+            android:layout_height="70.50px"
+            android:layout_marginLeft="300.00px"
+            android:layout_marginTop="9.00px"
             android:background="@drawable/btn_help" />
         
 
         <Button
             android:id="@+id/btnback"
-            android:layout_width="120dp"
-            android:layout_height="47dp"
+            android:layout_width="180.00px"
+            android:layout_height="70.50px"
             android:layout_alignParentLeft="true"
             android:layout_alignTop="@+id/btnhlp"
             android:background="@drawable/btn_back" />
@@ -46,17 +46,17 @@ android:layout_height="800px" >
 
         <Button
             android:id="@+id/btnshake"
-            android:layout_width="128dp"
-            android:layout_height="60dp"
+            android:layout_width="192.00px"
+            android:layout_height="90.00px"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="1dp"
+            android:layout_marginTop="1.50px"
             android:background="@drawable/btn_shake" />
         
 
         <Button
             android:id="@+id/btnlist"
             android:layout_width="fill_parent"
-            android:layout_height="48dp"
+            android:layout_height="72.00px"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:background="@drawable/btn_purchase" />
@@ -69,13 +69,13 @@ android:layout_height="800px" >
 
     <Button
         android:id="@+id/button2"
-        android:layout_width="125dp"
-        android:layout_height="51dp"
+        android:layout_width="187.50px"
+        android:layout_height="76.50px"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_marginRight="25dp"
-        android:layout_marginTop="100dp"
-        android:background="@drawable/btn_upgrade" />
+        android:layout_marginRight="37.50px"
+        android:layout_marginTop="150px"
+        android:background="@drawable/btncapupgrade" />
 
 </RelativeLayout>
 </FrameLayout>

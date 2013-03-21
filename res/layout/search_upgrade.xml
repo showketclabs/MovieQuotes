@@ -43,8 +43,8 @@ android:layout_height="800px" >
         <ListView
             android:id="@+id/list_twoligne_itineraire"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/roundlist" 
+            android:layout_height="571px"
+          android:layout_marginTop="10px"
             android:fastScrollEnabled="true"
             android:cacheColorHint="@android:color/transparent" > 
         

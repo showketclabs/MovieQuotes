@@ -392,7 +392,14 @@ public class HelpActivity extends Activity {
 	    mShaker.pause();
 	    super.onPause();
 	  }
+	  public void onBackPressed() {
+			 finish();
+			  startActivity(new Intent(HelpActivity.this,
+						UIActivity.class));
 
+
+	         return;
+	     }   
 	private void unbindDrawables(View view) {
 		try {
 			if (view.getBackground() != null) {

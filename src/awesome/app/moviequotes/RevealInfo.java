@@ -526,7 +526,14 @@ public class RevealInfo extends Activity  {
 	    mShaker.pause();
 	    super.onPause();
 	  }
+	  public void onBackPressed() {
+			 finish();
+			  startActivity(new Intent(RevealInfo.this,
+						UIActivity.class));
 
+
+	         return;
+	     }   
 	private void unbindDrawables(View view) {
 		try {
 			if (view.getBackground() != null) {

@@ -157,6 +157,7 @@ public class UIActivity extends Activity {
 				// Toast.makeText(getApplicationContext(), "in", 500).show();
 				finish();
 				startActivity(new Intent(UIActivity.this, dance.class));
+				
 
 			}
 		});
@@ -187,9 +188,9 @@ public class UIActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// Toast.makeText(getApplicationContext(), "in", 500).show();
-				finish();
+				//finish();
 				startActivity(new Intent(UIActivity.this, ListActivity.class));
-
+				
 			}
 		});
 
@@ -225,7 +226,12 @@ public class UIActivity extends Activity {
 	    super.onPause();
 	  }
 	
+	  public void onBackPressed() {
+			 finish();
+			 
 
+	         return;
+	     }   
 
 	private void unbindDrawables(View view) {
 		try {

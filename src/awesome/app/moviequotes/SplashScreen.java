@@ -103,8 +103,7 @@ public class SplashScreen extends Activity {
 		
 		
 	    //SavePreferences("MEM1", "");
-		if(haveNetworkConnection())
-		{   
+	 
 			LoadPreferences();
 			if (serverres!="") {
 				Handler mHandler = new Handler();
@@ -127,13 +126,22 @@ public class SplashScreen extends Activity {
 					parse();
 				} catch (Exception e) {
 					Log.v("responce", e.toString());
+					Toast.makeText(getApplicationContext(), "Check Your Internet Connection..!", 500).show();
 				}
 				
 
 			} else {
 				try {
+					if(haveNetworkConnection())
+					{  
 					new myAsyncTask().execute();
 				//	parse();
+					}
+					else{
+						
+						Toast.makeText(getApplicationContext(), "Check Your Internet Connection..!", 500).show();
+						//finish();
+					}
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					Log.v("responce", e.toString());
@@ -148,16 +156,12 @@ public class SplashScreen extends Activity {
 			
 			
 			}
-		else{
-			
-			Toast.makeText(getApplicationContext(), "Check Your Internet Connection..!", 500).show();
-			//finish();
-		}
+		
 		
 	
 		
 		
-	}
+	
 	// savving preference
 		private void SavePreferences(String key, String value) {
 			Global.sharedPreferences = getPreferences(MODE_PRIVATE);

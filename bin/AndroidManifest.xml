@@ -17,6 +17,7 @@
    <uses-permission android:name="app.swag.words.permission.C2D_MESSAGE" />
    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
    <uses-permission android:name="android.permission.WAKE_LOCK" />
+   <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
   
     <!-- <uses-permission android:name="android.permission.VIBRATE" /> -->
     <application
@@ -123,6 +124,19 @@
             android:name="ADMOB_ALLOW_LOCATION_FOR_ADS"
             android:value="true" >
         </meta-data>
+        
+        
+        <service android:name="net.robotmedia.billing.BillingService" />
+
+       <receiver
+           android:name="net.robotmedia.billing.BillingReceiver"
+           android:exported="false" >
+           <intent-filter>
+               <action android:name="com.android.vending.billing.IN_APP_NOTIFY" />
+               <action android:name="com.android.vending.billing.RESPONSE_CODE" />
+               <action android:name="com.android.vending.billing.PURCHASE_STATE_CHANGED" />
+           </intent-filter>
+       </receiver>
     </application>
 
 </manifest>

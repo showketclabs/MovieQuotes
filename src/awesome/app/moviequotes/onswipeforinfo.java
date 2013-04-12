@@ -48,6 +48,7 @@ public class onswipeforinfo implements OnTouchListener {
 							onSwipeLeft();
 						}
 					} else {
+						
 						return true;
 					}
 				} else {

@@ -42,13 +42,14 @@ public class searchUgrade extends Activity {
 	int temp = 0;
 	private mylistadapter4 adapter;
 	private FrameLayout fl;
+	public static String searchmode;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.search_upgrade);
 		fl=(FrameLayout)findViewById(R.id.rv);
-		new AndroidScreenSize(searchUgrade.this,fl,800,480);
+		new AndroidScreenSize(searchUgrade.this,fl,1184,720);
 		shake = (Button) findViewById(R.id.btnshake);
 		help = (Button) findViewById(R.id.btnhlp);
 		search = (Button) findViewById(R.id.btnsearch);
@@ -57,12 +58,22 @@ public class searchUgrade extends Activity {
 		fav = (Button) findViewById(R.id.btnfav);
 		back = (Button) findViewById(R.id.btnback);
 		temp = 0;
+		  AppRater.app_launched(searchUgrade.this);
 		listView = (ListView) findViewById(R.id.list_twoligne_itineraire);
 		final Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-		movie=Global.movie.split("~, ");
-		year=Global.year.split("~, ");
-		quote=Global.quotes.split("~, ");
+		try {
+			movie=Global.movie.split("~, ");
+			year=Global.year.split("~, ");
+			quote=Global.quotes.split("~, ");
+			Log.v("Error:", Global.movie);
+			Log.v("Error:", Global.year);
+			Log.v("Error:", Global.quotes);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		mShaker = new ShakeListener(this);
+		
 		mShaker.setOnShakeListener(new ShakeListener.OnShakeListener() {
 			@Override
 			public void onShake() {
@@ -72,8 +83,10 @@ public class searchUgrade extends Activity {
 				{
 					temp = 1;
 					finish();
-
-					startActivity(new Intent(searchUgrade.this, dance.class));
+					Intent intent = new Intent(searchUgrade.this, dance.class);
+					
+					startActivity(intent);
+					overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
 				}
 			}
 		});
@@ -109,10 +122,12 @@ public class searchUgrade extends Activity {
 								@Override
 								public void onClick(DialogInterface dialog,
 										int which) {
+									ActivityContext.myList.add("UpgradeSearch");
 									finish();
-
-									startActivity(new Intent(searchUgrade.this,
-											UpgradeActivity.class));
+									Intent intent = new Intent(searchUgrade.this, UpgradeActivity.class);
+									
+									startActivity(intent);
+									overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
 								}
 							});
 
@@ -138,10 +153,12 @@ public class searchUgrade extends Activity {
 					// getPreferences(MODE_PRIVATE).getString("prouser",
 					// "")
 					// + "", 500).show();
-
+					ActivityContext.myList.add("UpgradeSearch");
 					finish();
-					startActivity(new Intent(searchUgrade.this,
-							SearchActivity.class));
+					Intent intent = new Intent(searchUgrade.this, SearchActivity.class);
+					
+					startActivity(intent);
+					overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
 				}
 			}
 		});
@@ -150,9 +167,12 @@ public class searchUgrade extends Activity {
 			@Override
 			public void onClick(View v) {
 				// Toast.makeText(getApplicationContext(), "in", 500).show();
+				ActivityContext.myList.add("UpgradeSearch");
 				finish();
-
-				startActivity(new Intent(searchUgrade.this, HelpActivity.class));
+				Intent intent = new Intent(searchUgrade.this, HelpActivity.class);
+			
+				startActivity(intent);
+				overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
 
 			}
 		});
@@ -162,8 +182,10 @@ public class searchUgrade extends Activity {
 			public void onClick(View v) {
 				// Toast.makeText(getApplicationContext(), "in", 500).show();
 				finish();
-
-				startActivity(new Intent(searchUgrade.this, dance.class));
+				Intent intent = new Intent(searchUgrade.this, dance.class);
+				
+				startActivity(intent);
+				overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
 
 			}
 		});
@@ -172,8 +194,12 @@ public class searchUgrade extends Activity {
 			@Override
 			public void onClick(View v) {
 				// Toast.makeText(getApplicationContext(), "in", 500).show();
+				ActivityContext.myList.add("UpgradeSearch");
 				finish();
-				startActivity(new Intent(searchUgrade.this, MoreActivity.class));
+				Intent intent = new Intent(searchUgrade.this, MoreActivity.class);
+				
+				startActivity(intent);
+				overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
 
 			}
 		});
@@ -182,8 +208,12 @@ public class searchUgrade extends Activity {
 			@Override
 			public void onClick(View v) {
 				// Toast.makeText(getApplicationContext(), "in", 500).show();
+				ActivityContext.myList.add("UpgradeSearch");
 				finish();
-				startActivity(new Intent(searchUgrade.this, FavActivity.class));
+				Intent intent = new Intent(searchUgrade.this, FavActivity.class);
+				
+				startActivity(intent);
+				overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
 
 			}
 		});
@@ -193,8 +223,12 @@ public class searchUgrade extends Activity {
 			@Override
 			public void onClick(View v) {
 				// Toast.makeText(getApplicationContext(), "in", 500).show();
+				ActivityContext.myList.add("UpgradeSearch");
 				finish();
-				startActivity(new Intent(searchUgrade.this, ListActivity.class));
+				Intent intent = new Intent(searchUgrade.this, ListActivity.class);
+				
+				startActivity(intent);
+				overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
 
 			}
 		});
@@ -202,18 +236,173 @@ public class searchUgrade extends Activity {
 
 			@Override
 			public void onClick(View v) {
-
-				startActivity(new Intent(searchUgrade.this, SearchActivity.class));
-				finish();
-
+				 String act=ActivityContext.myList.get(ActivityContext.myList.size()-1);
+				 Log.v("hello back class", act+",");
+				if(act.equals("UIActivity")){
+					ActivityContext.myList.remove(ActivityContext.myList.size()-1);
+					finish();
+					    Intent intent = new Intent(searchUgrade.this, UIActivity.class);
+						//intent.putExtra("token",act);
+						startActivity(intent);
+						
+						overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+					
+					//Toast.makeText(getApplicationContext(), "fdf", 500).show();
+					
+				}
+				else if(act.equals("ListActivity")){
+					ActivityContext.myList.remove(ActivityContext.myList.size()-1);
+					finish();
+					    Intent intent = new Intent(searchUgrade.this, ListActivity.class);
+						//intent.putExtra("token",act);
+						startActivity(intent);
+						
+						overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+					
+					//Toast.makeText(getApplicationContext(), "fdf", 500).show();
+					
+				}
+				else if(act.equals("SearchActivity")){
+					ActivityContext.myList.remove(ActivityContext.myList.size()-1);
+					finish();
+					    Intent intent = new Intent(searchUgrade.this, SearchActivity.class);
+						//intent.putExtra("token",act);
+						startActivity(intent);
+						
+						overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+					
+					//Toast.makeText(getApplicationContext(), "fdf", 500).show();
+					
+				}
+				else if(act.equals("FavActivity")){
+					ActivityContext.myList.remove(ActivityContext.myList.size()-1);
+					finish();
+					    Intent intent = new Intent(searchUgrade.this, FavActivity.class);
+						//intent.putExtra("token",act);
+						startActivity(intent);
+						
+						overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+					
+					//Toast.makeText(getApplicationContext(), "fdf", 500).show();
+					
+				}
+				else if(act.equals("MoreActivity")){
+					ActivityContext.myList.remove(ActivityContext.myList.size()-1);
+					finish();
+					    Intent intent = new Intent(searchUgrade.this, MoreActivity.class);
+						//intent.putExtra("token",act);
+						startActivity(intent);
+						
+						overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+					
+					//Toast.makeText(getApplicationContext(), "fdf", 500).show();
+					
+				}
+				else if(act.equals("InfoActivity")){
+					ActivityContext.myList.remove(ActivityContext.myList.size()-1);
+					finish();
+					    Intent intent = new Intent(searchUgrade.this, InfoActivity.class);
+						//intent.putExtra("token",act);
+						startActivity(intent);
+						
+						overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+					
+					//Toast.makeText(getApplicationContext(), "fdf", 500).show();
+					
+				}
+//				else if(act.equals("UpgradeSearch")){
+//					ActivityContext.myList.remove(ActivityContext.myList.size()-1);
+//					finish();
+//					    Intent intent = new Intent(searchUgrade.this, searchUgrade.class);
+//						//intent.putExtra("token",act);
+//						startActivity(intent);
+//						
+//						overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+//					
+//					//Toast.makeText(getApplicationContext(), "fdf", 500).show();
+//					
+//				}
+				else if(act.equals("UpgradeActivity")){
+					ActivityContext.myList.remove(ActivityContext.myList.size()-1);
+					finish();
+					    Intent intent = new Intent(searchUgrade.this, UpgradeActivity.class);
+						//intent.putExtra("token",act);
+						startActivity(intent);
+						
+						overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+					
+					//Toast.makeText(getApplicationContext(), "fdf", 500).show();
+					
+				}
+				else if(act.equals("RevealActivity")){
+					ActivityContext.myList.remove(ActivityContext.myList.size()-1);
+					finish();
+					    Intent intent = new Intent(searchUgrade.this, RevealInfo.class);
+						//intent.putExtra("token",act);
+						startActivity(intent);
+						
+						overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+					
+					//Toast.makeText(getApplicationContext(), "fdf", 500).show();
+					
+				}
+				else if(act.equals("ShareActivity")){
+					ActivityContext.myList.remove(ActivityContext.myList.size()-1);
+					finish();
+					    Intent intent = new Intent(searchUgrade.this, ShareActivity.class);
+						//intent.putExtra("token",act);
+						startActivity(intent);
+						
+						overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+					
+					//Toast.makeText(getApplicationContext(), "fdf", 500).show();
+					
+				}
+				else if(act.equals("ShareActivity1")){
+					ActivityContext.myList.remove(ActivityContext.myList.size()-1);
+					finish();
+					    Intent intent = new Intent(searchUgrade.this, ShareActivity1.class);
+						//intent.putExtra("token",act);
+						startActivity(intent);
+						
+						overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+					
+					//Toast.makeText(getApplicationContext(), "fdf", 500).show();
+					
+				}
+				else if(act.equals("HelpActivity")){
+					ActivityContext.myList.remove(ActivityContext.myList.size()-1);
+					finish();
+					    Intent intent = new Intent(searchUgrade.this, HelpActivity.class);
+						//intent.putExtra("token",act);
+						startActivity(intent);
+						
+						overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+					
+					//Toast.makeText(getApplicationContext(), "fdf", 500).show();
+					
+				} 
+				else if(act.equals("randomquotes")){
+					ActivityContext.myList.remove(ActivityContext.myList.size()-1);
+					finish();
+					    Intent intent = new Intent(searchUgrade.this, randomquote.class);
+						//intent.putExtra("token",act);
+						startActivity(intent);
+						
+						overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+					
+					//Toast.makeText(getApplicationContext(), "fdf", 500).show();
+					
+				}
 			}
 		});
-		String searchmode = getIntent().getExtras().getString("mode");
+		searchmode = getIntent().getExtras().getString("mode");
 		// Toast.makeText(getApplicationContext(), searchmode, 500).show();
 		// Log.v("movies",searchmode+"");
 
 		// Log.v("movies",Global.year1+"");
 		// Log.v("movies",Global.qu_arr+"");
+		try{
 		if (searchmode.equals("moviesearch")) {
 
 			array_sort.clear();
@@ -225,10 +414,12 @@ public class searchUgrade extends Activity {
 			// 5000).show();
 		} else if (searchmode.equals("quoteseach")) {
 			array_sort.clear();
+	
 			for(int i=0;i<quote.length;i++){
 				array_sort.add(quote[i]);
 				// Log.v("arraysearch",quote[i]+"");
 				 }
+			
 			
 		} else {
 
@@ -239,6 +430,10 @@ public class searchUgrade extends Activity {
 			// Toast.makeText(getApplicationContext(), array_sort.size()+"",
 			// 5000).show();/
 				 }
+		
+		}
+		}catch(Exception e){
+			Log.e("Error", e.toString());
 		}
 		lv = (ListView) findViewById(R.id.list_twoligne_itineraire);
 		et = (EditText) findViewById(R.id.EditText01);
@@ -345,10 +540,166 @@ public class searchUgrade extends Activity {
 		super.onPause();
 	}
 	 public void onBackPressed() {
-		 finish();
-		  startActivity(new Intent(searchUgrade.this,
-					UIActivity.class));
-
+		 String act=ActivityContext.myList.get(ActivityContext.myList.size()-1);
+		 Log.v("hello back class", act+",");
+		if(act.equals("UIActivity")){
+			ActivityContext.myList.remove(ActivityContext.myList.size()-1);
+			finish();
+			    Intent intent = new Intent(searchUgrade.this, UIActivity.class);
+				//intent.putExtra("token",act);
+				startActivity(intent);
+				
+				overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+			
+			//Toast.makeText(getApplicationContext(), "fdf", 500).show();
+			
+		}
+		else if(act.equals("ListActivity")){
+			ActivityContext.myList.remove(ActivityContext.myList.size()-1);
+			finish();
+			    Intent intent = new Intent(searchUgrade.this, ListActivity.class);
+				//intent.putExtra("token",act);
+				startActivity(intent);
+				
+				overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+			
+			//Toast.makeText(getApplicationContext(), "fdf", 500).show();
+			
+		}
+		else if(act.equals("SearchActivity")){
+			ActivityContext.myList.remove(ActivityContext.myList.size()-1);
+			finish();
+			    Intent intent = new Intent(searchUgrade.this, SearchActivity.class);
+				//intent.putExtra("token",act);
+				startActivity(intent);
+				
+				overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+			
+			//Toast.makeText(getApplicationContext(), "fdf", 500).show();
+			
+		}
+		else if(act.equals("FavActivity")){
+			ActivityContext.myList.remove(ActivityContext.myList.size()-1);
+			finish();
+			    Intent intent = new Intent(searchUgrade.this, FavActivity.class);
+				//intent.putExtra("token",act);
+				startActivity(intent);
+				
+				overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+			
+			//Toast.makeText(getApplicationContext(), "fdf", 500).show();
+			
+		}
+		else if(act.equals("MoreActivity")){
+			ActivityContext.myList.remove(ActivityContext.myList.size()-1);
+			finish();
+			    Intent intent = new Intent(searchUgrade.this, MoreActivity.class);
+				//intent.putExtra("token",act);
+				startActivity(intent);
+				
+				overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+			
+			//Toast.makeText(getApplicationContext(), "fdf", 500).show();
+			
+		}
+		else if(act.equals("InfoActivity")){
+			ActivityContext.myList.remove(ActivityContext.myList.size()-1);
+			finish();
+			    Intent intent = new Intent(searchUgrade.this, InfoActivity.class);
+				//intent.putExtra("token",act);
+				startActivity(intent);
+				
+				overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+			
+			//Toast.makeText(getApplicationContext(), "fdf", 500).show();
+			
+		}
+//		else if(act.equals("UpgradeSearch")){
+//			ActivityContext.myList.remove(ActivityContext.myList.size()-1);
+//			finish();
+//			    Intent intent = new Intent(searchUgrade.this, searchUgrade.class);
+//				//intent.putExtra("token",act);
+//				startActivity(intent);
+//				
+//				overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+//			
+//			//Toast.makeText(getApplicationContext(), "fdf", 500).show();
+//			
+//		}
+		else if(act.equals("UpgradeActivity")){
+			ActivityContext.myList.remove(ActivityContext.myList.size()-1);
+			finish();
+			    Intent intent = new Intent(searchUgrade.this, UpgradeActivity.class);
+				//intent.putExtra("token",act);
+				startActivity(intent);
+				
+				overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+			
+			//Toast.makeText(getApplicationContext(), "fdf", 500).show();
+			
+		}
+		else if(act.equals("RevealActivity")){
+			ActivityContext.myList.remove(ActivityContext.myList.size()-1);
+			finish();
+			    Intent intent = new Intent(searchUgrade.this, RevealInfo.class);
+				//intent.putExtra("token",act);
+				startActivity(intent);
+				
+				overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+			
+			//Toast.makeText(getApplicationContext(), "fdf", 500).show();
+			
+		}
+		else if(act.equals("ShareActivity")){
+			ActivityContext.myList.remove(ActivityContext.myList.size()-1);
+			finish();
+			    Intent intent = new Intent(searchUgrade.this, ShareActivity.class);
+				//intent.putExtra("token",act);
+				startActivity(intent);
+				
+				overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+			
+			//Toast.makeText(getApplicationContext(), "fdf", 500).show();
+			
+		}
+		else if(act.equals("ShareActivity1")){
+			ActivityContext.myList.remove(ActivityContext.myList.size()-1);
+			finish();
+			    Intent intent = new Intent(searchUgrade.this, ShareActivity1.class);
+				//intent.putExtra("token",act);
+				startActivity(intent);
+				
+				overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+			
+			//Toast.makeText(getApplicationContext(), "fdf", 500).show();
+			
+		}
+		else if(act.equals("HelpActivity")){
+			ActivityContext.myList.remove(ActivityContext.myList.size()-1);
+			finish();
+			    Intent intent = new Intent(searchUgrade.this, HelpActivity.class);
+				//intent.putExtra("token",act);
+				startActivity(intent);
+				
+				overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+			
+			//Toast.makeText(getApplicationContext(), "fdf", 500).show();
+			
+		} 
+		else if(act.equals("randomquotes")){
+			ActivityContext.myList.remove(ActivityContext.myList.size()-1);
+			finish();
+			    Intent intent = new Intent(searchUgrade.this, randomquote.class);
+				//intent.putExtra("token",act);
+				startActivity(intent);
+				
+				overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+			
+			//Toast.makeText(getApplicationContext(), "fdf", 500).show();
+			
+		}
+		
+			
 
          return;
      }   

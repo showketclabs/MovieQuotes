@@ -3,6 +3,8 @@
 // Developed by Showket Ahmad,Clicklabs pvt. ltd.
 package awesome.app.moviequotes;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -10,7 +12,15 @@ import android.util.Log;
 import android.widget.Toast;
 
 public class dbase {
-	SQLiteDatabase db;
+	static SQLiteDatabase db;
+	//public static String[] f_quotes = {};
+	//public static String[] f_movies = {};
+	//public static String[] f_year = {};
+	public static ArrayList<String> f_quotes=new ArrayList<String>();
+	public static ArrayList<String> f_movies=new ArrayList<String>();
+	public static ArrayList<String> f_year=new ArrayList<String>();
+	static int i = 0;
+	
 
 	public dbase(Context c, String q, String m, String y) {
 
@@ -65,6 +75,7 @@ public class dbase {
 				// Toast.makeText(getApplicationContext(), "not exists",
 				// 500).show();
 			}
+
 			db.close();
 
 		} catch (Exception e) {
@@ -72,6 +83,32 @@ public class dbase {
 
 		}
 
+	}
+
+	public static void getfromdata(Context con) {
+		
+		try {
+			db = con.openOrCreateDatabase("EMPDATABASE.db",
+					SQLiteDatabase.CREATE_IF_NECESSARY, null);
+			// Toast.makeText(c, "Database Created",Toast.LENGTH_SHORT).show();
+		} catch (Exception e) {
+			Toast.makeText(con, "Database error" + e.getMessage(),
+					Toast.LENGTH_SHORT).show();
+		}
+		String fav_data = "SELECT * from fav1";
+		Cursor c = db.rawQuery(fav_data, null);
+
+		while (c.moveToNext()) {
+			f_quotes.add(c.getString(c.getColumnIndex("quote")));
+			f_year.add(c.getString(c.getColumnIndex("year")));
+			f_movies.add(c.getString(c.getColumnIndex("movie")));
+			i++;
+			// System.out.println(uname);
+			// System.out.println(uname);
+			// System.out.println(uname);
+		}
+	
+		db.close();
 	}
 
 }

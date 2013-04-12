@@ -28,10 +28,10 @@ public class Global {
 		quotes = q;
 		movie = m;
 
-		q = null;
-		m = null;
-		y = null;
-		System.gc();
+//		q = null;
+//		m = null;
+//		y = null;
+//		System.gc();
 
 	}
 
@@ -47,7 +47,7 @@ public class Global {
 	public Global(int cnt, String datatodispaly) {
 		Global.cnt = cnt;
 		Global.datatodispaly = datatodispaly;
-		datatodispaly = null;
+		
 		System.gc();
 
 	}

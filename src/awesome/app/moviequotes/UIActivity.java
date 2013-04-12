@@ -14,10 +14,12 @@ import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
 import com.flurry.android.FlurryAgent;
+
 
 public class UIActivity extends Activity {
 	Button shake, help, search, more, list, fav;
@@ -30,6 +32,7 @@ public class UIActivity extends Activity {
 	//flurry reg key
 	String MY_KEY="MWZY29QZHHSWXYQS8DYN";
 	private FrameLayout fl;
+	
 	@Override
 	protected void onStart() {
         super.onStart();
@@ -46,10 +49,12 @@ public class UIActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		fl=(FrameLayout)findViewById(R.id.rv);
-		new AndroidScreenSize(UIActivity.this,fl,800,480);
+		new AndroidScreenSize(UIActivity.this,fl,1184,720);
+		//rate my app
+		AppRater.app_launched(UIActivity.this);
 		//shaker = new Shaker(UIActivity.this, 2.25d, 500, UIActivity.this);
 		 final Vibrator vibe = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
-
+		 
 		    mShaker = new ShakeListener(this);
 		    mShaker.setOnShakeListener(new ShakeListener.OnShakeListener () {
 		      @Override
@@ -60,8 +65,12 @@ public class UIActivity extends Activity {
 		    		  
   		  		{
   		  			temp = 1;
-		    	  finish();
+  		  		  
+		    	    finish();
 					startActivity(new Intent(UIActivity.this, dance.class));
+					//ActivityContext.myList.add("dance.class");
+					overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
+					
 		      }}
 		    });
 		shake = (Button) findViewById(R.id.btnshake);
@@ -104,10 +113,13 @@ public class UIActivity extends Activity {
 								@Override
 								public void onClick(DialogInterface dialog,
 										int which) {
+									ActivityContext.myList.add("UIActivity");
 									finish();
 
 									startActivity(new Intent(UIActivity.this,
 											UpgradeActivity.class));
+									overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
+									
 								}
 							});
 
@@ -133,10 +145,13 @@ public class UIActivity extends Activity {
 					// getPreferences(MODE_PRIVATE).getString("prouser",
 					// "")
 					// + "", 500).show();
-
+					ActivityContext.myList.add("UIActivity");
 					finish();
 					startActivity(new Intent(UIActivity.this,
 							SearchActivity.class));
+					
+					overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
+					
 				}
 			}
 		});
@@ -145,8 +160,14 @@ public class UIActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// Toast.makeText(getApplicationContext(), "in", 500).show();
+				ActivityContext.myList.add("UIActivity");
 				finish();
-				startActivity(new Intent(UIActivity.this, HelpActivity.class));
+				Intent intent = new Intent(UIActivity.this, HelpActivity.class);
+//				intent.putExtra("token", "UIActivity");
+				startActivity(intent);
+				//ActivityContext.myList.add("HelpActivity.class");
+				overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
+				
 
 			}
 		});
@@ -155,8 +176,11 @@ public class UIActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// Toast.makeText(getApplicationContext(), "in", 500).show();
+				
 				finish();
 				startActivity(new Intent(UIActivity.this, dance.class));
+				//ActivityContext.myList.add("dance.class");
+				overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
 				
 
 			}
@@ -166,9 +190,14 @@ public class UIActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// Toast.makeText(getApplicationContext(), "in", 500).show();
+				ActivityContext.myList.add("UIActivity");
 				finish();
-				startActivity(new Intent(UIActivity.this, MoreActivity.class));
-
+				Intent intent = new Intent(UIActivity.this, MoreActivity.class);
+				//intent.putExtra("token", "UIActivity");
+				//ActivityContext.myList.add("UIActivity.class");
+				startActivity(intent);
+				overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
+			
 			}
 		});
 		fav.setOnClickListener(new View.OnClickListener() {
@@ -177,9 +206,14 @@ public class UIActivity extends Activity {
 			public void onClick(View v) {
 				// Toast.makeText(getApplicationContext(), "in", 500).show();
 				// startActivity(new Intent(UIActivity.this,FavActivity.class));
+				ActivityContext.myList.add("UIActivity");
 				finish();
-				startActivity(new Intent(UIActivity.this, FavActivity.class));
-
+				Intent intent = new Intent(UIActivity.this, FavActivity.class);
+			//	intent.putExtra("token", "UIActivity");
+				
+				startActivity(intent);
+				overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
+				
 			}
 		});
 
@@ -188,9 +222,15 @@ public class UIActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// Toast.makeText(getApplicationContext(), "in", 500).show();
-				//finish();
-				startActivity(new Intent(UIActivity.this, ListActivity.class));
+				ActivityContext.myList.add("UIActivity");
+				finish();
+				Intent intent = new Intent(UIActivity.this, ListActivity.class);
+				//intent.putExtra("token", "UIActivity");
 				
+				
+				startActivity(intent);
+			//	startActivity(new Intent(UIActivity.this, ListActivity.class));
+				 overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
 			}
 		});
 
@@ -200,6 +240,7 @@ public class UIActivity extends Activity {
 	public void onDestroy() {
 		super.onDestroy();
 		//shaker.close();
+		
 		unbindDrawables(findViewById(R.id.mainlayout));
 		System.gc();
 		Runtime rt=Runtime.getRuntime();
@@ -227,6 +268,7 @@ public class UIActivity extends Activity {
 	  }
 	
 	  public void onBackPressed() {
+		 
 			 finish();
 			 
 
@@ -253,33 +295,5 @@ public class UIActivity extends Activity {
 
 		}
 	}
-
-	// @Override
-	// public void onDestroy() {
-	// super.onDestroy();
-	//
-	// // shaker.close();
-	// }
-	//
-//	public void shakingStarted() {
-//		if (temp == 0)
-//
-//		{
-//			temp = 1;
-//			finish();
-//		
-//			startActivity(new Intent(UIActivity.this, dance.class));
-//		}
-//		// Log.d("ShakerDemo", "Shaking started!");
-//		// transcript.setText(transcript.getText().toString()+"Shaking started\n");
-//		// scroll.fullScroll(View.FOCUS_DOWN);
-//	}
-//
-//	public void shakingStopped() {
-//		// startActivity(new Intent(UIActivity.this,ShakeActivity.class));
-//		// Log.d("ShakerDemo", "Shaking stopped!");
-//		// transcript.setText(transcript.getText().toString()+"Shaking stopped\n");
-//		// scroll.fullScroll(View.FOCUS_DOWN);
-//	}
 
 }

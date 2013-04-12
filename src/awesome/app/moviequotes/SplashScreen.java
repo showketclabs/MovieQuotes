@@ -1,4 +1,4 @@
-// Project Name: - Movie Quotes
+// Project Name:Movie Quotes
 // Purpose of file: - Twitter controls
 // Developed by Showket Ahmad,Clicklabs pvt. ltd.
 package awesome.app.moviequotes;
@@ -32,7 +32,10 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,9 +45,9 @@ import com.flurry.android.FlurryAgent;
 public class SplashScreen extends Activity {
 
 
-	ProgressBar bar;
+	
 	public String s=null,serverres=null;
-	TextView t, m, y, q, loading;
+	TextView t, m, y, q;
 	String movie="";
 	String quotes="";
 	String year="";
@@ -62,6 +65,8 @@ public class SplashScreen extends Activity {
 	
 	String MY_KEY="MWZY29QZHHSWXYQS8DYN";
 	private FrameLayout fl;
+	ImageView gazil,togo;
+	Animation a;
 	@Override
 	protected void onStart() {
         super.onStart();
@@ -74,11 +79,14 @@ public class SplashScreen extends Activity {
         FlurryAgent.onEndSession(this);
     }
 	@Override
+	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.splash);
 		fl=(FrameLayout)findViewById(R.id.rv);
-		new AndroidScreenSize(SplashScreen.this,fl,800,480);
+		ActivityContext.myList.clear();
+		System.gc();
+		new AndroidScreenSize(SplashScreen.this,fl,1184,720);
 		     mov1.clear();
 			 year1.clear();
 			 quo1.clear();
@@ -91,62 +99,67 @@ public class SplashScreen extends Activity {
 		        Log.v("free time",free/(1024*1024)+"");
 		        Log.v("total",total/(1024*1024)+"");
 		        Log.v("used",used/(1024*1024)+"");
-		bar = (ProgressBar) findViewById(R.id.progressBar1);
-        bar.setVisibility(View.INVISIBLE);
 		
-		loading = (TextView) findViewById(R.id.textView1);
-		loading.setVisibility(View.INVISIBLE);
-		
-		/////////
-		
-		
-		
-		
-	    //SavePreferences("MEM1", "");
-	 
-			LoadPreferences();
-			if (serverres!="") {
-				Handler mHandler = new Handler();
+		        gazil = (ImageView)findViewById(R.id.imageView1);
+		        togo = (ImageView)findViewById(R.id.imageView2);
+		    	gazil.setVisibility(0);
+			     a = AnimationUtils.loadAnimation(SplashScreen.this, R.anim.slideup);
+			    gazil.startAnimation(a);
+			    Handler mHandler1 = new Handler();
 
-				mHandler.postDelayed(new Runnable() {
+				mHandler1.postDelayed(new Runnable() {
 					@Override
 					public void run() {
 						// frameAnimation.stop();
 					//	mDialog.hide();
-						finish();
-						startActivity(new Intent(SplashScreen.this,
-								UIActivity.class));
+						 Handler mHandler1 = new Handler();
 
-					}
-				}, 2000);
-				try {
+							mHandler1.postDelayed(new Runnable() {
+								@Override
+								public void run() {
+									// frameAnimation.stop();
+								//	mDialog.hide();
+									    
+									   
+									try {
+										if(haveNetworkConnection())
+										{  
+										try {
+											new myAsyncTask().execute();
+										} catch (Exception e) {
+											Toast.makeText(getApplicationContext(), "Check Your Internet Connection..!", 500).show();
+											e.printStackTrace();
+										}
+									//	parse();
+										}
+										else{
+											
+											Toast.makeText(getApplicationContext(), "Check Your Internet Connection..!", 500).show();
+											//finish();
+										}
+									} catch (Exception e) {
+										// TODO Auto-generated catch block
+										Log.v("responce", e.toString());
+									}
+
+
+								}
+							}, 1000);
 					
-		            // mDialog.show();
-					new myAsyncTask1().execute();
-					parse();
-				} catch (Exception e) {
-					Log.v("responce", e.toString());
-					Toast.makeText(getApplicationContext(), "Check Your Internet Connection..!", 500).show();
-				}
+						   
+						togo.setVisibility(0);
+					     a = AnimationUtils.loadAnimation(SplashScreen.this, R.anim.slideup2);
+					    togo.startAnimation(a);
+
+					}
+				}, 1000);
+		
+		
+		
+		
+		
+	   
 				
-
-			} else {
-				try {
-					if(haveNetworkConnection())
-					{  
-					new myAsyncTask().execute();
-				//	parse();
-					}
-					else{
-						
-						Toast.makeText(getApplicationContext(), "Check Your Internet Connection..!", 500).show();
-						//finish();
-					}
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					Log.v("responce", e.toString());
-				}
-
 			
 
 			}
@@ -155,28 +168,13 @@ public class SplashScreen extends Activity {
 
 			
 			
-			}
+			//}
 		
 		
 	
 		
-		
 	
-	// savving preference
-		private void SavePreferences(String key, String value) {
-			Global.sharedPreferences = getPreferences(MODE_PRIVATE);
-			SharedPreferences.Editor editor = Global.sharedPreferences.edit();
-			editor.putString(key, value);
-			editor.commit();
-		}
-
-		// loading preference
-		private void LoadPreferences() {
-			Global.sharedPreferences = getPreferences(MODE_PRIVATE);
-			serverres = Global.sharedPreferences.getString("MEM1", "");
-			//s=serverres;
-		
-		}
+	
 	private boolean haveNetworkConnection() {
 		 boolean NetConnected = false;
 
@@ -218,14 +216,7 @@ public class SplashScreen extends Activity {
 		System.gc();
 		
 	}
-//	 public void onBackPressed() {
-//		 finish();
-//		  startActivity(new Intent(SplashScreen.this,
-//					SplashScreen.class));
-//
-//
-//         return;
-//     }   
+  
 	private void unbindDrawables(View view) {
 		try {
 			if (view.getBackground() != null) {
@@ -303,7 +294,7 @@ public class SplashScreen extends Activity {
 		protected String doInBackground(Void... arg) {
 			
 			s = getUrlResponse("http://54.235.203.216/movies-quotes/movies.php");
-			SavePreferences("MEM1", s);
+		
 			return null;
 		}
 
@@ -311,16 +302,17 @@ public class SplashScreen extends Activity {
 		protected void onPostExecute(String result) {
 
 			 mDialog.hide();
-//			bar.setVisibility(View.INVISIBLE);
-//			loading.setVisibility(loading.INVISIBLE);
-//	
+			 mDialog.dismiss();
+
 			 try{
 				 Log.v("s", s+"");
 				 if(s!=null)
 				 {
+					 ActivityContext.myList.add("UIActivity");
 					    parse();
 						finish();
 						startActivity(new Intent(SplashScreen.this, UIActivity.class));
+						overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
 					
 			}else{
 				 
@@ -342,30 +334,15 @@ public class SplashScreen extends Activity {
 
 		}
 	}
-//background update of data from server
-	class myAsyncTask1 extends AsyncTask<Void, Void, String> {
-
-		@Override
-		protected String doInBackground(Void... arg) {
-			s = getUrlResponse("http://54.235.203.216/movies-quotes/movies.php");
-			
-			
-			SavePreferences("MEM1", s);
-			
-
-			return null;
-		}
-
-	}
 
 
 	public void parse() {
-		LoadPreferences();
+		
 		
 	
 
 		try {
-			jObj = new JSONObject(serverres.toString());
+			jObj = new JSONObject(s.toString());
 			// Log.v("inside",jObj.toString());
 		} catch (JSONException e1) {
 			flag=1;
@@ -440,8 +417,7 @@ public class SplashScreen extends Activity {
 		 		 
 		 s=null;
 		 System.gc();
-		 System.gc();
-
+		 
 		}
 		
 	       

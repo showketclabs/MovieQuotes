@@ -3,8 +3,8 @@
 xmlns:tools="http://schemas.android.com/tools"
 android:id="@+id/rv"
 android:background="#000000"
-android:layout_width="480px"
-android:layout_height="800px" >
+android:layout_width="720px"
+android:layout_height="1184px" >
 <RelativeLayout 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,26 +12,21 @@ android:layout_height="800px" >
     android:orientation="vertical" >
     
 
-    <RelativeLayout
+      <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="150px"
+        android:layout_height="214px"
         android:layout_alignParentBottom="true"
+      
         android:layout_alignParentLeft="true" >
         
 
-        <Button
-            android:id="@+id/btnhlp"
-            android:layout_width="180px"
-            android:layout_height="70.5px"
-            android:layout_marginLeft="300px"
-            android:layout_marginTop="9px"
-            android:background="@drawable/btn_help" />
+        
         
 
         <Button
             android:id="@+id/btnshake"
-            android:layout_width="192px"
-            android:layout_height="90px"
+            android:layout_width="290px"
+            android:layout_height="126px"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="1.5px"
             android:background="@drawable/btn_shake" />
@@ -39,35 +34,37 @@ android:layout_height="800px" >
 
         <Button
             android:id="@+id/btnsearch"
-            android:layout_width="118.5px"
-            android:layout_height="72px"
+            android:layout_width="170px"
+            android:layout_height="104px"
             android:layout_alignParentBottom="true"
-            android:layout_marginLeft="120px"
+            android:layout_marginLeft="184px"
             android:background="@drawable/btn_search" />
-        
+          
 
         <Button
             android:id="@+id/btnmore"
-            android:layout_width="120px"
-            android:layout_height="72px"
+            android:layout_width="190px"
+            android:layout_height="104px"
             android:layout_alignParentBottom="true"
-            android:layout_marginLeft="358.5px"
+            android:layout_marginLeft="530px"
             android:background="@drawable/btn_more" />
-        
+     
 
         <Button
             android:id="@+id/btnfav"
-            android:layout_width="118.5px"
-            android:layout_height="72px"
+            android:layout_width="188px"
+            android:layout_height="104px"
             android:layout_alignParentBottom="true"
-            android:layout_marginLeft="240px"
+            android:layout_alignTop="@+id/btnsearch"
+            android:layout_marginLeft="346px"
             android:background="@drawable/btn_press" />
+ 
         
 
         <Button
             android:id="@+id/btnlist"
-            android:layout_width="118.5px"
-            android:layout_height="72px"
+            android:layout_width="178px"
+            android:layout_height="104px"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:background="@drawable/btn_list" />
@@ -75,50 +72,59 @@ android:layout_height="800px" >
 
         <Button
             android:id="@+id/btnback"
-            android:layout_width="180px"
-            android:layout_height="70.5px"
+            android:layout_width="273px"
+            android:layout_height="112px"
             android:layout_alignParentLeft="true"
-            android:layout_alignTop="@+id/btnhlp"
+           
             android:background="@drawable/btn_back" />
+
+        <Button
+            android:id="@+id/btnhlp"
+            android:layout_width="273px"
+            android:layout_height="112px"
+            android:layout_above="@+id/btnmore"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/btn_help" />
+
     
     </RelativeLayout>
     
 
     <RelativeLayout
         android:id="@+id/relativeLayout1"
-        android:layout_width="427.5px"
-        android:layout_height="465px"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="165px"
-        android:background="@drawable/box" >
-        
-
-        <ListView
+        android:layout_width="669px"
+        android:layout_height="700px"
+    
+        android:background="@drawable/text_box"
+        android:layout_marginLeft="24px"
+        android:layout_marginTop="230px" >
+<ListView
             android:id="@+id/list_twoligne_itineraire"
             android:layout_width="match_parent"
-            android:layout_height="445px"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-              android:layout_marginTop="10px"
-          android:cacheColorHint="@android:color/transparent" 
+            android:layout_height="680px"
+            android:layout_marginTop="10px"
+            android:cacheColorHint="@android:color/transparent"
             android:fastScrollEnabled="true" >
-             
+      
+         
+                
+          
         
         </ListView>
-        
-    
+        
+
     </RelativeLayout>
     
 
     <Button
-        android:id="@+id/btnreq"
-        android:layout_width="150px"
-        android:layout_height="60px"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="300px"
-        android:layout_marginTop="42px"
-        android:background="@drawable/btn_request" />
+       android:id="@+id/btnreq"
+        android:layout_width="250px"
+        android:layout_height="100px"
+        
+        android:layout_marginTop="50px"
+        android:layout_marginLeft="438px"
+        
+         android:background="@drawable/btn_request" />
 
 </RelativeLayout>
 </FrameLayout>

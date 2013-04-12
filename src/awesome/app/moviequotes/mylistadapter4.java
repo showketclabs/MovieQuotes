@@ -14,9 +14,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 
 public class mylistadapter4 extends BaseAdapter {
 
@@ -50,15 +52,17 @@ public class mylistadapter4 extends BaseAdapter {
 
 	private class ViewHolder {
 		RelativeLayout item;
-
+		public int p;
 		TextView texte1;
 		TextView texte2;
 		TextView texte3;
+		Button cb1Recup;
+		
 	}
 
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
-
+		final ViewHolder holder = new ViewHolder();
 		convertView = inflater.inflate(R.layout.searchitem, null);
 
 		final RelativeLayout item = (RelativeLayout) convertView
@@ -73,9 +77,36 @@ public class mylistadapter4 extends BaseAdapter {
 		TextView texte3Recup = (TextView) convertView
 				.findViewById(R.id.thirdLine);
 		texte3Recup.setText(mListe.get(position).getTexte3());
-		final CheckBox cb1Recup = (CheckBox) convertView.findViewById(R.id.cb1);
-		cb1Recup.setChecked(mListe.get(position).getCb1());
-		cb1Recup.setEnabled(false);
+		holder.p = position;
+		
+		Button cb1Recup = (Button) convertView.findViewById(R.id.cb1);
+		cb1Recup.setTag(holder);
+		cb1Recup.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				ViewHolder holder = (ViewHolder) v.getTag();
+				int pos = holder.p;
+				String randomdata = mListe.get(pos).getTexte1() + "\n"
+						+ "~" + "\n" + mListe.get(pos).getTexte2() + "\n"
+						+ "~" + "\n" + mListe.get(pos).getTexte3();
+				// Toast.makeText(c, randomdata, 500).show();
+				// InfoActivity.data=randomdata;
+Log.v("", randomdata);
+				Global global = new Global(1, randomdata);
+				randomdata=null;
+				System.gc();
+				
+				ActivityContext.myList.add("UpgradeSearch");
+			
+				Intent ii = new Intent(c, RevealInfo.class);
+               
+				c.startActivity(ii);
+				((Activity) c).overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
+			}
+		});
+	//	cb1Recup.setcl(mListe.get(position).getCb1());
+		//cb1Recup.setEnabled(false);
 
 		item.setOnClickListener(new View.OnClickListener() {
 
@@ -91,11 +122,13 @@ Log.v("", randomdata);
 				Global global = new Global(1, randomdata);
 				randomdata=null;
 				System.gc();
-				System.gc();
-				((Activity) c).finish();
+				
+				ActivityContext.myList.add("UpgradeSearch");
+			
 				Intent ii = new Intent(c, RevealInfo.class);
-
+			
 				c.startActivity(ii);
+				((Activity) c).overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
 			}
 		});
 		if (mListe.get(position).getTexte2().compareTo("") == 0) {

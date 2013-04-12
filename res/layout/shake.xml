@@ -5,6 +5,10 @@ android:id="@+id/rv"
 android:background="#000000"
 android:layout_width="match_parent"
     android:layout_height="match_parent" >
+
+
+   
+    
 <RelativeLayout 
        android:id="@+id/mainlayout"
     android:orientation="vertical"
@@ -13,11 +17,15 @@ android:layout_width="match_parent"
     >
 
     <ImageView
-        android:id="@+id/img"
+        android:id="@+id/imageView1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/a1" />
+        android:background="@drawable/a1"
+        android:scaleType="fitXY" />
 
-</RelativeLayout></FrameLayout>
+</RelativeLayout>
+
+
+</FrameLayout>

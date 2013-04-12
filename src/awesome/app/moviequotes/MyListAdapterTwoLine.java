@@ -103,10 +103,11 @@ public class MyListAdapterTwoLine extends BaseAdapter {
 					int pos = holder.p;
 					if (cBox.isChecked() == true) {
 
-						String quote = holder.texte1Recup.getText().toString();
-						String movie = holder.texte2Recup.getText().toString();
-						String year = holder.texte3Recup.getText().toString();
+						String quote = holder.texte1Recup.getText().toString()+"\n";
+						String movie = "\n"+holder.texte2Recup.getText().toString()+"\n";
+						String year = "\n"+holder.texte3Recup.getText().toString();
 						new dbase(c, quote, movie, year);
+						mylistadapter2.cnt++;
 
 					}
 
@@ -135,11 +136,13 @@ public class MyListAdapterTwoLine extends BaseAdapter {
 					Global global = new Global(1, randomdata);
 					randomdata=null;
 					System.gc();
-					
+					ActivityContext.myList.add("ListActivity");
 					
 					Intent ii = new Intent(c, InfoActivity.class);
+					
 					ii.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 					c.startActivity(ii);
+					activity.overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
 
 				}
 			});

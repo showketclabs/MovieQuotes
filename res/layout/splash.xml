@@ -3,8 +3,8 @@
 xmlns:tools="http://schemas.android.com/tools"
 android:id="@+id/rv"
 android:background="#000000"
-android:layout_width="480px"
-android:layout_height="800px" >
+android:layout_width="720px"
+android:layout_height="1184px" >
 <RelativeLayout
     android:id="@+id/mainlayout"
     android:layout_width="match_parent"
@@ -12,20 +12,25 @@ android:layout_height="800px" >
     android:background="@drawable/splashscreen"
     android:orientation="vertical" >
 
-    <ProgressBar
-        android:id="@+id/progressBar1"
-        android:layout_width="37.5px"
-        android:layout_height="37.5px"
-        android:layout_marginTop="375px"
-        android:layout_marginLeft="225px" />
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="578px"
+        android:layout_height="250px"
+        android:layout_marginTop="700px"
+         android:layout_marginLeft="40px"
+        android:layout_marginBottom="0px"
+        android:visibility="invisible"
+        android:src="@drawable/gazillion" />
+      <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="420px"
         android:layout_height="wrap_content"
-       android:textColor="#000000"
-        android:layout_marginTop="415.5px"
-         android:layout_marginLeft="210px"
-        android:text="Loading..." />
+        android:layout_marginTop="845px"
+         android:layout_marginLeft="170px"
+        android:layout_marginBottom="0px"
+        android:visibility="invisible"
+        android:paddingTop="70px"
+        android:src="@drawable/movie_quotes" />
+    
 
 </RelativeLayout></FrameLayout>

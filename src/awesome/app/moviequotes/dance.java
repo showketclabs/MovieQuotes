@@ -30,13 +30,13 @@ public class dance extends Activity {
 	 }
       private void startAnimation(){
           animation = new AnimationDrawable();
-          animation.addFrame(getResources().getDrawable(R.drawable.a1), 120);
-          animation.addFrame(getResources().getDrawable(R.drawable.a2), 120);
-          animation.addFrame(getResources().getDrawable(R.drawable.a3), 120);
-          animation.addFrame(getResources().getDrawable(R.drawable.a4), 120);
-          animation.addFrame(getResources().getDrawable(R.drawable.a5), 120);
-          animation.addFrame(getResources().getDrawable(R.drawable.a6), 120);
-          animation.addFrame(getResources().getDrawable(R.drawable.a7), 120);
+          animation.addFrame(getResources().getDrawable(R.drawable.a1), 110);
+          animation.addFrame(getResources().getDrawable(R.drawable.a2), 110);
+          animation.addFrame(getResources().getDrawable(R.drawable.a3), 110);
+          animation.addFrame(getResources().getDrawable(R.drawable.a4), 110);
+          animation.addFrame(getResources().getDrawable(R.drawable.a5), 110);
+          animation.addFrame(getResources().getDrawable(R.drawable.a6), 110);
+          animation.addFrame(getResources().getDrawable(R.drawable.a7), 110);
           animation.setOneShot(false);
           
           ImageView imageView = (ImageView) findViewById(R.id.imageView1);

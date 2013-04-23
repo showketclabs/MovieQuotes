@@ -529,6 +529,13 @@ public class ShareActivity1 extends Activity{
 			switch (view.getId()) {
 
 			case R.id.btnemail:
+				alertDialog.setTitle("Send As Email");
+				alertDialog.setMessage("Click Yes to share..");
+				alertDialog.setPositiveButton("Yes",
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
 				if (haveNetworkConnection()) {
 					try {
 						new emai_s().execute();
@@ -539,11 +546,27 @@ public class ShareActivity1 extends Activity{
 						
 						Toast.makeText(getApplicationContext(), "Check your internet connection.",500).show();
 					}
-		
-			
+							}
+							});
+
+				alertDialog.setNegativeButton("No",
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								dialog.cancel();
+							}
+						});
+				alertDialog.show();
 				break;
 			case R.id.btnfb:
-				
+				alertDialog.setTitle("Share To Facebook");
+				alertDialog.setMessage("Click Yes to share..");
+				alertDialog.setPositiveButton("Yes",
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
 				if (!facebook.isSessionValid()) {
 					loginAndPostToWall();
 				} else {
@@ -553,11 +576,29 @@ public class ShareActivity1 extends Activity{
 				}
 
 				fb.setEnabled(false);
+							}
+				});
+
+	alertDialog.setNegativeButton("No",
+			new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog,
+						int which) {
+					dialog.cancel();
+				}
+			});
+	alertDialog.show();
 				break;
 			case R.id.btntext:
-
+				alertDialog.setTitle("Send As Text");
+				alertDialog.setMessage("Click Yes to share..");
+				alertDialog.setPositiveButton("Yes",
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
 				try {
-					String msgg = postdata;
+					String msgg = "Check out this great app - 'Gazillion Movie Quotes'"+"\n"+postdata;
 					postdata = null;
 					Intent intentsms = new Intent(Intent.ACTION_VIEW,
 							Uri.parse("sms:" + ""));
@@ -567,8 +608,27 @@ public class ShareActivity1 extends Activity{
 				} catch (Exception e1) {
 					Toast.makeText(getApplicationContext(), "No Text Support on Your device.",500).show();
 				}
+							}
+				});
+
+	alertDialog.setNegativeButton("No",
+			new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog,
+						int which) {
+					dialog.cancel();
+				}
+			});
+	alertDialog.show();
 				break;
 			case R.id.btntw:
+				alertDialog.setTitle("Share To Twitter");
+				alertDialog.setMessage("Click Yes to share..");
+				alertDialog.setPositiveButton("Yes",
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
 				mTwitter.setListener(mTwLoginDialogListener);
 				mTwitter.resetAccessToken();
 				if (mTwitter.hasAccessToken() == true) {
@@ -588,6 +648,18 @@ public class ShareActivity1 extends Activity{
 					mTwitter.authorize();
 				}
 				tweet.setEnabled(false);
+							}
+				});
+
+	alertDialog.setNegativeButton("No",
+			new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog,
+						int which) {
+					dialog.cancel();
+				}
+			});
+	alertDialog.show();
 				break;
 			default:
 				break;
@@ -643,7 +715,7 @@ public class ShareActivity1 extends Activity{
 		
 		parameters.putString("message","Check out this great app.'Gazillion Movie Quote'  https://play.google.com/store/apps/details?id=awesome.app.moviequotes");
 		// parameters.putStringArrayList("message", data);
-		parameters.putString("picture", "http://i45.tinypic.com/36b6s.png");
+		parameters.putString("picture", "http://54.243.28.185/sendgrid/images/MovieQuotes_512.png");
 		parameters.putString("link", "https://play.google.com/store/apps/details?id=awesome.app.moviequotes");
 		parameters.putString("name", "Gazillion Movie Quotes");
 		
@@ -1096,7 +1168,7 @@ public class ShareActivity1 extends Activity{
 		    InputStream is;
 		    try {
 		     is = (InputStream) new URL(
-		       "http://i45.tinypic.com/36b6s.png")
+		       "http://54.243.28.185/sendgrid/images/MovieQuotes_512.png")
 		       .getContent();
 
 		     // storing image from stream
@@ -1143,11 +1215,11 @@ public class ShareActivity1 extends Activity{
 				 emailIntent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 				 emailIntent1.putExtra(Intent.EXTRA_STREAM, screenshotUri);
 				 emailIntent1.putExtra(Intent.EXTRA_SUBJECT,
-				   "Movie Quote Request!");
+				   "Gazillion Movie Quote Request!");
 				
 
 				 emailIntent1.putExtra(Intent.EXTRA_TEXT,
-				   Html.fromHtml(postdata));
+				   Html.fromHtml("Check out this great app - 'Gazillion Movie Quotes'"+"<br>"+postdata));
 				 emailIntent1.setType("image/rfc822");
 
 				 // emailIntent1.setType("image/png");

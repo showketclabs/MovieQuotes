@@ -177,9 +177,9 @@ public class MyListAdapterTwoLine extends BaseAdapter {
 		
 		holder.texte1Recup.setText(quote[position]);
 
-		holder.texte2Recup.setText(year[position]);
+		holder.texte2Recup.setText(movie[position]);
 
-		holder.texte3Recup.setText(movie[position]);
+		holder.texte3Recup.setText(year[position]);
 
 		return vi;
 

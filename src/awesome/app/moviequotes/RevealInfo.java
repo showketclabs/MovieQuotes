@@ -63,7 +63,7 @@ public class RevealInfo extends Activity {
 	public String revdata;
 	private FrameLayout fl;
 	AdView adView;
-
+public static String emailstring="";
 	@Override
 	protected void onStart() {
 		super.onStart();
@@ -650,13 +650,13 @@ public class RevealInfo extends Activity {
 				ArrayList<String> data = new ArrayList<String>();
 				ArrayList<String> tdata = new ArrayList<String>();
 				for (int i = 0; i < myStringArray.length; i++) {
-
+					emailstring="Quote:  " + datatoshare[0] +"<br><br><br>"+ "Guess The Movie Name..?";
 					tdata.add("Quote:  " + rdata[0] + "\n\n" + "Movie:  "
 							+ rdata[1] + "\n\n" + "Year:  " + rdata[2] + "\n\n");
 					data.add("Quote:  " + rdata[0] + "\n\n\n"
 							+ "Guess The Movie Name..?");
 				}
-				Global global = new Global(data, tdata);
+				Global global = new Global(data, data);
 				data = null;
 				tdata = null;
 				System.gc();

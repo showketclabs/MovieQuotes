@@ -60,6 +60,7 @@ public class InfoActivity extends Activity{
 	private FrameLayout fl;
 	String act=null;
 	RelativeLayout layout;
+	public static String emailString="";
 	@Override
 	protected void onStart() {
         super.onStart();
@@ -608,14 +609,14 @@ public class InfoActivity extends Activity{
 				ArrayList<String> data = new ArrayList<String>();
 				ArrayList<String> tdata = new ArrayList<String>();
 				for (int i = 0; i < myStringArray.length; i++) {
-
+					emailString="Quote:  " + datatoshare[0] +"<br><br><br>"+ "Guess The Movie Name..?";
 					tdata.add("Quote:  " + datatoshare[0] + "\n\n" + "Movie:  "
 							+ datatoshare[1] + "\n\n" + "Year:  "
 							+ datatoshare[2] + "\n\n");
 					data.add("Quote:  " + datatoshare[0] + "\n\n\n"
 							+ "Guess The Movie Name..?");
 				}
-				Global global = new Global(data, tdata);
+				Global global = new Global(data, data);
 				//Global appState = ((Global)getApplicationContext());
 				//appState.fbdata=data;
 			//	appState.textdata=tdata;

@@ -53,6 +53,7 @@ public class FavActivity extends Activity {
 	String MY_KEY="MWZY29QZHHSWXYQS8DYN";
 	public ListView listView;
 	private FrameLayout fl;
+	public static String emailist="";
 	@Override
 	protected void onStart() {
         super.onStart();
@@ -532,7 +533,9 @@ public class FavActivity extends Activity {
 				}
 				ArrayList<String> data = new ArrayList<String>();
 				for (int i = 0; i < m.size(); i++) {
-
+emailist="Quote:  " + q.get(i).replaceAll("`", "'")
++ "<br><br>" + "Movie:  " + m.get(i) + "<br><br>"
++ "Year:  " + y.get(i) + "<br><br>";
 					data.add("Quote:  " + q.get(i).replaceAll("`", "'")
 							+ "\n\n" + "Movie:  " + m.get(i) + "\n\n"
 							+ "Year:  " + y.get(i) + "\n\n");

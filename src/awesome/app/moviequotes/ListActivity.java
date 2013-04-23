@@ -752,27 +752,19 @@ public class ListActivity extends Activity{
 			   
 		    InputStream is;
 		    try {
-		     is = (InputStream) new URL(
-		       "http://i45.tinypic.com/36b6s.png")
-		       .getContent();
+			     is = (InputStream) new URL(
+					       "http://54.243.28.185/sendgrid/images/MovieQuotes_512.png")
+					       .getContent();
 
-		     // storing image from stream
-		     drawable = Drawable.createFromStream(is, "srcName");
-		     is.close();
-		     // converting drawable object to Bitmap to store in content
-		     // providers of Media
-		     Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
-		     // Store image in Devise database to send image to mail
-		     path = MediaStore.Images.Media.insertImage(activity.getContentResolver(), bitmap, "title",null);
+					     // storing image from stream
+					     drawable = Drawable.createFromStream(is, "srcName");
+					     is.close();
+					      Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+					     // Store image in Devise database to send image to mail
+					     path = MediaStore.Images.Media.insertImage(activity.getContentResolver(), bitmap, "title",null);
+					     screenshotUri = Uri.parse(path);
 
-		   //  html = "<!DOCTYPE html><html><body>Your friend has invited you to start racing in "
-		    //   + "<a href=\"https://www.facebook.com/WordDerby\" target=\"_blank\">Word Derby</a>"
-		    //   + ".Free for Android, iPhone and iPad. Your friend's Word Derby username is '"
-		    //   + data.username + "' . </p></body></html>";
-
-		     screenshotUri = Uri.parse(path);
-
-		    } catch (MalformedURLException e) {
+					    } catch (MalformedURLException e) {
 		     // TODO Auto-generated catch block
 		     e.printStackTrace();
 		    } catch (IOException e) {
@@ -809,7 +801,7 @@ public class ListActivity extends Activity{
 		     emailIntent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		     emailIntent1.putExtra(Intent.EXTRA_STREAM, screenshotUri);
 		     emailIntent1.putExtra(Intent.EXTRA_SUBJECT,
-		       "Movie Quote Request!");
+		       "Gazillion Movie Quote Request!");
 		     // emailIntent1.putExtra(Intent.EXTRA_TEXT,"Your friend has invited you to start racing in Word Derby.Free for Android, iPhone and iPad. Your friend's Word Derby username is '"
 		     // + data.username + "'. ");
 

@@ -50,6 +50,7 @@ public class randomquote extends Activity {
 	 public static String[] movie1;
 	 public static  String[] year1;
 	 public static String[] quote1;
+	 public static String emailString="";
 	//Shaker shaker;
 	 String caller=null;
 	private int temp = 0;
@@ -578,14 +579,15 @@ public class randomquote extends Activity {
 				ArrayList<String> data = new ArrayList<String>();
 				ArrayList<String> tdata = new ArrayList<String>();
 				for (int i = 0; i < myStringArray.length; i++) {
-
-					tdata.add("Quote:  " + datatoshare[0] + "\n\n" + "Movie:  "
-							+ datatoshare[1] + "\n\n" + "Year:  "
-							+ datatoshare[2] + "\n\n");
+                    emailString="Quote:  " + datatoshare[0] +"<br><br><br>"+ "Guess The Movie Name..?";
+					tdata.add("Quote:  " + datatoshare[0] +"\n\n\n"+ "Guess The Movie Name..?");
+//					+ "Movie:  "
+//							+ datatoshare[1] + "\n\n" + "Year:  "
+//							+ datatoshare[2] + "\n\n");
 					data.add("Quote:  " + datatoshare[0] + "\n\n\n"
 							+ "Guess The Movie Name..?");
 				}
-				Global global = new Global(data, tdata);
+				Global global = new Global(tdata, data);
 				//Global appState = ((Global)getApplication());
 				//appState.fbdata=data;
 				//appState.textdata=data;

@@ -29,18 +29,17 @@ import android.provider.MediaStore;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
+import clabs.androidscreenlibrary.AndroidScreenSize;
 
 import com.flurry.android.FlurryAgent;
-import com.google.ads.AdRequest;
-import com.google.ads.AdSize;
-import com.google.ads.AdView;
+import com.revmob.RevMob;
+import com.revmob.ads.banner.RevMobBanner;
 
 
 public class ListActivity extends Activity{
@@ -55,7 +54,7 @@ public class ListActivity extends Activity{
 	 Uri mediaStoreImageUri=null;
 	 File destinationFile=null;
 	 Intent i;
-	 AdView adView;
+	 private RevMob revmob;
 	 static final int responce = 1;  
 	    static final int resul = 0;
 	private MyListAdapterTwoLine adapter;
@@ -81,29 +80,30 @@ public class ListActivity extends Activity{
 		String strSavedMem1 = sharedPreferences.getString("MEM2", "");
 		if (strSavedMem1 == "") {
 			setContentView(R.layout.listactivity_nexus);
+			try{
+				
+				
+				revmob = RevMob.start(ListActivity.this, "517a0db434a9464b16000031");
+				RevMobBanner banner = revmob.createBanner(ListActivity.this);
+				ViewGroup view = (ViewGroup) findViewById(R.id.banner);
+				view.addView(banner);
+			}
+			catch(Exception e){
+				Log.v("add",e.toString());
+			}
 		} else {
 			setContentView(R.layout.list_activity_2);
 		}
 		fl=(FrameLayout)findViewById(R.id.rv);
 		
+		
+		Log.i("activity context", ActivityContext.myList+"");
 		new AndroidScreenSize(ListActivity.this,fl,1184,720);
 		//caller=getIntent().getExtras().getString("token");
 	
+		Log.i("stack..list Actity.......",ActivityContext.myList+"");
 		
 		
-		try{
-			
-			
-			adView = new AdView(this, AdSize.BANNER, "a1513d779a8f2c4");        
-		    RelativeLayout layout = (RelativeLayout)findViewById(R.id.add);        
-		    layout.addView(adView);
-		    AdRequest request = new AdRequest();
-		    request.setTesting(false);
-		    adView.loadAd(request);
-		}
-		catch(Exception e){
-			Log.v("add",e.toString());
-		}
 		temp = 0;
 	
 		 final Vibrator vibe = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
@@ -117,6 +117,14 @@ public class ListActivity extends Activity{
 		    	  if (temp == 0)
 		    		  
 		    		  		{
+		    		  ActivityContext.revealflag=false;
+		    		  ActivityContext.revealflag=false;
+						String act = ActivityContext.myList.get(ActivityContext.myList.size() - 1);
+						Log.v("hello back class", act + ",");
+						if (!act.equals("ListActivity")) {
+							
+							ActivityContext.myList.add("ListActivity");
+						}
 		    		  			temp = 1;
 		    		  			//ActivityContext.myList.add("dance.class");
 		    		  			finish();
@@ -236,6 +244,14 @@ public class ListActivity extends Activity{
 			public void onClick(View v) {
 				// Toast.makeText(getApplicationContext(), "in", 500).show();
 			//	ActivityContext.myList.add("dance.class");
+				ActivityContext.revealflag=false;
+				String act = ActivityContext.myList.get(ActivityContext.myList.size() - 1);
+				Log.v("hello back class", act + ",");
+				if (!act.equals("ListActivity")) {
+					
+					ActivityContext.myList.add("ListActivity");
+				}
+				//Toast.makeText(getApplicationContext(), "in"+ActivityContext.myList, 500).show();
 				finish();
 				Intent intent = new Intent(ListActivity.this, dance.class);
 				//intent.putExtra("token", "ListActivity");
@@ -361,13 +377,13 @@ public class ListActivity extends Activity{
 				 Log.v("hello back class", act+",");
 				if(act.equals("UIActivity")){
 					ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-					finish();
+					
 					    Intent intent = new Intent(ListActivity.this, UIActivity.class);
 						//intent.putExtra("token",act);
 						startActivity(intent);
 						
 						overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-					
+						finish();
 					//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 					
 				}
@@ -385,49 +401,61 @@ public class ListActivity extends Activity{
 //				}
 				else if(act.equals("SearchActivity")){
 					ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-					finish();
+					
 					    Intent intent = new Intent(ListActivity.this, SearchActivity.class);
 						//intent.putExtra("token",act);
 						startActivity(intent);
 						
 						overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-					
+						finish();
 					//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 					
 				}
 				else if(act.equals("FavActivity")){
 					ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-					finish();
+					
 					    Intent intent = new Intent(ListActivity.this, FavActivity.class);
 						//intent.putExtra("token",act);
 						startActivity(intent);
 						
 						overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-					
+						finish();
 					//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 					
 				}
 				else if(act.equals("MoreActivity")){
 					ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-					finish();
+					
 					    Intent intent = new Intent(ListActivity.this, MoreActivity.class);
 						//intent.putExtra("token",act);
 						startActivity(intent);
 						
 						overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-					
+						finish();
 					//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 					
 				}
 				else if(act.equals("InfoActivity")){
 					ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-					finish();
+					
 					    Intent intent = new Intent(ListActivity.this, InfoActivity.class);
 						//intent.putExtra("token",act);
 						startActivity(intent);
 						
 						overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+						finish();
+					//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 					
+				}
+				else if(act.equals("InfoActivity2")){
+					ActivityContext.myList.remove(ActivityContext.myList.size()-1);
+				
+					    Intent intent = new Intent(ListActivity.this, Info_reveal.class);
+						//intent.putExtra("token",act);
+						startActivity(intent);
+						
+						overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+						finish();
 					//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 					
 				}
@@ -435,6 +463,7 @@ public class ListActivity extends Activity{
 					ActivityContext.myList.remove(ActivityContext.myList.size()-1);
 					finish();
 					    Intent intent = new Intent(ListActivity.this, searchUgrade.class);
+					    intent.putExtra("mode", searchUgrade.searchmode);
 						//intent.putExtra("token",act);
 						startActivity(intent);
 						
@@ -527,10 +556,14 @@ public class ListActivity extends Activity{
 
 	private void loadlist() {
      
-		listView = (ListView) findViewById(R.id.list_twoligne_itineraire);
-	
-	    adapter = new MyListAdapterTwoLine(ListActivity.this,getApplicationContext());
-		listView.setAdapter(adapter);
+		try {
+			listView = (ListView) findViewById(R.id.list_twoligne_itineraire);
+
+			adapter = new MyListAdapterTwoLine(ListActivity.this,getApplicationContext());
+			listView.setAdapter(adapter);
+		} catch (Exception e) {
+			Log.v("load list in list act", e.toString());
+		}
 
 	}
 	@Override
@@ -546,9 +579,7 @@ public class ListActivity extends Activity{
 	        Log.v("free time",free/(1024*1024)+"");
 	        Log.v("total",total/(1024*1024)+"");
 	        Log.v("used",used/(1024*1024)+"");
-	        if (adView != null) {
-	        	adView.destroy();
-	        	}
+	       
 	        	super.onDestroy();
 	        	
 
@@ -641,10 +672,23 @@ public class ListActivity extends Activity{
 				//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 				
 			}
+			else if(act.equals("InfoActivity2")){
+				ActivityContext.myList.remove(ActivityContext.myList.size()-1);
+				finish();
+				    Intent intent = new Intent(ListActivity.this, Info_reveal.class);
+					//intent.putExtra("token",act);
+					startActivity(intent);
+					
+					overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+				
+				//Toast.makeText(getApplicationContext(), "fdf", 500).show();
+				
+			}
 			else if(act.equals("UpgradeSearch")){
 				ActivityContext.myList.remove(ActivityContext.myList.size()-1);
 				finish();
 				    Intent intent = new Intent(ListActivity.this, searchUgrade.class);
+				    intent.putExtra("mode", searchUgrade.searchmode);
 					//intent.putExtra("token",act);
 					startActivity(intent);
 					

@@ -2,15 +2,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/item"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_height="200px"
     android:orientation="horizontal" 
       android:clickable="true"
        android:focusable="true"
+      
      android:background="@drawable/relsel">
 
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="180px" >
+        android:layout_height="200px" 
+        android:padding="5px">
         
         
        <Button
@@ -18,7 +20,7 @@
             style="?android:attr/buttonStyleSmall"
             android:layout_width="70px"
             android:layout_height="70px"
-            android:layout_marginLeft="590px"
+            android:layout_marginLeft="580px"
             android:layout_marginTop="40px"
             android:background="@drawable/btn_arrow"
              android:textColor="#ffffff"/>
@@ -81,16 +83,17 @@
        
   <TextView
             android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30px"
+            android:layout_height="25px"
             android:layout_marginLeft="322px"
             android:layout_marginTop="35px"
              android:textColor="#000000"
             android:text="~" />
         <TextView
             android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30px"
+            android:layout_height="25px"
+            
             android:layout_marginLeft="322px"
             android:layout_marginTop="95px"
              android:textColor="#000000"

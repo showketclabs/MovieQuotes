@@ -1,6 +1,6 @@
 /*
  * This file is auto-generated.  DO NOT MODIFY.
- * Original file: /Users/mac/Documents/projects/MovieQuotes/src/com/android/vending/billing/IInAppBillingService.aidl
+ * Original file: /Users/mac/Documents/MovieQuotes/src/com/android/vending/billing/IInAppBillingService.aidl
  */
 package com.android.vending.billing;
 /**

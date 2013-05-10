@@ -10,10 +10,16 @@ android:layout_height="1184px" >
     android:layout_height="match_parent"
     android:background="@drawable/screen9_1"
     android:orientation="vertical" >
-    
+     <LinearLayout
+        android:id="@+id/banner"
+        android:layout_width="720px"
+        android:layout_height="110px"
+        android:visibility="invisible" >
+        
+    </LinearLayout>
 
       <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="720px"
         android:layout_height="214px"
         android:layout_alignParentBottom="true"
       

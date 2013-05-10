@@ -4,8 +4,8 @@
 
 package awesome.app.moviequotes;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Random;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -21,20 +21,17 @@ import android.os.Vibrator;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-import awesome.app.moviequotes.InfoActivity.ActivitySwipeDetector;
+import clabs.androidscreenlibrary.AndroidScreenSize;
 
 import com.flurry.android.FlurryAgent;
-import com.google.ads.AdRequest;
-import com.google.ads.AdSize;
-import com.google.ads.AdView;
 
 public class RevealInfo extends Activity {
 
@@ -62,8 +59,9 @@ public class RevealInfo extends Activity {
 	String MY_KEY = "MWZY29QZHHSWXYQS8DYN";
 	public String revdata;
 	private FrameLayout fl;
-	AdView adView;
-public static String emailstring="";
+	
+	int idx;
+    public static String emailstring="";
 	@Override
 	protected void onStart() {
 		super.onStart();
@@ -84,28 +82,13 @@ public static String emailstring="";
 		setContentView(R.layout.revealinfo);
 		fl = (FrameLayout) findViewById(R.id.rv);
 		main = (RelativeLayout) findViewById(R.id.id1);
-		adView = new AdView(this, AdSize.BANNER, "a1513d779a8f2c4");
+		
 		SharedPreferences sharedPreferences = getSharedPreferences("MY",
 				MODE_PRIVATE);
 		String strSavedMem1 = sharedPreferences.getString("MEM2", "");
 
-		if (strSavedMem1 == "") {
-			adView.setVisibility(adView.VISIBLE);
-		} else {
-			adView.setVisibility(adView.INVISIBLE);
-			main.setBackgroundResource(R.drawable.screen_5_1);
-		}
-		try {
-
-			RelativeLayout layout = (RelativeLayout) findViewById(R.id.add);
-			layout.addView(adView);
-			AdRequest request = new AdRequest();
-			request.setTesting(false);
-			adView.loadAd(request);
-		} catch (Exception e) {
-			// Log.v("add",e.toString());
-		}
-
+		
+		
 		new AndroidScreenSize(RevealInfo.this, fl, 1184, 720);
 		movie1 = Global.movie.split("~, ");
 		year1 = Global.year.split("~, ");
@@ -123,13 +106,25 @@ public static String emailstring="";
 				if (temp == 0)
 
 				{
+					ActivityContext.revealflag=true;
 					temp = 1;
-					finish();
+					 ActivityContext.revealflag=false;
+					// if(ActivityContext.myList.size()>0)
+//						{
+//						String act = ActivityContext.myList.get(ActivityContext.myList.size() - 1);
+//						Log.v("hello back class", act + ",");
+//						if (!act.equals("RevealActivity")) {
+//							
+//							ActivityContext.myList.add("RevealActivity");
+//						}
+//						}
 					Intent intent = new Intent(RevealInfo.this, dance.class);
 
 					startActivity(intent);
 					overridePendingTransition(R.anim.slide_in_left,
 							R.anim.slide_out_left);
+					finish();
+					
 				}
 			}
 		});
@@ -150,14 +145,44 @@ public static String emailstring="";
 		tv = (TextView) findViewById(R.id.movie);
 		temp = 0;
 
-		rdata = Global.datatodispaly.split("~");
-
-		tv.setText(rdata[0]);
+		Log.i("stack.reveal Info........",ActivityContext.myList+"");
+//		String act = ActivityContext.myList.get(ActivityContext.myList
+//				.size() - 1);
+//		Log.i("inside reveal", "inside random revea"+act);
+//		
+//		if (act.equals("RevealActivity")) {
+//			ActivityContext.myList.remove(ActivityContext.myList
+//				.size() - 1);
+//		}
+//		if(ActivityContext.revealflag==false){
+//		rdata = Global.datatodispaly.split("~");
+//
+//		tv.setText(rdata[0]);
+//		}
+//		else{
+		if(ActivityContext.fromupgrade==true){
+			//Toast.makeText(getApplicationContext(), "in ifff", 500).show();
+			String datafromrandom[]=Global.datatodispaly.split("~");
+			tv.setText((datafromrandom[0]));
+			rdata=datafromrandom;
+			}
+		else{
+			loadquoterandom();
+			rdata=new String[3];
+			rdata[0]=quote1[idx]+"\n";
+			rdata[1]="\n"+movie1[idx]+"\n";
+			rdata[2]="\n"+year1[idx];
+		}
+		//}
 
 		ActivitySwipeDetector activitySwipeDetector = new ActivitySwipeDetector(
 				RevealInfo.this);
+		if(ActivityContext.forswipecheck==true)
+		{
 		scrollview.setOnTouchListener((OnTouchListener) activitySwipeDetector);
-
+		ActivityContext.forswipecheck=false;
+		}
+	
 		search.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -193,7 +218,7 @@ public static String emailstring="";
 										int which) {
 									ActivityContext.myList
 											.add("RevealActivity");
-									finish();
+								
 									Intent intent = new Intent(RevealInfo.this,
 											UpgradeActivity.class);
 
@@ -201,6 +226,7 @@ public static String emailstring="";
 									overridePendingTransition(
 											R.anim.slide_in_left,
 											R.anim.slide_out_left);
+									finish();
 								}
 							});
 
@@ -227,13 +253,14 @@ public static String emailstring="";
 					// "")
 					// + "", 500).show();
 					ActivityContext.myList.add("RevealActivity");
-					finish();
+					
 					Intent intent = new Intent(RevealInfo.this,
 							SearchActivity.class);
 
 					startActivity(intent);
 					overridePendingTransition(R.anim.slide_in_left,
 							R.anim.slide_out_left);
+					finish();
 				}
 			}
 		});
@@ -243,12 +270,13 @@ public static String emailstring="";
 			public void onClick(View v) {
 				// Toast.makeText(getApplicationContext(), "in", 500).show();
 				ActivityContext.myList.add("RevealActivity");
-				finish();
+				
 				Intent intent = new Intent(RevealInfo.this, HelpActivity.class);
 
 				startActivity(intent);
 				overridePendingTransition(R.anim.slide_in_left,
 						R.anim.slide_out_left);
+				finish();
 
 			}
 		});
@@ -257,12 +285,23 @@ public static String emailstring="";
 			@Override
 			public void onClick(View v) {
 				// Toast.makeText(getApplicationContext(), "in", 500).show();
-				finish();
+				//ActivityContext.revealflag=true;
+				 ActivityContext.revealflag=false;
+//				 if(ActivityContext.myList.size()>0)
+//					{
+//					String act = ActivityContext.myList.get(ActivityContext.myList.size() - 1);
+//					Log.v("hello back class", act + ",");
+//					if (!act.equals("RevealActivity")) {
+//						
+//						ActivityContext.myList.add("RevealActivity");
+//					}
+//					}
 				Intent intent = new Intent(RevealInfo.this, dance.class);
 
 				startActivity(intent);
 				overridePendingTransition(R.anim.slide_in_left,
 						R.anim.slide_out_left);
+				finish();
 
 			}
 		});
@@ -272,12 +311,13 @@ public static String emailstring="";
 			public void onClick(View v) {
 				// Toast.makeText(getApplicationContext(), "in", 500).show();
 				ActivityContext.myList.add("RevealActivity");
-				finish();
+				
 				Intent intent = new Intent(RevealInfo.this, MoreActivity.class);
 
 				startActivity(intent);
 				overridePendingTransition(R.anim.slide_in_left,
 						R.anim.slide_out_left);
+				finish();
 
 			}
 		});
@@ -288,12 +328,13 @@ public static String emailstring="";
 			public void onClick(View v) {
 				// Toast.makeText(getApplicationContext(), "in", 500).show();
 				ActivityContext.myList.add("RevealActivity");
-				finish();
+				
 				Intent intent = new Intent(RevealInfo.this, ListActivity.class);
 
 				startActivity(intent);
 				overridePendingTransition(R.anim.slide_in_left,
 						R.anim.slide_out_left);
+				finish();
 
 			}
 		});
@@ -303,12 +344,13 @@ public static String emailstring="";
 			public void onClick(View v) {
 				// Toast.makeText(getApplicationContext(), "in", 500).show();
 				ActivityContext.myList.add("RevealActivity");
-				finish();
+				
 				Intent intent = new Intent(RevealInfo.this, FavActivity.class);
 
 				startActivity(intent);
 				overridePendingTransition(R.anim.slide_in_left,
 						R.anim.slide_out_left);
+				finish();
 
 			}
 		});
@@ -320,9 +362,11 @@ public static String emailstring="";
 				String act = ActivityContext.myList.get(ActivityContext.myList
 						.size() - 1);
 				Log.v("hello back class", act + ",");
+				
+				
 				if (act.equals("UIActivity")) {
-					ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
-					finish();
+					//ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
+				
 					Intent intent = new Intent(RevealInfo.this,
 							UIActivity.class);
 					// intent.putExtra("token",act);
@@ -330,13 +374,14 @@ public static String emailstring="";
 
 					overridePendingTransition(R.anim.slide_in_right,
 							R.anim.slide_out_right);
+					finish();
 
 					// Toast.makeText(getApplicationContext(), "fdf",
 					// 500).show();
 
 				} else if (act.equals("ListActivity")) {
 					ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
-					finish();
+					
 					Intent intent = new Intent(RevealInfo.this,
 							ListActivity.class);
 					// intent.putExtra("token",act);
@@ -344,13 +389,14 @@ public static String emailstring="";
 
 					overridePendingTransition(R.anim.slide_in_right,
 							R.anim.slide_out_right);
+					finish();
 
 					// Toast.makeText(getApplicationContext(), "fdf",
 					// 500).show();
 
 				} else if (act.equals("SearchActivity")) {
 					ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
-					finish();
+					
 					Intent intent = new Intent(RevealInfo.this,
 							SearchActivity.class);
 					// intent.putExtra("token",act);
@@ -358,13 +404,13 @@ public static String emailstring="";
 
 					overridePendingTransition(R.anim.slide_in_right,
 							R.anim.slide_out_right);
-
+					finish();
 					// Toast.makeText(getApplicationContext(), "fdf",
 					// 500).show();
 
 				} else if (act.equals("FavActivity")) {
 					ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
-					finish();
+					
 					Intent intent = new Intent(RevealInfo.this,
 							FavActivity.class);
 					// intent.putExtra("token",act);
@@ -372,13 +418,13 @@ public static String emailstring="";
 
 					overridePendingTransition(R.anim.slide_in_right,
 							R.anim.slide_out_right);
-
+					finish();
 					// Toast.makeText(getApplicationContext(), "fdf",
 					// 500).show();
 
 				} else if (act.equals("MoreActivity")) {
 					ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
-					finish();
+					
 					Intent intent = new Intent(RevealInfo.this,
 							MoreActivity.class);
 					// intent.putExtra("token",act);
@@ -386,13 +432,13 @@ public static String emailstring="";
 
 					overridePendingTransition(R.anim.slide_in_right,
 							R.anim.slide_out_right);
-
+					finish();
 					// Toast.makeText(getApplicationContext(), "fdf",
 					// 500).show();
 
 				} else if (act.equals("InfoActivity")) {
 					ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
-					finish();
+					
 					Intent intent = new Intent(RevealInfo.this,
 							InfoActivity.class);
 					// intent.putExtra("token",act);
@@ -400,13 +446,13 @@ public static String emailstring="";
 
 					overridePendingTransition(R.anim.slide_in_right,
 							R.anim.slide_out_right);
-
+					finish();
 					// Toast.makeText(getApplicationContext(), "fdf",
 					// 500).show();
 
 				} else if (act.equals("UpgradeSearch")) {
 					ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
-					finish();
+					
 					Intent intent = new Intent(RevealInfo.this,
 							searchUgrade.class);
 					intent.putExtra("mode", searchUgrade.searchmode);
@@ -415,13 +461,13 @@ public static String emailstring="";
 
 					overridePendingTransition(R.anim.slide_in_right,
 							R.anim.slide_out_right);
-
+					finish();
 					// Toast.makeText(getApplicationContext(), "fdf",
 					// 500).show();
 
 				} else if (act.equals("UpgradeActivity")) {
 					ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
-					finish();
+					
 					Intent intent = new Intent(RevealInfo.this,
 							UpgradeActivity.class);
 					// intent.putExtra("token",act);
@@ -429,7 +475,7 @@ public static String emailstring="";
 
 					overridePendingTransition(R.anim.slide_in_right,
 							R.anim.slide_out_right);
-
+					finish();
 					// Toast.makeText(getApplicationContext(), "fdf",
 					// 500).show();
 
@@ -450,7 +496,7 @@ public static String emailstring="";
 				// }
 				else if (act.equals("ShareActivity")) {
 					ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
-					finish();
+					
 					Intent intent = new Intent(RevealInfo.this,
 							ShareActivity.class);
 					// intent.putExtra("token",act);
@@ -458,13 +504,13 @@ public static String emailstring="";
 
 					overridePendingTransition(R.anim.slide_in_right,
 							R.anim.slide_out_right);
-
+					finish();
 					// Toast.makeText(getApplicationContext(), "fdf",
 					// 500).show();
 
 				} else if (act.equals("ShareActivity1")) {
 					ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
-					finish();
+					
 					Intent intent = new Intent(RevealInfo.this,
 							ShareActivity1.class);
 					// intent.putExtra("token",act);
@@ -472,15 +518,29 @@ public static String emailstring="";
 
 					overridePendingTransition(R.anim.slide_in_right,
 							R.anim.slide_out_right);
-
+					finish();
 					// Toast.makeText(getApplicationContext(), "fdf",
 					// 500).show();
 
 				}
+				else if (act.equals("InfoActivity2")) {
+					ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
+					
+					Intent intent = new Intent(RevealInfo.this,
+							Info_reveal.class);
+					// intent.putExtra("token",act);
+					startActivity(intent);
 
+					overridePendingTransition(R.anim.slide_in_right,
+							R.anim.slide_out_right);
+					finish();
+					// Toast.makeText(getApplicationContext(), "fdf",
+					// 500).show();
+
+				}
 				else if (act.equals("HelpActivity")) {
 					ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
-					finish();
+					
 					Intent intent = new Intent(RevealInfo.this,
 							HelpActivity.class);
 					// intent.putExtra("token",act);
@@ -488,13 +548,13 @@ public static String emailstring="";
 
 					overridePendingTransition(R.anim.slide_in_right,
 							R.anim.slide_out_right);
-
+					finish();
 					// Toast.makeText(getApplicationContext(), "fdf",
 					// 500).show();
 
 				} else if (act.equals("randomquotes")) {
 					ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
-					finish();
+					
 					Intent intent = new Intent(RevealInfo.this,
 							randomquote.class);
 					// intent.putExtra("token",act);
@@ -502,7 +562,7 @@ public static String emailstring="";
 
 					overridePendingTransition(R.anim.slide_in_right,
 							R.anim.slide_out_right);
-
+					finish();
 					// Toast.makeText(getApplicationContext(), "fdf",
 					// 500).show();
 
@@ -585,7 +645,7 @@ public static String emailstring="";
 									String sql = "SELECT * FROM fav1 WHERE movie == '"
 											+ rdata[1]
 											+ "' and quote=='"
-											+ rdata[0].replaceAll("'", "`")
+											+ (rdata[0].replaceAll("'", "`"))
 											+ "' and year=='" + rdata[2] + "'";
 									Cursor data = db.rawQuery(sql, null);
 									if (data.moveToFirst()) {
@@ -649,6 +709,7 @@ public static String emailstring="";
 				// 500).show();
 				ArrayList<String> data = new ArrayList<String>();
 				ArrayList<String> tdata = new ArrayList<String>();
+			//	if(ActivityContext.revealflag!=true){
 				for (int i = 0; i < myStringArray.length; i++) {
 					emailstring="Quote:  " + datatoshare[0] +"<br><br><br>"+ "Guess The Movie Name..?";
 					tdata.add("Quote:  " + rdata[0] + "\n\n" + "Movie:  "
@@ -657,6 +718,18 @@ public static String emailstring="";
 							+ "Guess The Movie Name..?");
 				}
 				Global global = new Global(data, data);
+				//}
+//			    else{
+//			    	emailstring="Quote:  " + quote1[idx] +"<br><br><br>"+ "Guess The Movie Name..?";
+//			    	Log.i("data when revel:::", quote1[idx]+"");
+//				tdata.add("Quote:  " +quote1[idx] + "\n\n" + "Movie:  "
+//						+ movie1[idx] + "\n\n" + "Year:  " + year1[idx] + "\n\n");
+//				data.add("Quote:  " + quote1[idx] + "\n\n\n"
+//						+ "Guess The Movie Name..?");
+//				Global global = new Global(data, data);
+//				
+//		    	}
+				
 				data = null;
 				tdata = null;
 				System.gc();
@@ -667,20 +740,18 @@ public static String emailstring="";
 				v1.setDrawingCacheEnabled(true);
 				Bitmap bmp = v1.getDrawingCache();
 				ActivityContext.bmp = bmp;
-				// ByteArrayOutputStream stream = new ByteArrayOutputStream();
-				// bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
-				// byte[] byteArray = stream.toByteArray();
+				
 				ActivityContext.myList.add("RevealActivity");
-				finish();
+				
 				// Log.v("DATA",data+"");
 				Intent i = new Intent(RevealInfo.this, ShareActivity.class);
 				// i.putExtra("picture", byteArray);
 
 				startActivity(i);
-				finish();
+				
 				overridePendingTransition(R.anim.slide_in_left,
 						R.anim.slide_out_left);
-
+				finish();
 			}
 
 		});
@@ -689,7 +760,21 @@ public static String emailstring="";
 
 			@Override
 			public void onClick(View v) {
-				tv.setText(rdata[0] + "~" + rdata[1] + "~" + rdata[2]);
+//				if(ActivityContext.revealflag==true){
+//				tv.setText(rdata[0]  + "\n"+ "~" + "\n"+ rdata[1]  + "\n"+ "~" + "\n"+ rdata[2]);
+//				}
+//				else{
+				if(ActivityContext.fromupgrade==true){
+					String datafromrandom[]=Global.datatodispaly.split("~");
+					tv.setText(datafromrandom[0] + "~" + datafromrandom[1] + "~" + datafromrandom[2]);
+					ActivityContext.fromupgrade=false;
+				}
+				else{
+					tv.setText(rdata[0] + "~" + rdata[1] + "~" + rdata[2]);
+				}
+//					data = quote1[idx] + "\n" + "~" + "\n" + movie1[idx] + "\n" + "~" + "\n" + year1[idx];
+//					tv.setText(data);
+				//}
 				// reveal.setEnabled(false);
 				// b.setEnabled(true);
 
@@ -729,111 +814,167 @@ public static String emailstring="";
 	}
 
 	public void onBackPressed() {
-		String act = ActivityContext.myList
-				.get(ActivityContext.myList.size() - 1);
-		Log.v("hello back class", act + ",");
+
+		String act = ActivityContext.myList.get(ActivityContext.myList
+				.size() - 1);
+		Log.i("inside reveal", "inside random revea"+act);
+		
 		if (act.equals("UIActivity")) {
-			ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
-			finish();
-			Intent intent = new Intent(RevealInfo.this, UIActivity.class);
+			//ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
+		
+			Intent intent = new Intent(RevealInfo.this,
+					UIActivity.class);
 			// intent.putExtra("token",act);
 			startActivity(intent);
 
 			overridePendingTransition(R.anim.slide_in_right,
 					R.anim.slide_out_right);
-
-			// Toast.makeText(getApplicationContext(), "fdf", 500).show();
-
-		} else if (act.equals("ListActivity")) {
-			ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
 			finish();
-			Intent intent = new Intent(RevealInfo.this, ListActivity.class);
+
+			// Toast.makeText(getApplicationContext(), "fdf",
+			// 500).show();
+
+		} 
+		
+		else if (act.equals("RevealActivity")) {
+			ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
+			
+			Intent intent = new Intent(RevealInfo.this,
+					ListActivity.class);
 			// intent.putExtra("token",act);
 			startActivity(intent);
 
 			overridePendingTransition(R.anim.slide_in_right,
 					R.anim.slide_out_right);
+			finish();
 
-			// Toast.makeText(getApplicationContext(), "fdf", 500).show();
+			// Toast.makeText(getApplicationContext(), "fdf",
+			// 500).show();
+
+		}
+		else if (act.equals("ListActivity")) {
+			ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
+			
+			Intent intent = new Intent(RevealInfo.this,
+					ListActivity.class);
+			// intent.putExtra("token",act);
+			startActivity(intent);
+
+			overridePendingTransition(R.anim.slide_in_right,
+					R.anim.slide_out_right);
+			finish();
+
+			// Toast.makeText(getApplicationContext(), "fdf",
+			// 500).show();
 
 		} else if (act.equals("SearchActivity")) {
 			ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
-			finish();
-			Intent intent = new Intent(RevealInfo.this, SearchActivity.class);
+			
+			Intent intent = new Intent(RevealInfo.this,
+					SearchActivity.class);
 			// intent.putExtra("token",act);
 			startActivity(intent);
 
 			overridePendingTransition(R.anim.slide_in_right,
 					R.anim.slide_out_right);
-
-			// Toast.makeText(getApplicationContext(), "fdf", 500).show();
+			finish();
+			// Toast.makeText(getApplicationContext(), "fdf",
+			// 500).show();
 
 		} else if (act.equals("FavActivity")) {
 			ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
-			finish();
-			Intent intent = new Intent(RevealInfo.this, FavActivity.class);
+			
+			Intent intent = new Intent(RevealInfo.this,
+					FavActivity.class);
 			// intent.putExtra("token",act);
 			startActivity(intent);
 
 			overridePendingTransition(R.anim.slide_in_right,
 					R.anim.slide_out_right);
-
-			// Toast.makeText(getApplicationContext(), "fdf", 500).show();
+			finish();
+			// Toast.makeText(getApplicationContext(), "fdf",
+			// 500).show();
 
 		} else if (act.equals("MoreActivity")) {
 			ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
-			finish();
-			Intent intent = new Intent(RevealInfo.this, MoreActivity.class);
+			
+			Intent intent = new Intent(RevealInfo.this,
+					MoreActivity.class);
 			// intent.putExtra("token",act);
 			startActivity(intent);
 
 			overridePendingTransition(R.anim.slide_in_right,
 					R.anim.slide_out_right);
-
-			// Toast.makeText(getApplicationContext(), "fdf", 500).show();
+			finish();
+			// Toast.makeText(getApplicationContext(), "fdf",
+			// 500).show();
 
 		} else if (act.equals("InfoActivity")) {
 			ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
-			finish();
-			Intent intent = new Intent(RevealInfo.this, InfoActivity.class);
+			
+			Intent intent = new Intent(RevealInfo.this,
+					InfoActivity.class);
 			// intent.putExtra("token",act);
 			startActivity(intent);
 
 			overridePendingTransition(R.anim.slide_in_right,
 					R.anim.slide_out_right);
-
-			// Toast.makeText(getApplicationContext(), "fdf", 500).show();
-
-		} else if (act.equals("UpgradeSearch")) {
-			ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
 			finish();
-			Intent intent = new Intent(RevealInfo.this, searchUgrade.class);
+			// Toast.makeText(getApplicationContext(), "fdf",
+			// 500).show();
+
+		} 
+		
+		else if (act.equals("InfoActivity2")) {
+			ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
+			
+			Intent intent = new Intent(RevealInfo.this,
+					Info_reveal.class);
 			// intent.putExtra("token",act);
 			startActivity(intent);
 
 			overridePendingTransition(R.anim.slide_in_right,
 					R.anim.slide_out_right);
-
-			// Toast.makeText(getApplicationContext(), "fdf", 500).show();
-
-		} else if (act.equals("UpgradeActivity")) {
-			ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
 			finish();
-			Intent intent = new Intent(RevealInfo.this, UpgradeActivity.class);
+			// Toast.makeText(getApplicationContext(), "fdf",
+			// 500).show();
+
+		}
+		else if (act.equals("UpgradeSearch")) {
+			ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
+			
+			Intent intent = new Intent(RevealInfo.this,
+					searchUgrade.class);
 			intent.putExtra("mode", searchUgrade.searchmode);
 			// intent.putExtra("token",act);
 			startActivity(intent);
 
 			overridePendingTransition(R.anim.slide_in_right,
 					R.anim.slide_out_right);
+			finish();
+			// Toast.makeText(getApplicationContext(), "fdf",
+			// 500).show();
 
-			// Toast.makeText(getApplicationContext(), "fdf", 500).show();
+		} else if (act.equals("UpgradeActivity")) {
+			ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
+			
+			Intent intent = new Intent(RevealInfo.this,
+					UpgradeActivity.class);
+			// intent.putExtra("token",act);
+			startActivity(intent);
+
+			overridePendingTransition(R.anim.slide_in_right,
+					R.anim.slide_out_right);
+			finish();
+			// Toast.makeText(getApplicationContext(), "fdf",
+			// 500).show();
 
 		}
 		// else if(act.equals("RevealActivity")){
 		// ActivityContext.myList.remove(ActivityContext.myList.size()-1);
 		// finish();
-		// Intent intent = new Intent(RevealInfo.this, RevealInfo.class);
+		// Intent intent = new Intent(RevealInfo.this,
+		// RevealInfo.class);
 		// //intent.putExtra("token",act);
 		// startActivity(intent);
 		//
@@ -845,55 +986,64 @@ public static String emailstring="";
 		// }
 		else if (act.equals("ShareActivity")) {
 			ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
-			finish();
-			Intent intent = new Intent(RevealInfo.this, ShareActivity.class);
+			
+			Intent intent = new Intent(RevealInfo.this,
+					ShareActivity.class);
 			// intent.putExtra("token",act);
 			startActivity(intent);
 
 			overridePendingTransition(R.anim.slide_in_right,
 					R.anim.slide_out_right);
-
-			// Toast.makeText(getApplicationContext(), "fdf", 500).show();
+			finish();
+			// Toast.makeText(getApplicationContext(), "fdf",
+			// 500).show();
 
 		} else if (act.equals("ShareActivity1")) {
 			ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
-			finish();
-			Intent intent = new Intent(RevealInfo.this, ShareActivity1.class);
+			
+			Intent intent = new Intent(RevealInfo.this,
+					ShareActivity1.class);
 			// intent.putExtra("token",act);
 			startActivity(intent);
 
 			overridePendingTransition(R.anim.slide_in_right,
 					R.anim.slide_out_right);
-
-			// Toast.makeText(getApplicationContext(), "fdf", 500).show();
-
-		} else if (act.equals("HelpActivity")) {
-			ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
 			finish();
-			Intent intent = new Intent(RevealInfo.this, HelpActivity.class);
-			// intent.putExtra("token",act);
-			startActivity(intent);
-
-			overridePendingTransition(R.anim.slide_in_right,
-					R.anim.slide_out_right);
-
-			// Toast.makeText(getApplicationContext(), "fdf", 500).show();
-
-		} else if (act.equals("randomquotes")) {
-			ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
-			finish();
-			Intent intent = new Intent(RevealInfo.this, randomquote.class);
-			// intent.putExtra("token",act);
-			startActivity(intent);
-
-			overridePendingTransition(R.anim.slide_in_right,
-					R.anim.slide_out_right);
-
-			// Toast.makeText(getApplicationContext(), "fdf", 500).show();
+			// Toast.makeText(getApplicationContext(), "fdf",
+			// 500).show();
 
 		}
 
-		return;
+		else if (act.equals("HelpActivity")) {
+			ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
+			
+			Intent intent = new Intent(RevealInfo.this,
+					HelpActivity.class);
+			// intent.putExtra("token",act);
+			startActivity(intent);
+
+			overridePendingTransition(R.anim.slide_in_right,
+					R.anim.slide_out_right);
+			finish();
+			// Toast.makeText(getApplicationContext(), "fdf",
+			// 500).show();
+
+		} else if (act.equals("randomquotes")) {
+			ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
+			
+			Intent intent = new Intent(RevealInfo.this,
+					randomquote.class);
+			// intent.putExtra("token",act);
+			startActivity(intent);
+
+			overridePendingTransition(R.anim.slide_in_right,
+					R.anim.slide_out_right);
+			finish();
+			// Toast.makeText(getApplicationContext(), "fdf",
+			// 500).show();
+
+		}
+
 	}
 
 	private void unbindDrawables(View view) {
@@ -929,8 +1079,15 @@ public static String emailstring="";
 		}
 
 		public void onRightToLeftSwipe() {
-			if (index > 0) {
-				String data = quote1[index];
+			
+			
+			 index=index+1;
+			   
+			   if(index >= quote1.length){
+				   index=0;
+				}
+			   
+			   String data = quote1[index];
 
 				revdata = quote1[index].replaceAll("~", " ") + "\n" + "~"
 						+ "\n" + year1[index].replaceAll("~", " ") + "\n" + "~"
@@ -939,26 +1096,39 @@ public static String emailstring="";
 				Log.v("revdata", revdata + "");
 
 				tv.setText(data);
-
-				// lindex--;
-				index--;
-				if (index == 0) {
-					index = quote1.length - 1;
-					String data1 = quote1[index];
-					String q11 = quote1[index].replaceAll("~", " ");
-					String y11 = year1[index].replaceAll("~", " ");
-					String m11 = movie1[index].replaceAll("~", " ");
-					revdata = q11 + "\n" + "~" + "\n" + m11 + "\n" + "~" + "\n"
-							+ y11;
-					rdata = revdata.split("~");
-					Log.v("revdata", revdata + "");
-
-					tv.setText(data1);
-
-				}
-			} else {
-
-			}
+			
+			
+			
+//			if (index > 0) {
+//				String data = quote1[index];
+//
+//				revdata = quote1[index].replaceAll("~", " ") + "\n" + "~"
+//						+ "\n" + year1[index].replaceAll("~", " ") + "\n" + "~"
+//						+ "\n" + movie1[index].replaceAll("~", " ");
+//				rdata = revdata.split("~");
+//				Log.v("revdata", revdata + "");
+//
+//				tv.setText(data);
+//
+//				// lindex--;
+//				index--;
+//				if (index == 0) {
+//					index = quote1.length - 1;
+//					String data1 = quote1[index];
+//					String q11 = quote1[index].replaceAll("~", " ");
+//					String y11 = year1[index].replaceAll("~", " ");
+//					String m11 = movie1[index].replaceAll("~", " ");
+//					revdata = q11 + "\n" + "~" + "\n" + m11 + "\n" + "~" + "\n"
+//							+ y11;
+//					rdata = revdata.split("~");
+//					Log.v("revdata", revdata + "");
+//
+//					tv.setText(data1);
+//
+//				}
+//			} else {
+//
+//			}
 
 			// rdata.notifyAll();
 			// Toast.makeText(activity, "RightToLeftSwipe", 1000).show();
@@ -966,9 +1136,14 @@ public static String emailstring="";
 		}
 
 		public void onLeftToRightSwipe() {
-			if (index < quote1.length) {
-
-				String data = quote1[index];
+			
+			 index=index-1;
+			   
+			   if(index<0){
+				   index=quote1.length-1;
+				}
+			   
+			    String data = quote1[index];
 				String q1 = quote1[index].replaceAll("~", " ");
 				String y1 = year1[index].replaceAll("~", " ");
 				String m1 = movie1[index].replaceAll("~", " ");
@@ -977,43 +1152,62 @@ public static String emailstring="";
 				Log.v("revdata", revdata + "");
 
 				tv.setText(data);
-				q1 = null;
-				y1 = null;
-				m1 = null;
-				System.gc();
-				// tv.setText(Global.quotes1.get(index));
-				index++;
-				if (index == quote1.length) {
-					index = 0;
-					String data1 = quote1[index];
-					String q11 = quote1[index].replaceAll("~", " ");
-					String y11 = year1[index].replaceAll("~", " ");
-					String m11 = movie1[index].replaceAll("~", " ");
-					revdata = q1 + "\n" + "~" + "\n" + m1 + "\n" + "~" + "\n"
-							+ y1;
-					rdata = revdata.split("~");
-					Log.v("revdata", revdata + "");
-
-					tv.setText(data1);
-
-				}
-				// lindex = index - 2;
-			} else {
-				// Toast.makeText(InfoActivity.this, "right Ended",
-				// Toast.LENGTH_SHORT).show();
-			}
+			
+			
+			
+			
+			
+			
+			
+			
+//			if (index < quote1.length) {
+//
+//				String data = quote1[index];
+//				String q1 = quote1[index].replaceAll("~", " ");
+//				String y1 = year1[index].replaceAll("~", " ");
+//				String m1 = movie1[index].replaceAll("~", " ");
+//				revdata = q1 + "\n" + "~" + "\n" + m1 + "\n" + "~" + "\n" + y1;
+//				rdata = revdata.split("~");
+//				Log.v("revdata", revdata + "");
+//
+//				tv.setText(data);
+//				q1 = null;
+//				y1 = null;
+//				m1 = null;
+//				System.gc();
+//				// tv.setText(Global.quotes1.get(index));
+//				index++;
+//				if (index == quote1.length) {
+//					index = 0;
+//					String data1 = quote1[index];
+//					String q11 = quote1[index].replaceAll("~", " ");
+//					String y11 = year1[index].replaceAll("~", " ");
+//					String m11 = movie1[index].replaceAll("~", " ");
+//					revdata = q1 + "\n" + "~" + "\n" + m1 + "\n" + "~" + "\n"
+//							+ y1;
+//					rdata = revdata.split("~");
+//					Log.v("revdata", revdata + "");
+//
+//					tv.setText(data1);
+//
+//				}
+//				// lindex = index - 2;
+//			} else {
+//				// Toast.makeText(InfoActivity.this, "right Ended",
+//				// Toast.LENGTH_SHORT).show();
+//			}
 			// rdata.notifyAll();
 			// Toast.makeText(activity, "RightToLeftSwipe", 1000).show();
 			// Log.e(logTag, "LeftToRightSwipe!");
 		}
 
 		public void onTopToBottomSwipe() {
-			Toast.makeText(activity, "RightToLeftSwipe", 1000).show();
+			//Toast.makeText(activity, "RightToLeftSwipe", 1000).show();
 			Log.i(logTag, "onTopToBottomSwipe!");
 		}
 
 		public void onBottomToTopSwipe() {
-			Toast.makeText(activity, "BottomToTopSwipe", 1000).show();
+			//Toast.makeText(activity, "BottomToTopSwipe", 1000).show();
 			Log.i(logTag, "onBottomToTopSwipe!");
 		}
 
@@ -1067,5 +1261,14 @@ public static String emailstring="";
 		}
 
 	}
+	private void loadquoterandom() {
+		   
+		
+	   idx = new Random().nextInt(quote1.length);
 
+		data = quote1[idx];
+
+		tv.setText(data);
+		
+	}
 }

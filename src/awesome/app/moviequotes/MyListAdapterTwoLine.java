@@ -7,8 +7,10 @@ package awesome.app.moviequotes;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -106,6 +108,9 @@ public class MyListAdapterTwoLine extends BaseAdapter {
 						String quote = holder.texte1Recup.getText().toString()+"\n";
 						String movie = "\n"+holder.texte2Recup.getText().toString()+"\n";
 						String year = "\n"+holder.texte3Recup.getText().toString();
+						Log.i("data on check", quote);
+						Log.i("data on check", movie);
+						Log.i("data on check", year);
 						new dbase(c, quote, movie, year);
 						mylistadapter2.cnt++;
 
@@ -127,6 +132,11 @@ public class MyListAdapterTwoLine extends BaseAdapter {
 				public void onClick(View v) {
 					holder = (ViewHolder) v.getTag();
 					int pos = holder.p;
+//					String randomdata = holder.texte1Recup.getText().toString()
+//							+ "\n" + "~" + "\n"
+//							+ holder.texte2Recup.getText().toString() + "\n"
+//							+ "~" + "\n"
+//							+ holder.texte3Recup.getText().toString();
 					String randomdata = holder.texte1Recup.getText().toString()
 							+ "\n" + "~" + "\n"
 							+ holder.texte2Recup.getText().toString() + "\n"
@@ -137,13 +147,28 @@ public class MyListAdapterTwoLine extends BaseAdapter {
 					randomdata=null;
 					System.gc();
 					ActivityContext.myList.add("ListActivity");
-					
-					Intent ii = new Intent(c, InfoActivity.class);
+					SharedPreferences sharedPreferences = c.getSharedPreferences("MY",
+							c.MODE_PRIVATE);
+					String strSavedMem1 = sharedPreferences.getString("MEM2", "");
+					//if (strSavedMem1 == "") {
+						
+					Intent ii = new Intent(c, Info_reveal.class);
 					
 					ii.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 					c.startActivity(ii);
 					activity.overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
-
+					activity.finish();
+					//}
+//					else{
+//						ActivityContext.forswipecheck=true;
+//						Intent ii = new Intent(c, RevealInfo.class);
+//						
+//						ii.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//						c.startActivity(ii);
+//						activity.overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
+//						activity.finish();
+//					}
+					
 				}
 			});
 

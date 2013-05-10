@@ -7,10 +7,8 @@ package awesome.app.moviequotes;
 
 
 
-import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,24 +17,15 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebChromeClient;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
+import clabs.androidscreenlibrary.AndroidScreenSize;
 
 import com.flurry.android.FlurryAgent;
-import com.google.ads.AdRequest;
-import com.google.ads.AdSize;
-import com.google.ads.AdView;
+import com.revmob.RevMob;
+import com.revmob.ads.banner.RevMobBanner;
 
 
 public class MoreActivity extends Activity {
@@ -45,14 +34,14 @@ public class MoreActivity extends Activity {
 	//Shaker shaker;
 	int temp = 0;
 	//WebView mWebView;
-	AdView adview;
-	
+	 private RevMob revmob;	
+	 ViewGroup view;
 	 ShakeListener mShaker;
 	  String MY_KEY="MWZY29QZHHSWXYQS8DYN";
 	 // ProgressDialog mDialog;
 	private FrameLayout fl;
 
-	private RelativeLayout layout;
+	
 		@Override
 		protected void onStart() {
 	        super.onStart();
@@ -69,8 +58,8 @@ public class MoreActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.more_activity);
 		// mDialog = new ProgressDialog(MoreActivity.this);
-		adview = new AdView(this, AdSize.BANNER, "a1513d779a8f2c4"); 
-		 layout = (RelativeLayout)findViewById(R.id.add);  
+		revmob = RevMob.start(MoreActivity.this, "517a0db434a9464b16000031");
+		view = (ViewGroup) findViewById(R.id.banner);
         // mDialog.setMessage("Loading...");
 		SharedPreferences sharedPreferences = getSharedPreferences("MY",
 				MODE_PRIVATE);
@@ -81,23 +70,23 @@ public class MoreActivity extends Activity {
 			try{
 				       
 			        
-			    layout.addView(adview);
-			    AdRequest request = new AdRequest();
-			    request.setTesting(false);
-			    adview.loadAd(request);
+				
+				RevMobBanner banner = revmob.createBanner(MoreActivity.this);
+				
+				view.addView(banner);
 			    }
 				catch(Exception e){
 					Log.v("add",e.toString());
 				}
 		} else {
 			
-	     	adview.setVisibility(8);
-	     	layout.setVisibility(8);
+	     	view.setVisibility(8);
+	     	
 		}
 		fl=(FrameLayout)findViewById(R.id.rv);
 		new AndroidScreenSize(MoreActivity.this,fl,1184,720);
 		//caller=getIntent().getExtras().getString("token");
-	
+		Log.i("stack..list more activity.......",ActivityContext.myList+"");
 		temp = 0;
 		 final Vibrator vibe = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
 
@@ -110,12 +99,19 @@ public class MoreActivity extends Activity {
 		    	  if (temp == 0)
 		    		  
 		    		  		{
+		    		  ActivityContext.revealflag=false;
 		    		  			temp = 1;
-		    		  			finish();
+		    		  			String act = ActivityContext.myList.get(ActivityContext.myList.size() - 1);
+		 						Log.v("hello back class", act + ",");
+		 						if (!act.equals("MoreActivity")) {
+		 							
+		 							ActivityContext.myList.add("MoreActivity");
+		 						}
 		    					Intent intent = new Intent(MoreActivity.this, dance.class);
 		    				//	intent.putExtra("token", "MoreActivity");
 		    					startActivity(intent);
 		    		  			overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
+		    		  			finish();
 		    		  		}
 		      }
 		    });
@@ -166,12 +162,13 @@ public class MoreActivity extends Activity {
 								public void onClick(DialogInterface dialog,
 										int which) {
 									ActivityContext.myList.add("MoreActivity");
-									finish();
+									
 									Intent intent = new Intent(MoreActivity.this, UpgradeActivity.class);
 									
 									
 									startActivity(intent);
 									overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
+									finish();
 								}
 							});
 
@@ -198,11 +195,13 @@ public class MoreActivity extends Activity {
 					// "")
 					// + "", 500).show();
 					ActivityContext.myList.add("MoreActivity");
-					finish();
+					
 					Intent intent = new Intent(MoreActivity.this, SearchActivity.class);
 					
 					
 					startActivity(intent);
+					overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
+					finish();
 				}
 			}
 		});
@@ -212,12 +211,12 @@ public class MoreActivity extends Activity {
 			public void onClick(View v) {
 				// Toast.makeText(getApplicationContext(), "in", 500).show();
 				ActivityContext.myList.add("MoreActivity");
-				finish();
+				
 				Intent intent = new Intent(MoreActivity.this, HelpActivity.class);
 				
 				startActivity(intent);
 				overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
-
+				finish();
 			}
 		});
 		shake.setOnClickListener(new View.OnClickListener() {
@@ -225,12 +224,18 @@ public class MoreActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// Toast.makeText(getApplicationContext(), "in", 500).show();
-				finish();
+				 ActivityContext.revealflag=false;
+				 String act = ActivityContext.myList.get(ActivityContext.myList.size() - 1);
+					Log.v("hello back class", act + ",");
+					if (!act.equals("MoreActivity")) {
+						
+						ActivityContext.myList.add("MoreActivity");
+					}
 				Intent intent = new Intent(MoreActivity.this, dance.class);
 				
 				startActivity(intent);
 				overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
-
+				finish();
 			}
 		});
 		more.setOnClickListener(new View.OnClickListener() {
@@ -248,13 +253,13 @@ public class MoreActivity extends Activity {
 			public void onClick(View v) {
 				// Toast.makeText(getApplicationContext(), "in", 500).show();
 				ActivityContext.myList.add("MoreActivity");
-				finish();
+				
 				Intent intent = new Intent(MoreActivity.this, FavActivity.class);
 			
 				
 				startActivity(intent);
 				overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
-
+				finish();
 			}
 		});
 
@@ -264,12 +269,12 @@ public class MoreActivity extends Activity {
 			public void onClick(View v) {
 				// Toast.makeText(getApplicationContext(), "in", 500).show();
 				ActivityContext.myList.add("MoreActivity");
-				finish();
+				
 				Intent intent = new Intent(MoreActivity.this, ListActivity.class);
 								
 				startActivity(intent);
 				overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
-
+				finish();
 			}
 		});
 		back.setOnClickListener(new View.OnClickListener() {
@@ -283,146 +288,159 @@ public class MoreActivity extends Activity {
 					 Log.v("hello back class", act+",");
 					if(act.equals("UIActivity")){
 						ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-						finish();
+					
 						    Intent intent = new Intent(MoreActivity.this, UIActivity.class);
 							//intent.putExtra("token",act);
 							startActivity(intent);
 							
 							overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-						
+							finish();
 						//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 						
 					}
 					else if(act.equals("ListActivity")){
 						ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-						finish();
+						
 						    Intent intent = new Intent(MoreActivity.this, ListActivity.class);
 							//intent.putExtra("token",act);
 							startActivity(intent);
 							
 							overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-						
+							finish();
 						//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 						
 					}
 					else if(act.equals("SearchActivity")){
 						ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-						finish();
+						
 						    Intent intent = new Intent(MoreActivity.this, SearchActivity.class);
 							//intent.putExtra("token",act);
 							startActivity(intent);
 							
 							overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-						
+							finish();
 						//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 						
 					}
 					else if(act.equals("FavActivity")){
 						ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-						finish();
+						
 						    Intent intent = new Intent(MoreActivity.this, FavActivity.class);
 							//intent.putExtra("token",act);
 							startActivity(intent);
 							
 							overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-						
+							finish();
 						//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 						
 					}
 				
 					else if(act.equals("InfoActivity")){
 						ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-						finish();
+						
 						    Intent intent = new Intent(MoreActivity.this, InfoActivity.class);
 							//intent.putExtra("token",act);
 							startActivity(intent);
 							
 							overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+							finish();
+						//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 						
+					}
+					else if(act.equals("InfoActivity2")){
+						ActivityContext.myList.remove(ActivityContext.myList.size()-1);
+						
+						    Intent intent = new Intent(MoreActivity.this, Info_reveal.class);
+							//intent.putExtra("token",act);
+							startActivity(intent);
+							
+							overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+							finish();
 						//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 						
 					}
 					else if(act.equals("UpgradeSearch")){
 						ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-						finish();
+						
 						    Intent intent = new Intent(MoreActivity.this, searchUgrade.class);
+						    intent.putExtra("mode", searchUgrade.searchmode);
 							//intent.putExtra("token",act);
 							startActivity(intent);
 							
 							overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-						
+							finish();
 						//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 						
 					}
 					else if(act.equals("UpgradeActivity")){
 						ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-						finish();
+						
 						    Intent intent = new Intent(MoreActivity.this, UpgradeActivity.class);
 							//intent.putExtra("token",act);
 							startActivity(intent);
 							
 							overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-						
+							finish();
 						//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 						
 					}
 					else if(act.equals("RevealActivity")){
 						ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-						finish();
+						
 						    Intent intent = new Intent(MoreActivity.this, RevealInfo.class);
 							//intent.putExtra("token",act);
 							startActivity(intent);
 							
 							overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-						
+							finish();
 						//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 						
 					}
 					else if(act.equals("ShareActivity")){
 						ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-						finish();
+						
 						    Intent intent = new Intent(MoreActivity.this, ShareActivity.class);
 							//intent.putExtra("token",act);
 							startActivity(intent);
 							
 							overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-						
+							finish();
 						//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 						
 					}
 					else if(act.equals("ShareActivity1")){
 						ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-						finish();
+						
 						    Intent intent = new Intent(MoreActivity.this, ShareActivity1.class);
 							//intent.putExtra("token",act);
 							startActivity(intent);
 							
 							overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-						
+							finish();
 						//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 						
 					}
 					else if(act.equals("HelpActivity")){
 						ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-						finish();
+						
 						    Intent intent = new Intent(MoreActivity.this, HelpActivity.class);
 							//intent.putExtra("token",act);
 							startActivity(intent);
 							
 							overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-				
+							finish();
 						
 					}
 					else if(act.equals("randomquotes")){
 						ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-						finish();
+						
 						    Intent intent = new Intent(MoreActivity.this, randomquote.class);
 							//intent.putExtra("token",act);
 							startActivity(intent);
 							
 							overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
 						
-				
+							finish();
 						
 					}
 
@@ -479,168 +497,170 @@ public class MoreActivity extends Activity {
 	  }
 	  public void onBackPressed() {
 
+			
+
 		  String act=ActivityContext.myList.get(ActivityContext.myList.size()-1);
 			 Log.v("hello back class", act+",");
 			if(act.equals("UIActivity")){
 				ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-				finish();
+			
 				    Intent intent = new Intent(MoreActivity.this, UIActivity.class);
 					//intent.putExtra("token",act);
 					startActivity(intent);
 					
 					overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-				
+					finish();
 				//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 				
 			}
 			else if(act.equals("ListActivity")){
 				ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-				finish();
+				
 				    Intent intent = new Intent(MoreActivity.this, ListActivity.class);
 					//intent.putExtra("token",act);
 					startActivity(intent);
 					
 					overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-				
+					finish();
 				//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 				
 			}
 			else if(act.equals("SearchActivity")){
 				ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-				finish();
+				
 				    Intent intent = new Intent(MoreActivity.this, SearchActivity.class);
 					//intent.putExtra("token",act);
 					startActivity(intent);
 					
 					overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-				
+					finish();
 				//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 				
 			}
 			else if(act.equals("FavActivity")){
 				ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-				finish();
+				
 				    Intent intent = new Intent(MoreActivity.this, FavActivity.class);
 					//intent.putExtra("token",act);
 					startActivity(intent);
 					
 					overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-				
+					finish();
 				//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 				
 			}
-//			else if(act.equals("MoreActivity")){
-//				ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-//				finish();
-//				    Intent intent = new Intent(MoreActivity.this, MoreActivity.class);
-//					//intent.putExtra("token",act);
-//					startActivity(intent);
-//					
-//					overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-//				
-//				//Toast.makeText(getApplicationContext(), "fdf", 500).show();
-//				
-//			}
+		
 			else if(act.equals("InfoActivity")){
 				ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-				finish();
+				
 				    Intent intent = new Intent(MoreActivity.this, InfoActivity.class);
 					//intent.putExtra("token",act);
 					startActivity(intent);
 					
 					overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+					finish();
+				//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 				
+			}
+			else if(act.equals("InfoActivity2")){
+				ActivityContext.myList.remove(ActivityContext.myList.size()-1);
+				
+				    Intent intent = new Intent(MoreActivity.this, Info_reveal.class);
+					//intent.putExtra("token",act);
+					startActivity(intent);
+					
+					overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+					finish();
 				//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 				
 			}
 			else if(act.equals("UpgradeSearch")){
 				ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-				finish();
+				
 				    Intent intent = new Intent(MoreActivity.this, searchUgrade.class);
+				    intent.putExtra("mode", searchUgrade.searchmode);
 					//intent.putExtra("token",act);
 					startActivity(intent);
 					
 					overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-				
+					finish();
 				//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 				
 			}
 			else if(act.equals("UpgradeActivity")){
 				ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-				finish();
+				
 				    Intent intent = new Intent(MoreActivity.this, UpgradeActivity.class);
 					//intent.putExtra("token",act);
 					startActivity(intent);
 					
 					overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-				
+					finish();
 				//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 				
 			}
 			else if(act.equals("RevealActivity")){
 				ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-				finish();
+				
 				    Intent intent = new Intent(MoreActivity.this, RevealInfo.class);
 					//intent.putExtra("token",act);
 					startActivity(intent);
 					
 					overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-				
+					finish();
 				//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 				
 			}
 			else if(act.equals("ShareActivity")){
 				ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-				finish();
+				
 				    Intent intent = new Intent(MoreActivity.this, ShareActivity.class);
 					//intent.putExtra("token",act);
 					startActivity(intent);
 					
 					overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-				
+					finish();
 				//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 				
 			}
 			else if(act.equals("ShareActivity1")){
 				ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-				finish();
+				
 				    Intent intent = new Intent(MoreActivity.this, ShareActivity1.class);
 					//intent.putExtra("token",act);
 					startActivity(intent);
 					
 					overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-				
+					finish();
 				//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 				
 			}
 			else if(act.equals("HelpActivity")){
 				ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-				finish();
+				
 				    Intent intent = new Intent(MoreActivity.this, HelpActivity.class);
 					//intent.putExtra("token",act);
 					startActivity(intent);
 					
 					overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-				
-				//Toast.makeText(getApplicationContext(), "fdf", 500).show();
+					finish();
 				
 			}
 			else if(act.equals("randomquotes")){
 				ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-				finish();
+				
 				    Intent intent = new Intent(MoreActivity.this, randomquote.class);
 					//intent.putExtra("token",act);
 					startActivity(intent);
 					
 					overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
 				
-				//Toast.makeText(getApplicationContext(), "fdf", 500).show();
+					finish();
 				
 			}
-			
 
-	         return;
-	     }   
+
+	}   
 	private void unbindDrawables(View view) {
 		try {
 			if (view.getBackground() != null) {

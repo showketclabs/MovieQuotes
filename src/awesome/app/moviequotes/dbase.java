@@ -1,4 +1,4 @@
-// Project Name: - Movie Quotes
+													// Project Name: - Movie Quotes
 // Purpose of file: - Stores favorite quotes to database
 // Developed by Showket Ahmad,Clicklabs pvt. ltd.
 package awesome.app.moviequotes;
@@ -58,11 +58,11 @@ public class dbase {
 			} else {
 
 				try {
-					String qq = q.replaceAll("~", " ");
+					//String qq = q.replaceAll("~", "");
 
 					String Insert_Data = "INSERT INTO fav1 VALUES('"
 							+ m.toString() + "','" + y.toString() + "','"
-							+ qq.replaceAll("'", "`").toString() + "');";
+							+ q.replaceAll("'", "`").toString() + "');";
 
 					db.execSQL(Insert_Data);
 					// Toast.makeText(c, "Insertion successful",

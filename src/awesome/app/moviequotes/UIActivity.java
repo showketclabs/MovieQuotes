@@ -3,22 +3,27 @@
 // Developed by Showket Ahmad,Clicklabs pvt. ltd.
 package awesome.app.moviequotes;
 
+import java.util.Timer;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import clabs.androidscreenlibrary.AndroidScreenSize;
 
 import com.flurry.android.FlurryAgent;
+import com.revmob.RevMob;
 
 
 public class UIActivity extends Activity {
@@ -28,11 +33,16 @@ public class UIActivity extends Activity {
 	//Shaker shaker;
 	SharedPreferences prouser;
 	int temp = 0;
+	int adflag=0;
 	private ShakeListener mShaker;
 	//flurry reg key
 	String MY_KEY="MWZY29QZHHSWXYQS8DYN";
 	private FrameLayout fl;
-	
+	private RevMob revmob;
+	String strSavedMem1;
+	Timer tt;
+	static boolean addShow=false;
+	public static SharedPreferences upgradepref;
 	@Override
 	protected void onStart() {
         super.onStart();
@@ -64,12 +74,21 @@ public class UIActivity extends Activity {
 		    	  if (temp == 0)
 		    		  
   		  		{
+		    		  ActivityContext.revealflag=false;
+						String act = ActivityContext.myList.get(ActivityContext.myList.size() - 1);
+						Log.v("hello back class", act + ",");
+						if (!act.equals("UIActivity")) {
+							
+							ActivityContext.myList.add("UIActivity");
+						}
+		    		  ActivityContext.revealflag=false;
   		  			temp = 1;
   		  		  
-		    	    finish();
+		    	   
 					startActivity(new Intent(UIActivity.this, dance.class));
 					//ActivityContext.myList.add("dance.class");
 					overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
+					 finish();
 					
 		      }}
 		    });
@@ -80,15 +99,77 @@ public class UIActivity extends Activity {
 		list = (Button) findViewById(R.id.btnlist);
 		fav = (Button) findViewById(R.id.btnfav);
 		temp = 0;
+		Log.i("stack. in UI........",ActivityContext.myList+"");
+		//empty prefrence
+	    upgradepref = PreferenceManager.getDefaultSharedPreferences(this);
+	    final Editor edit = upgradepref.edit();
+       	
+		edit.putString("upgradebool","");
+		edit.commit();
+	    
+		SharedPreferences sharedPreferences = getSharedPreferences(
+				"MY", MODE_PRIVATE);
+		strSavedMem1 = sharedPreferences.getString("MEM2", "");
+		//revmob full screen add
+		if (strSavedMem1 == "") {
+			
+		 try {
+			 revmob = RevMob.start(UIActivity.this, "517a0db434a9464b16000031");
+			  revmob.showFullscreen(UIActivity.this);
+			 revmob.setTimeoutInSeconds(3); 
+			 
+			 
+			 
+//			 if(!addShow){
+//				 addShow=true;
+//				 tt = new Timer();
+//					tt.scheduleAtFixedRate(new TimerTask() {
+//						@Override
+//						public void run() {
+//							runOnUiThread(new Runnable() {
+//								@Override
+//								public void run() {
+//									
+//										 try {
+//											 
+//											revmob = RevMob.start(UIActivity.this, "517a0db434a9464b16000031");
+//											  revmob.showFullscreen(UIActivity.this);
+//											 revmob.setTimeoutInSeconds(3);
+//											 
+//										} catch (Exception e) {
+//											Log.v("full screen add",e.toString());
+//										}
+//										
+//										
+//									
+//									tt.cancel();
+//									tt.purge();
+//									
+//								}
+//							});
+//						}
+//					}, 5000, 100);
+//			 }
+			 
+			 
+			 
+//			revmob = RevMob.start(UIActivity.this, "517a0db434a9464b16000031");
+//			  revmob.showFullscreen(UIActivity.this);
+//			 revmob.setTimeoutInSeconds(3);
+			 
+		} catch (Exception e) {
+			Log.v("full screen add",e.toString());
+		}
+		
+		}
+		Log.i("activity context", ActivityContext.myList+"");
 		// SavePreferences("prouser", "");
 		search.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 
-				SharedPreferences sharedPreferences = getSharedPreferences(
-						"MY", MODE_PRIVATE);
-				String strSavedMem1 = sharedPreferences.getString("MEM2", "");
+				
 				// Toast.makeText(UIActivity.this, strSavedMem1,
 				// Toast.LENGTH_LONG)
 				// .show();
@@ -114,12 +195,12 @@ public class UIActivity extends Activity {
 								public void onClick(DialogInterface dialog,
 										int which) {
 									ActivityContext.myList.add("UIActivity");
-									finish();
+									
 
 									startActivity(new Intent(UIActivity.this,
 											UpgradeActivity.class));
 									overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
-									
+									finish();
 								}
 							});
 
@@ -146,12 +227,12 @@ public class UIActivity extends Activity {
 					// "")
 					// + "", 500).show();
 					ActivityContext.myList.add("UIActivity");
-					finish();
+				
 					startActivity(new Intent(UIActivity.this,
 							SearchActivity.class));
 					
 					overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
-					
+					finish();
 				}
 			}
 		});
@@ -161,13 +242,13 @@ public class UIActivity extends Activity {
 			public void onClick(View v) {
 				// Toast.makeText(getApplicationContext(), "in", 500).show();
 				ActivityContext.myList.add("UIActivity");
-				finish();
+				
 				Intent intent = new Intent(UIActivity.this, HelpActivity.class);
 //				intent.putExtra("token", "UIActivity");
 				startActivity(intent);
 				//ActivityContext.myList.add("HelpActivity.class");
 				overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
-				
+				finish();
 
 			}
 		});
@@ -176,12 +257,19 @@ public class UIActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// Toast.makeText(getApplicationContext(), "in", 500).show();
+				 ActivityContext.revealflag=false;
 				
-				finish();
+					String act = ActivityContext.myList.get(ActivityContext.myList.size() - 1);
+					Log.v("hello back class", act + ",");
+					if (!act.equals("UIActivity")) {
+						
+						ActivityContext.myList.add("UIActivity");
+					}
+			//	Toast.makeText(getApplicationContext(), "in"+ActivityContext.myList, 500).show();
 				startActivity(new Intent(UIActivity.this, dance.class));
 				//ActivityContext.myList.add("dance.class");
 				overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
-				
+				finish();
 
 			}
 		});
@@ -191,13 +279,13 @@ public class UIActivity extends Activity {
 			public void onClick(View v) {
 				// Toast.makeText(getApplicationContext(), "in", 500).show();
 				ActivityContext.myList.add("UIActivity");
-				finish();
+				
 				Intent intent = new Intent(UIActivity.this, MoreActivity.class);
 				//intent.putExtra("token", "UIActivity");
 				//ActivityContext.myList.add("UIActivity.class");
 				startActivity(intent);
 				overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
-			
+				finish();
 			}
 		});
 		fav.setOnClickListener(new View.OnClickListener() {
@@ -207,13 +295,13 @@ public class UIActivity extends Activity {
 				// Toast.makeText(getApplicationContext(), "in", 500).show();
 				// startActivity(new Intent(UIActivity.this,FavActivity.class));
 				ActivityContext.myList.add("UIActivity");
-				finish();
+			
 				Intent intent = new Intent(UIActivity.this, FavActivity.class);
 			//	intent.putExtra("token", "UIActivity");
 				
 				startActivity(intent);
 				overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
-				
+				finish();
 			}
 		});
 
@@ -223,7 +311,7 @@ public class UIActivity extends Activity {
 			public void onClick(View v) {
 				// Toast.makeText(getApplicationContext(), "in", 500).show();
 				ActivityContext.myList.add("UIActivity");
-				finish();
+				
 				Intent intent = new Intent(UIActivity.this, ListActivity.class);
 				//intent.putExtra("token", "UIActivity");
 				
@@ -231,8 +319,12 @@ public class UIActivity extends Activity {
 				startActivity(intent);
 			//	startActivity(new Intent(UIActivity.this, ListActivity.class));
 				 overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
+				 finish();
 			}
 		});
+		
+		
+		
 
 	}
 
@@ -240,7 +332,7 @@ public class UIActivity extends Activity {
 	public void onDestroy() {
 		super.onDestroy();
 		//shaker.close();
-		
+	
 		unbindDrawables(findViewById(R.id.mainlayout));
 		System.gc();
 		Runtime rt=Runtime.getRuntime();
@@ -296,4 +388,6 @@ public class UIActivity extends Activity {
 		}
 	}
 
+	
+	
 }

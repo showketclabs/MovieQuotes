@@ -11,13 +11,12 @@ android:layout_height="1184px" >
     android:layout_height="match_parent"
     android:background="@drawable/screen3bg"
     android:orientation="vertical" >
-  <RelativeLayout
-        android:id="@+id/add"
-        android:layout_width="fill_parent"
-        android:layout_height="110px"
-        android:gravity="center_vertical|center_horizontal|center" >
+  <LinearLayout
+        android:id="@+id/banner"
+        android:layout_width="720px"
+        android:layout_height="105px" >
         
-    </RelativeLayout>
+    </LinearLayout>
 <Button
         android:id="@+id/upgrade_ext"
         android:layout_width="220px"
@@ -28,7 +27,7 @@ android:layout_height="1184px" >
         
         android:background="@drawable/upgradeextra" />
   <RelativeLayout
-            android:layout_width="wrap_content"
+            android:layout_width="720px"
             android:layout_height="220px"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true" >

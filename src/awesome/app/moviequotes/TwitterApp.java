@@ -41,7 +41,13 @@ public class TwitterApp {
 	public static final String OAUTH_CALLBACK_HOST = "callback";
 	public static final String CALLBACK_URL = OAUTH_CALLBACK_SCHEME + "://"
 			+ OAUTH_CALLBACK_HOST;
+//	public static final String OAUTH_CALLBACK_SCHEME = "x-oauthflow-twitter";
+//	public static final String OAUTH_CALLBACK_HOST = "callback";
+//	public static final String CALLBACK_URL = OAUTH_CALLBACK_SCHEME + "://"
+//			+ OAUTH_CALLBACK_HOST;
 
+	
+	//T4J_OAuth://callback_main
 	// public static final String CALLBACK_URL =
 	// "http://abhinavasblog.blogspot.com/";
 
@@ -164,8 +170,7 @@ public class TwitterApp {
 				int what = 1;
 
 				try {
-					mHttpOauthprovider.retrieveAccessToken(mHttpOauthConsumer,
-							verifier);
+					mHttpOauthprovider.retrieveAccessToken(mHttpOauthConsumer,verifier);
 
 					mAccessToken = new AccessToken(
 							mHttpOauthConsumer.getToken(),

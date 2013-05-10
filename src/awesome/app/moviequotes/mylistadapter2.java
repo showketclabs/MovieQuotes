@@ -143,6 +143,7 @@ Log.v("rdata", randomdata+"");
 					ii.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 					c.startActivity(ii);
 					activity.overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
+					activity.finish();
 //					Toast.makeText(c, "you clicked:"+pos, 500).show();
 //					Log.v("ffd", pos+"");
 			}
@@ -371,10 +372,11 @@ cnt--;
 								+ holder.texte2Recup.getText().toString() 
 								+ "~" 
 								+ holder.texte3Recup.getText().toString();
-	Log.v("rdata", randomdata+"");
+							Log.v("rdata", randomdata+"");
 						Global global = new Global(1, randomdata);
 						randomdata=null;
 						System.gc();
+						
 						ActivityContext.myList.add("FavActivity");
 						
 						Intent ii = new Intent(c, InfoActivity.class);
@@ -382,6 +384,7 @@ cnt--;
 						ii.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 						c.startActivity(ii);
 						activity.overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
+						activity.finish();
 					}
 				}
 			});

@@ -13,17 +13,14 @@
         android:background="@drawable/more_screen"
         android:orientation="vertical" >
 
-        <RelativeLayout
-            android:id="@+id/add"
-            android:layout_width="fill_parent"
-            android:layout_height="110px"
-            android:gravity="center_vertical|center_horizontal|center" >
-        </RelativeLayout>
-
+         <LinearLayout
+        android:id="@+id/banner"
+        android:layout_width="720px"
+        android:layout_height="105px" >
         
-
+</LinearLayout>
         <RelativeLayout
-            android:layout_width="wrap_content"
+            android:layout_width="720px"
             android:layout_height="220px"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true" >

@@ -5,14 +5,6 @@
 package awesome.app.moviequotes;
 
 
-import awesome.app.moviequotes.Db;
-import com.example.android.trivialdrivesample.util.IabResult;
-import com.example.android.trivialdrivesample.util.Inventory;
-
-import com.example.android.trivialdrivesample.util.Purchase;
-
-import com.example.android.trivialdrivesample.util.IabHelper;
-
 import java.util.ArrayList;
 
 import android.app.Activity;
@@ -21,26 +13,28 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.content.SharedPreferences.Editor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
+import clabs.androidscreenlibrary.AndroidScreenSize;
 
+import com.example.android.trivialdrivesample.util.IabHelper;
+import com.example.android.trivialdrivesample.util.IabResult;
+import com.example.android.trivialdrivesample.util.Inventory;
+import com.example.android.trivialdrivesample.util.Purchase;
 import com.flurry.android.FlurryAgent;
-import com.google.ads.AdRequest;
-import com.google.ads.AdSize;
-import com.google.ads.AdView;
+import com.revmob.RevMob;
+import com.revmob.ads.banner.RevMobBanner;
 
 public class UpgradeActivity extends Activity {
 	Button shake, help, purchase, back, upgrade;
@@ -80,7 +74,7 @@ public class UpgradeActivity extends Activity {
 	boolean mIsPremium = false;
 
 	// inapp_product id
-	static final String SKU_PREMIUM = "remove_ads";
+	static final String SKU_PREMIUM = "remove";
 
 	// (arbitrary) request code for the purchase flow
 	static final int RC_REQUEST = 10001;
@@ -103,7 +97,8 @@ public class UpgradeActivity extends Activity {
 	// showDialog(DIALOG_BILLING_NOT_SUPPORTED_ID);
 	// }
 	// }
-	private AdView adview;
+	  private RevMob revmob;
+	  ViewGroup view;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -120,16 +115,11 @@ public class UpgradeActivity extends Activity {
 		upgrade = (Button) findViewById(R.id.button2);
 		temp = 0;
 
-		// creatng data base for in app
-		Db ob = new Db(UpgradeActivity.this);
-		ob.open();
-		int i = ob.get_inapp_row();
-		if (i == 0) {
-			ob.CreateEntry_INAPP(0);
-		}
-		ob.close();
+		
+		
 
-		adview = new AdView(this, AdSize.BANNER, "a1513d779a8f2c4");
+		revmob = RevMob.start(UpgradeActivity.this, "517a0db434a9464b16000031");
+		view = (ViewGroup) findViewById(R.id.banner);
 		AppRater.app_launched(UpgradeActivity.this);
 		SharedPreferences sharedPreferences = getSharedPreferences("MY",
 				MODE_PRIVATE);
@@ -139,19 +129,17 @@ public class UpgradeActivity extends Activity {
 		if (strSavedMem1 == "") {
 			try {
 
-				RelativeLayout layout = (RelativeLayout) findViewById(R.id.add);
-				layout.addView(adview);
-				AdRequest request = new AdRequest();
-				request.setTesting(false);
-				adview.loadAd(request);
+				RevMobBanner banner = revmob.createBanner(UpgradeActivity.this);
+				
+				view.addView(banner);
 			} catch (Exception e) {
 
 			}
 		} else {
 
-			adview.setVisibility(8);
+			view.setVisibility(8);
 		}
-
+		Log.i("stack..in Upgradeactivity.......",ActivityContext.myList+"");
 		final Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
 		mShaker = new ShakeListener(this);
@@ -166,15 +154,22 @@ public class UpgradeActivity extends Activity {
 				if (temp == 0)
 
 				{
+					 ActivityContext.revealflag=false;
 					temp = 1;
-
-					finish();
+					 String act = ActivityContext.myList.get(ActivityContext.myList.size() - 1);
+						Log.v("hello back class", act + ",");
+						if (!act.equals("UpgradeActivity")) {
+							
+							ActivityContext.myList.add("UpgradeActivity");
+						}
+					
 					Intent intent = new Intent(UpgradeActivity.this,
 							dance.class);
 
 					startActivity(intent);
 					overridePendingTransition(R.anim.slide_in_left,
 							R.anim.slide_out_left);
+					finish();
 				}
 			}
 		});
@@ -183,15 +178,22 @@ public class UpgradeActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// Toast.makeText(getApplicationContext(), "in", 500).show();
+				 
 				ActivityContext.myList.add("UpgradeActivity");
-				finish();
+				
+				
+//				SavePreferences("MEM2", "pro");
+			
 				Intent intent = new Intent(UpgradeActivity.this,
 						HelpActivity.class);
 
 				startActivity(intent);
-
+//				  SavePreferences("MEM2", "pro");
+				
+				 
 				overridePendingTransition(R.anim.slide_in_left,
 						R.anim.slide_out_left);
+				finish();
 
 			}
 		});
@@ -200,13 +202,20 @@ public class UpgradeActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// Toast.makeText(getApplicationContext(), "in", 500).show();
+				 ActivityContext.revealflag=false;
+				 String act = ActivityContext.myList.get(ActivityContext.myList.size() - 1);
+					Log.v("hello back class", act + ",");
+					if (!act.equals("UpgradeActivity")) {
+						
+						ActivityContext.myList.add("UpgradeActivity");
+					}
 				
-				finish();
 				Intent intent = new Intent(UpgradeActivity.this, dance.class);
 
 				startActivity(intent);
 				overridePendingTransition(R.anim.slide_in_left,
 						R.anim.slide_out_left);
+				finish();
 			}
 		});
 
@@ -225,12 +234,9 @@ public class UpgradeActivity extends Activity {
 					String strSavedMem1 = sharedPreferences.getString("MEM2",
 							"");
 
-					// testing purpose
-					//SavePreferences("MEM2", "pro");
-					// Toast.makeText(UIActivity.this, strSavedMem1,
-					// Toast.LENGTH_LONG)
-					// .show();
-					if (strSavedMem1 == "") {
+				
+					Log.v("strSavedMem1", strSavedMem1+"");
+					if (strSavedMem1 =="") {
 						Log.v("billl", "billing");
 						try {
 							String payload = "";
@@ -273,7 +279,10 @@ public class UpgradeActivity extends Activity {
 						alertDialog.show();
 
 					}
-				} else {
+				} 
+				
+				
+				else {
 
 					Toast.makeText(getApplicationContext(),
 							"Check your internet connection.", 500).show();
@@ -290,7 +299,7 @@ public class UpgradeActivity extends Activity {
 				Log.v("hello back class", act + ",");
 				if (act.equals("UIActivity")) {
 					ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
-					finish();
+					
 					Intent intent = new Intent(UpgradeActivity.this,
 							UIActivity.class);
 					// intent.putExtra("token",act);
@@ -298,13 +307,14 @@ public class UpgradeActivity extends Activity {
 
 					overridePendingTransition(R.anim.slide_in_right,
 							R.anim.slide_out_right);
+					finish();
 
 					// Toast.makeText(getApplicationContext(), "fdf",
 					// 500).show();
 
 				} else if (act.equals("ListActivity")) {
 					ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
-					finish();
+					
 					Intent intent = new Intent(UpgradeActivity.this,
 							ListActivity.class);
 					// intent.putExtra("token",act);
@@ -312,13 +322,13 @@ public class UpgradeActivity extends Activity {
 
 					overridePendingTransition(R.anim.slide_in_right,
 							R.anim.slide_out_right);
-
+					finish();
 					// Toast.makeText(getApplicationContext(), "fdf",
 					// 500).show();
 
 				} else if (act.equals("SearchActivity")) {
 					ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
-					finish();
+					
 					Intent intent = new Intent(UpgradeActivity.this,
 							SearchActivity.class);
 					// intent.putExtra("token",act);
@@ -326,13 +336,13 @@ public class UpgradeActivity extends Activity {
 
 					overridePendingTransition(R.anim.slide_in_right,
 							R.anim.slide_out_right);
-
+					finish();
 					// Toast.makeText(getApplicationContext(), "fdf",
 					// 500).show();
 
 				} else if (act.equals("FavActivity")) {
 					ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
-					finish();
+					
 					Intent intent = new Intent(UpgradeActivity.this,
 							FavActivity.class);
 					// intent.putExtra("token",act);
@@ -340,13 +350,13 @@ public class UpgradeActivity extends Activity {
 
 					overridePendingTransition(R.anim.slide_in_right,
 							R.anim.slide_out_right);
-
+					finish();
 					// Toast.makeText(getApplicationContext(), "fdf",
 					// 500).show();
 
 				} else if (act.equals("MoreActivity")) {
 					ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
-					finish();
+					
 					Intent intent = new Intent(UpgradeActivity.this,
 							MoreActivity.class);
 					// intent.putExtra("token",act);
@@ -354,13 +364,13 @@ public class UpgradeActivity extends Activity {
 
 					overridePendingTransition(R.anim.slide_in_right,
 							R.anim.slide_out_right);
-
+					finish();
 					// Toast.makeText(getApplicationContext(), "fdf",
 					// 500).show();
 
 				} else if (act.equals("InfoActivity")) {
 					ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
-					finish();
+					
 					Intent intent = new Intent(UpgradeActivity.this,
 							InfoActivity.class);
 					// intent.putExtra("token",act);
@@ -368,21 +378,22 @@ public class UpgradeActivity extends Activity {
 
 					overridePendingTransition(R.anim.slide_in_right,
 							R.anim.slide_out_right);
-
+					finish();
 					// Toast.makeText(getApplicationContext(), "fdf",
 					// 500).show();
 
 				} else if (act.equals("UpgradeSearch")) {
 					ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
-					finish();
+					
 					Intent intent = new Intent(UpgradeActivity.this,
 							searchUgrade.class);
+					  intent.putExtra("mode", searchUgrade.searchmode);
 					// intent.putExtra("token",act);
 					startActivity(intent);
 
 					overridePendingTransition(R.anim.slide_in_right,
 							R.anim.slide_out_right);
-
+					finish();
 					// Toast.makeText(getApplicationContext(), "fdf",
 					// 500).show();
 
@@ -390,7 +401,7 @@ public class UpgradeActivity extends Activity {
 				
 				else if (act.equals("RevealActivity")) {
 					ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
-					finish();
+					
 					Intent intent = new Intent(UpgradeActivity.this,
 							RevealInfo.class);
 					// intent.putExtra("token",act);
@@ -398,13 +409,13 @@ public class UpgradeActivity extends Activity {
 
 					overridePendingTransition(R.anim.slide_in_right,
 							R.anim.slide_out_right);
-
+					finish();
 					// Toast.makeText(getApplicationContext(), "fdf",
 					// 500).show();
 
 				} else if (act.equals("ShareActivity")) {
 					ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
-					finish();
+					
 					Intent intent = new Intent(UpgradeActivity.this,
 							ShareActivity.class);
 					// intent.putExtra("token",act);
@@ -412,13 +423,25 @@ public class UpgradeActivity extends Activity {
 
 					overridePendingTransition(R.anim.slide_in_right,
 							R.anim.slide_out_right);
-
+					finish();
 					// Toast.makeText(getApplicationContext(), "fdf",
 					// 500).show();
 
-				} else if (act.equals("ShareActivity1")) {
+				}else if(act.equals("InfoActivity2")){
+					ActivityContext.myList.remove(ActivityContext.myList.size()-1);
+					
+					    Intent intent = new Intent(UpgradeActivity.this, Info_reveal.class);
+						//intent.putExtra("token",act);
+						startActivity(intent);
+						
+						overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+						finish();
+					//Toast.makeText(getApplicationContext(), "fdf", 500).show();
+					
+				} 
+				else if (act.equals("ShareActivity1")) {
 					ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
-					finish();
+					
 					Intent intent = new Intent(UpgradeActivity.this,
 							ShareActivity1.class);
 					// intent.putExtra("token",act);
@@ -426,13 +449,13 @@ public class UpgradeActivity extends Activity {
 
 					overridePendingTransition(R.anim.slide_in_right,
 							R.anim.slide_out_right);
-
+					finish();
 					// Toast.makeText(getApplicationContext(), "fdf",
 					// 500).show();
 
 				} else if (act.equals("HelpActivity")) {
 					ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
-					finish();
+					
 					Intent intent = new Intent(UpgradeActivity.this,
 							HelpActivity.class);
 					// intent.putExtra("token",act);
@@ -440,7 +463,7 @@ public class UpgradeActivity extends Activity {
 
 					overridePendingTransition(R.anim.slide_in_right,
 							R.anim.slide_out_right);
-
+					finish();
 					// Toast.makeText(getApplicationContext(), "fdf",
 					// 500).show();
 
@@ -448,7 +471,7 @@ public class UpgradeActivity extends Activity {
 
 				else if (act.equals("randomquotes")) {
 					ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
-					finish();
+					
 					Intent intent = new Intent(UpgradeActivity.this,
 							randomquote.class);
 					// intent.putExtra("token",act);
@@ -456,7 +479,7 @@ public class UpgradeActivity extends Activity {
 
 					overridePendingTransition(R.anim.slide_in_right,
 							R.anim.slide_out_right);
-
+					finish();
 					// Toast.makeText(getApplicationContext(), "fdf",
 					// 500).show();
 
@@ -570,13 +593,13 @@ public class UpgradeActivity extends Activity {
 
 				if (!result.isSuccess()) {
 					// Oh noes, there was a problem.
-					complain("Problem setting up in-app billing: " + result);
+					//complain("Problem setting up in-app billing: " + result);
 					return;
 				}
 
 				// Hooray, IAB is fully set up. Now, let's get an inventory of
 				// stuff we own.
-				Log.d("TAG", "Setup successful. Querying inventory.");
+				Log.d("TAG", "Setup successful.");
 				mHelper.queryInventoryAsync(mGotInventoryListener);
 			}
 		});
@@ -588,7 +611,7 @@ public class UpgradeActivity extends Activity {
 				Inventory inventory) {
 			Log.d("TAG", "Query inventory finished.");
 			if (result.isFailure()) {
-				complain("Failed to query inventory: " + result);
+				//complain("Failed: " + result);
 				return;
 			}
 
@@ -678,12 +701,12 @@ public class UpgradeActivity extends Activity {
 	       public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
 	           Log.d("TAG", "Purchase finished: " + result + ", purchase: " + purchase);
 	           if (result.isFailure()) {
-	               complain("Error purchasing: " + result);
+	              // complain("Error purchasing: " + result);
 	             //  setWaitScreen(false);
 	               return;
 	           }
 	           if (!verifyDeveloperPayload(purchase)) {
-	               complain("Error purchasing. Authenticity verification failed.");
+	              // complain("Error purchasing. Authenticity verification failed.");
 	             //  setWaitScreen(false);
 	               return;
 	           }
@@ -693,7 +716,7 @@ public class UpgradeActivity extends Activity {
 	          if (purchase.getSku().equals(SKU_PREMIUM)) {
 	               // bought the premium upgrade!
 	               Log.d("TAG", "Purchase is premium upgrade. Congratulating user.");
-	               alert("Thank you for upgrading to premium!");
+	               //alert("Thank you for upgrading to premium!");
 	               mIsPremium = true;
 	               updateUi();
 	            //   setWaitScreen(false);
@@ -726,15 +749,34 @@ public class UpgradeActivity extends Activity {
  	   	if(mIsPremium==true){
 
  	     SavePreferences("MEM2", "pro");
- 		//ActivityContext.myList.add("UpgradeActivity");
-		finish();
+ 	   
+ 		UIActivity.upgradepref = PreferenceManager.getDefaultSharedPreferences(UpgradeActivity.this);
+		String upgrade = UIActivity.upgradepref.getString("upgradebool", "");
+		//Toast.makeText(getApplicationContext(), upgrade +"",500).show();
+		if(upgrade=="")
+		{
+			 ActivityContext.myList.clear();
+			  System.gc();
+			  ActivityContext.myList.add("UIActivity");
+			  ActivityContext.myList.add("UIActivity");
+			
+			ActivityContext.upgradecheckstack=false;
+//			UIActivity.upgradepref = PreferenceManager.getDefaultSharedPreferences(UpgradeActivity.this);
+			    final Editor edit = UIActivity.upgradepref.edit();
+		       	
+				edit.putString("upgradebool","doneupgrade");
+				edit.commit();
+			
+		}
 		Intent intent = new Intent(UpgradeActivity.this,
 				SearchActivity.class);
 
 		startActivity(intent);
 
+
 		overridePendingTransition(R.anim.slide_in_left,
 				R.anim.slide_out_left);
+		finish();
  	     
  	   	}
  	   	else{
@@ -771,36 +813,41 @@ public class UpgradeActivity extends Activity {
 	}
 
 	public void onBackPressed() {
-		String act = ActivityContext.myList
-				.get(ActivityContext.myList.size() - 1);
+		String act = ActivityContext.myList.get(ActivityContext.myList
+				.size() - 1);
 		Log.v("hello back class", act + ",");
 		if (act.equals("UIActivity")) {
 			ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
-			finish();
-			Intent intent = new Intent(UpgradeActivity.this, UIActivity.class);
+			
+			Intent intent = new Intent(UpgradeActivity.this,
+					UIActivity.class);
 			// intent.putExtra("token",act);
 			startActivity(intent);
 
 			overridePendingTransition(R.anim.slide_in_right,
 					R.anim.slide_out_right);
+			finish();
 
-			// Toast.makeText(getApplicationContext(), "fdf", 500).show();
+			// Toast.makeText(getApplicationContext(), "fdf",
+			// 500).show();
 
 		} else if (act.equals("ListActivity")) {
 			ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
-			finish();
-			Intent intent = new Intent(UpgradeActivity.this, ListActivity.class);
+			
+			Intent intent = new Intent(UpgradeActivity.this,
+					ListActivity.class);
 			// intent.putExtra("token",act);
 			startActivity(intent);
 
 			overridePendingTransition(R.anim.slide_in_right,
 					R.anim.slide_out_right);
-
-			// Toast.makeText(getApplicationContext(), "fdf", 500).show();
+			finish();
+			// Toast.makeText(getApplicationContext(), "fdf",
+			// 500).show();
 
 		} else if (act.equals("SearchActivity")) {
 			ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
-			finish();
+			
 			Intent intent = new Intent(UpgradeActivity.this,
 					SearchActivity.class);
 			// intent.putExtra("token",act);
@@ -808,87 +855,86 @@ public class UpgradeActivity extends Activity {
 
 			overridePendingTransition(R.anim.slide_in_right,
 					R.anim.slide_out_right);
-
-			// Toast.makeText(getApplicationContext(), "fdf", 500).show();
+			finish();
+			// Toast.makeText(getApplicationContext(), "fdf",
+			// 500).show();
 
 		} else if (act.equals("FavActivity")) {
 			ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
-			finish();
-			Intent intent = new Intent(UpgradeActivity.this, FavActivity.class);
+			
+			Intent intent = new Intent(UpgradeActivity.this,
+					FavActivity.class);
 			// intent.putExtra("token",act);
 			startActivity(intent);
 
 			overridePendingTransition(R.anim.slide_in_right,
 					R.anim.slide_out_right);
-
-			// Toast.makeText(getApplicationContext(), "fdf", 500).show();
+			finish();
+			// Toast.makeText(getApplicationContext(), "fdf",
+			// 500).show();
 
 		} else if (act.equals("MoreActivity")) {
 			ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
-			finish();
-			Intent intent = new Intent(UpgradeActivity.this, MoreActivity.class);
+			
+			Intent intent = new Intent(UpgradeActivity.this,
+					MoreActivity.class);
 			// intent.putExtra("token",act);
 			startActivity(intent);
 
 			overridePendingTransition(R.anim.slide_in_right,
 					R.anim.slide_out_right);
-
-			// Toast.makeText(getApplicationContext(), "fdf", 500).show();
+			finish();
+			// Toast.makeText(getApplicationContext(), "fdf",
+			// 500).show();
 
 		} else if (act.equals("InfoActivity")) {
 			ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
-			finish();
-			Intent intent = new Intent(UpgradeActivity.this, InfoActivity.class);
+			
+			Intent intent = new Intent(UpgradeActivity.this,
+					InfoActivity.class);
 			// intent.putExtra("token",act);
 			startActivity(intent);
 
 			overridePendingTransition(R.anim.slide_in_right,
 					R.anim.slide_out_right);
-
-			// Toast.makeText(getApplicationContext(), "fdf", 500).show();
+			finish();
+			// Toast.makeText(getApplicationContext(), "fdf",
+			// 500).show();
 
 		} else if (act.equals("UpgradeSearch")) {
 			ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
-			finish();
-			Intent intent = new Intent(UpgradeActivity.this, searchUgrade.class);
+			
+			Intent intent = new Intent(UpgradeActivity.this,
+					searchUgrade.class);
+			  intent.putExtra("mode", searchUgrade.searchmode);
 			// intent.putExtra("token",act);
 			startActivity(intent);
 
 			overridePendingTransition(R.anim.slide_in_right,
 					R.anim.slide_out_right);
-
-			// Toast.makeText(getApplicationContext(), "fdf", 500).show();
+			finish();
+			// Toast.makeText(getApplicationContext(), "fdf",
+			// 500).show();
 
 		}
-		// else if(act.equals("UpgradeActivity")){
-		// ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-		// finish();
-		// Intent intent = new Intent(UpgradeActivity.this,
-		// UpgradeActivity.class);
-		// //intent.putExtra("token",act);
-		// startActivity(intent);
-		//
-		// overridePendingTransition(R.anim.slide_in_right,
-		// R.anim.slide_out_right);
-		//
-		// //Toast.makeText(getApplicationContext(), "fdf", 500).show();
-		//
-		// }
+		
 		else if (act.equals("RevealActivity")) {
 			ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
-			finish();
-			Intent intent = new Intent(UpgradeActivity.this, RevealInfo.class);
+			
+			Intent intent = new Intent(UpgradeActivity.this,
+					RevealInfo.class);
 			// intent.putExtra("token",act);
 			startActivity(intent);
 
 			overridePendingTransition(R.anim.slide_in_right,
 					R.anim.slide_out_right);
-
-			// Toast.makeText(getApplicationContext(), "fdf", 500).show();
+			finish();
+			// Toast.makeText(getApplicationContext(), "fdf",
+			// 500).show();
 
 		} else if (act.equals("ShareActivity")) {
 			ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
-			finish();
+			
 			Intent intent = new Intent(UpgradeActivity.this,
 					ShareActivity.class);
 			// intent.putExtra("token",act);
@@ -896,12 +942,25 @@ public class UpgradeActivity extends Activity {
 
 			overridePendingTransition(R.anim.slide_in_right,
 					R.anim.slide_out_right);
-
-			// Toast.makeText(getApplicationContext(), "fdf", 500).show();
-
-		} else if (act.equals("ShareActivity1")) {
-			ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
 			finish();
+			// Toast.makeText(getApplicationContext(), "fdf",
+			// 500).show();
+
+		}else if(act.equals("InfoActivity2")){
+			ActivityContext.myList.remove(ActivityContext.myList.size()-1);
+			
+			    Intent intent = new Intent(UpgradeActivity.this, Info_reveal.class);
+				//intent.putExtra("token",act);
+				startActivity(intent);
+				
+				overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+				finish();
+			//Toast.makeText(getApplicationContext(), "fdf", 500).show();
+			
+		} 
+		else if (act.equals("ShareActivity1")) {
+			ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
+			
 			Intent intent = new Intent(UpgradeActivity.this,
 					ShareActivity1.class);
 			// intent.putExtra("token",act);
@@ -909,38 +968,42 @@ public class UpgradeActivity extends Activity {
 
 			overridePendingTransition(R.anim.slide_in_right,
 					R.anim.slide_out_right);
-
-			// Toast.makeText(getApplicationContext(), "fdf", 500).show();
-
-		}
-
-		else if (act.equals("HelpActivity")) {
-			ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
 			finish();
-			Intent intent = new Intent(UpgradeActivity.this, HelpActivity.class);
+			// Toast.makeText(getApplicationContext(), "fdf",
+			// 500).show();
+
+		} else if (act.equals("HelpActivity")) {
+			ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
+			
+			Intent intent = new Intent(UpgradeActivity.this,
+					HelpActivity.class);
 			// intent.putExtra("token",act);
 			startActivity(intent);
 
 			overridePendingTransition(R.anim.slide_in_right,
 					R.anim.slide_out_right);
-
-			// Toast.makeText(getApplicationContext(), "fdf", 500).show();
-
-		} else if (act.equals("randomquotes")) {
-			ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
 			finish();
-			Intent intent = new Intent(UpgradeActivity.this, randomquote.class);
+			// Toast.makeText(getApplicationContext(), "fdf",
+			// 500).show();
+
+		}
+
+		else if (act.equals("randomquotes")) {
+			ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
+			
+			Intent intent = new Intent(UpgradeActivity.this,
+					randomquote.class);
 			// intent.putExtra("token",act);
 			startActivity(intent);
 
 			overridePendingTransition(R.anim.slide_in_right,
 					R.anim.slide_out_right);
-
-			// Toast.makeText(getApplicationContext(), "fdf", 500).show();
+			finish();
+			// Toast.makeText(getApplicationContext(), "fdf",
+			// 500).show();
 
 		}
 
-		return;
 	}
 
 	private void unbindDrawables(View view) {

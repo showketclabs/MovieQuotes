@@ -13,16 +13,14 @@
         android:background="@drawable/screen5bg"
         android:orientation="vertical" >
 
-       <RelativeLayout
-        android:id="@+id/add"
-        android:layout_width="fill_parent"
-        android:layout_height="105px"
-        android:gravity="center_vertical|center_horizontal|center" >
-        
-        </RelativeLayout>
+        <LinearLayout
+        android:id="@+id/banner"
+        android:layout_width="720px"
+        android:layout_height="105px" >
+        </LinearLayout>
 
         <RelativeLayout
-            android:layout_width="wrap_content"
+            android:layout_width="720px"
             android:layout_height="220px"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true" >
@@ -102,15 +100,22 @@
 
             <Button
                 android:id="@+id/shareb"
-                android:layout_width="wrap_content"
+                android:layout_width="280px"
                 android:layout_height="90.5px"
                 android:layout_marginLeft="6px"
                 android:layout_marginTop="230px"
                 android:background="@drawable/btn_share" />
-
+<Button
+            android:id="@+id/revealbtn"
+            android:layout_width="280px"
+                android:layout_height="90.5px"
+                android:layout_marginLeft="6px"
+                android:layout_marginTop="7.5px"
+                android:visibility="invisible"
+            android:background="@drawable/btn_reveal" />
             <Button
                 android:id="@+id/favoriteb"
-                android:layout_width="wrap_content"
+                android:layout_width="280px"
                 android:layout_height="90.5px"
                 android:layout_marginLeft="6px"
                 android:layout_marginTop="119.5px"
@@ -118,7 +123,7 @@
 
             <Button
                 android:id="@+id/upgradeb"
-                android:layout_width="wrap_content"
+                android:layout_width="280px"
                 android:layout_height="90.5px"
                 android:layout_marginLeft="6px"
                 android:layout_marginTop="7.5px"

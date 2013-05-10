@@ -6,7 +6,7 @@ import android.hardware.SensorManager;
 
 public class ShakeListener implements SensorListener 
 {
-  private static final int FORCE_THRESHOLD = 200;
+  private static final int FORCE_THRESHOLD = 250;
   private static final int TIME_THRESHOLD = 180;
   private static final int SHAKE_TIMEOUT = 200;
   private static final int SHAKE_DURATION = 1000;

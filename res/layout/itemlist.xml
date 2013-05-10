@@ -68,16 +68,16 @@
 
         <TextView
             android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30px"
+            android:layout_height="25px"
             android:layout_marginLeft="322px"
             android:layout_marginTop="35px"
              android:textColor="#000000"
             android:text="~" />
         <TextView
             android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30px"
+            android:layout_height="25px"
             android:layout_marginLeft="322px"
             android:layout_marginTop="95px"
              android:textColor="#000000"

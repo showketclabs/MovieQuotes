@@ -3,7 +3,6 @@
 // Developed by Showket Ahmad,Clicklabs pvt. ltd.
 package awesome.app.moviequotes;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -27,11 +26,11 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import clabs.androidscreenlibrary.AndroidScreenSize;
 
 import com.flurry.android.FlurryAgent;
-import com.google.ads.AdRequest;
-import com.google.ads.AdSize;
-import com.google.ads.AdView;
+import com.revmob.RevMob;
+import com.revmob.ads.banner.RevMobBanner;
 
 
 public class randomquote extends Activity {
@@ -39,7 +38,8 @@ public class randomquote extends Activity {
 	TextView quote, movie, year;
 	Button addtofavbtn, sharebtn, upgradebtn;
 	Button shake, help, search, more, list, fav, back;
-	AdView adView;
+	 private RevMob revmob;
+	 ViewGroup view;
 	TextView tv;
 	String f = "info";
 	private ShakeListener mShaker;
@@ -74,26 +74,26 @@ public class randomquote extends Activity {
 		fl=(FrameLayout)findViewById(R.id.rv);
 		main=(RelativeLayout)findViewById(R.id.id1);
 		new AndroidScreenSize(randomquote.this,fl,1184,720);
-		adView = new AdView(this, AdSize.BANNER, "a1513d779a8f2c4");     
+		revmob = RevMob.start(randomquote.this, "517a0db434a9464b16000031"); 
+		view = (ViewGroup) findViewById(R.id.banner);
 		SharedPreferences sharedPreferences = getSharedPreferences("MY",
 				MODE_PRIVATE);
 		String strSavedMem1 = sharedPreferences.getString("MEM2", "");
 		// Toast.makeText(UIActivity.this, strSavedMem1, Toast.LENGTH_LONG)
 		// .show();
 		if (strSavedMem1 == "") {
-			adView.setVisibility(adView.VISIBLE);
+			view.setVisibility(view.VISIBLE);
 		} else {
-			adView.setVisibility(adView.INVISIBLE);
+			view.setVisibility(view.INVISIBLE);
 			 main.setBackgroundResource(R.drawable.screen_5_1);
 		}
 		try{
 			
 			       
-		    RelativeLayout layout = (RelativeLayout)findViewById(R.id.add);        
-		    layout.addView(adView);
-		    AdRequest request = new AdRequest();
-		    request.setTesting(false);
-		    adView.loadAd(request);
+			
+			RevMobBanner banner = revmob.createBanner(randomquote.this);
+		  
+			view.addView(banner);
 			
 		}
 			catch(Exception e){
@@ -102,8 +102,13 @@ public class randomquote extends Activity {
 		movie1=Global.movie.split("~, ");
 		year1=Global.year.split("~, ");
 		quote1=Global.quotes.split("~, ");
+		Log.i("activity context", ActivityContext.myList+"");
 		//caller=getIntent().getExtras().getString("token");
 	//	Toast.makeText(getApplicationContext(), ""+caller, 500).show();
+		Log.i("stack.in randomquote........",ActivityContext.myList+"");
+		
+		
+		
 		 final Vibrator vibe = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
 
 		    mShaker = new ShakeListener(this);
@@ -115,12 +120,24 @@ public class randomquote extends Activity {
 		    	  if (temp == 0)
 		    		  
 		    		  		{
+//		    		  if(ActivityContext.myList.size()>0)
+//						{
+//		    		  ActivityContext.revealflag=false;
+//						String act = ActivityContext.myList.get(ActivityContext.myList.size() - 1);
+//						Log.v("hello back class", act + ",");
+//						if (!act.equals("randomquotes")) {
+//							
+//							ActivityContext.myList.add("randomquotes");
+//						}
+//						}
+		    		  ActivityContext.revealflag=false;
 		    		  			temp = 1;
-		    		  			finish();
+		    		  			
 		    					Intent intent = new Intent(randomquote.this, dance.class);
 		    					//intent.putExtra("token", "randomquote");
 		    					startActivity(intent);
 		    		  			overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
+		    		  			finish();
 		    		  		}
 		      }
 		    });
@@ -138,7 +155,14 @@ public class randomquote extends Activity {
 		fav = (Button) findViewById(R.id.btnfav);
 		tv = (TextView) findViewById(R.id.movie);
 		tv.setMovementMethod(new ScrollingMovementMethod());
-
+//		String act = ActivityContext.myList.get(ActivityContext.myList
+//				.size() - 1);
+//		Log.i("inside reveal", "inside random revea"+act);
+//		
+//		if (act.equals("randomquotes")) {
+//			ActivityContext.myList.remove(ActivityContext.myList
+//				.size() - 1);
+//		}
 		loadquoterandom();
 
 		search.setOnClickListener(new View.OnClickListener() {
@@ -175,12 +199,13 @@ public class randomquote extends Activity {
 										int which) {
 									if(ActivityContext.myList.get((ActivityContext.myList.size()-1))!="randomquotes")
 									ActivityContext.myList.add("randomquotes");
-									finish();
+									
 									Intent intent = new Intent(randomquote.this, UpgradeActivity.class);
 									//intent.putExtra("token", "randomquote");
 									startActivity(intent);
 
 									overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
+									finish();
 								}
 							});
 
@@ -208,11 +233,12 @@ public class randomquote extends Activity {
 					// + "", 500).show();
 					if(ActivityContext.myList.get((ActivityContext.myList.size()-1))!="randomquotes")
 					ActivityContext.myList.add("randomquotes");
-					finish();
+					
 					Intent intent = new Intent(randomquote.this, SearchActivity.class);
 				//	intent.putExtra("token", "randomquote");
 					startActivity(intent);
 					overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
+					finish();
 				}
 			}
 		});
@@ -225,12 +251,12 @@ public class randomquote extends Activity {
 				Log.v("array::::", ActivityContext.myList+"");
 				Log.v("rando ent:", ActivityContext.myList.get((ActivityContext.myList.size()-1))+"");
 				// Toast.makeText(getApplicationContext(), "in", 500).show();
-				finish();
+				
 				Intent intent = new Intent(randomquote.this, HelpActivity.class);
 				//intent.putExtra("token", "randomquote");
 				startActivity(intent);
 				overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
-
+				finish();
 			}
 		});
 		shake.setOnClickListener(new View.OnClickListener() {
@@ -238,13 +264,25 @@ public class randomquote extends Activity {
 			@Override
 			public void onClick(View v) {
 			
-				// Toast.makeText(getApplicationContext(), "in", 500).show();
-				finish();
+				 ActivityContext.revealflag=false;
+//				if(ActivityContext.myList.size()>0)
+//				{
+//					String act = ActivityContext.myList.get(ActivityContext.myList.size() - 1);
+//					Log.v("hello back class", act + ",");
+//					if (!act.equals("randomquotes")) {
+//						
+//						ActivityContext.myList.add("randomquotes");
+//					}
+//				}
+					
+				 //Toast.makeText(getApplicationContext(), "in"+ActivityContext.myList, 500).show();
+				 ActivityContext.revealflag=false;
+				
 				Intent intent = new Intent(randomquote.this, dance.class);
 				//intent.putExtra("token", "randomquote");
 				startActivity(intent);
 				overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
-
+				finish();
 			}
 		});
 		more.setOnClickListener(new View.OnClickListener() {
@@ -254,12 +292,12 @@ public class randomquote extends Activity {
 				// Toast.makeText(getApplicationContext(), "in", 500).show();
 				if(ActivityContext.myList.get((ActivityContext.myList.size()-1))!="randomquotes")
 				ActivityContext.myList.add("randomquotes");
-				finish();
+				
 				Intent intent = new Intent(randomquote.this, MoreActivity.class);
 				
 				startActivity(intent);
 				overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
-
+				finish();
 			}
 		});
 
@@ -270,12 +308,12 @@ public class randomquote extends Activity {
 				// Toast.makeText(getApplicationContext(), "in", 500).show();
 				if(ActivityContext.myList.get((ActivityContext.myList.size()-1))!="randomquotes")
 				ActivityContext.myList.add("randomquotes");
-				finish();
+				
 				Intent intent = new Intent(randomquote.this, ListActivity.class);
 				
 				startActivity(intent);
 				overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
-
+				finish();
 			}
 		});
 		fav.setOnClickListener(new View.OnClickListener() {
@@ -285,162 +323,180 @@ public class randomquote extends Activity {
 				// Toast.makeText(getApplicationContext(), "in", 500).show();
 				if(ActivityContext.myList.get((ActivityContext.myList.size()-1))!="randomquotes")
 				ActivityContext.myList.add("randomquotes");
-				finish();
+				
 				Intent intent = new Intent(randomquote.this, FavActivity.class);
 				
 				startActivity(intent);
 				overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
-
+				finish();
 			}
 		});
 		back.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
+				
 				 String act=ActivityContext.myList.get(ActivityContext.myList.size()-1);
-				 Log.v("hello back class", act+",");
+//				 Toast.makeText(getApplicationContext(), act+""+"here", 500).show();
+//				 Log.v("hello back class", act+",");
 				if(act.equals("UIActivity")){
 					//ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-					finish();
+					
 					    Intent intent = new Intent(randomquote.this, UIActivity.class);
 						//intent.putExtra("token",act);
 						startActivity(intent);
 						
 						overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-					
+						finish();
 					//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 					
 				}
+				else if (act.equals("InfoActivity2")) {
+					ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
+					
+					Intent intent = new Intent(randomquote.this,
+							Info_reveal.class);
+					// intent.putExtra("token",act);
+					startActivity(intent);
+
+					overridePendingTransition(R.anim.slide_in_right,
+							R.anim.slide_out_right);
+					finish();
+					// Toast.makeText(getApplicationContext(), "fdf",
+					// 500).show();
+
+				}
 				else if(act.equals("ListActivity")){
 					ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-					finish();
+					
 					    Intent intent = new Intent(randomquote.this, ListActivity.class);
 						//intent.putExtra("token",act);
 						startActivity(intent);
 						
 						overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-					
+						finish();
 					//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 					
 				}
 				else if(act.equals("SearchActivity")){
 					ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-					finish();
+					
 					    Intent intent = new Intent(randomquote.this, SearchActivity.class);
 						//intent.putExtra("token",act);
 						startActivity(intent);
 						
 						overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-					
+						finish();
 					//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 					
 				}
 				else if(act.equals("FavActivity")){
 					ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-					finish();
+					
 					    Intent intent = new Intent(randomquote.this, FavActivity.class);
 						//intent.putExtra("token",act);
 						startActivity(intent);
 						
 						overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-					
+						finish();
 					//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 					
 				}
 				else if(act.equals("MoreActivity")){
 					ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-					finish();
+					
 					    Intent intent = new Intent(randomquote.this, MoreActivity.class);
 						//intent.putExtra("token",act);
 						startActivity(intent);
 						
 						overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-					
+						finish();
 					//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 					
 				}
 				else if(act.equals("InfoActivity")){
 					ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-					finish();
+					
 					    Intent intent = new Intent(randomquote.this, InfoActivity.class);
 						//intent.putExtra("token",act);
 						startActivity(intent);
 						
 						overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-					
+						finish();
 					//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 					
 				}
 				else if(act.equals("UpgradeSearch")){
 					ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-					finish();
+					
 					    Intent intent = new Intent(randomquote.this, searchUgrade.class);
+					    intent.putExtra("mode", searchUgrade.searchmode);
 						//intent.putExtra("token",act);
 						startActivity(intent);
 						
 						overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-					
+						finish();
 					//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 					
 				}
 				else if(act.equals("UpgradeActivity")){
 					ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-					finish();
+					
 					    Intent intent = new Intent(randomquote.this, UpgradeActivity.class);
 						//intent.putExtra("token",act);
 						startActivity(intent);
 						
 						overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-					
+						finish();
 					//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 					
 				}
 				else if(act.equals("RevealActivity")){
 					ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-					finish();
+					
 					    Intent intent = new Intent(randomquote.this, RevealInfo.class);
 						//intent.putExtra("token",act);
 						startActivity(intent);
 						
 						overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-					
+						finish();
 					//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 					
 				}
 				else if(act.equals("ShareActivity")){
 					ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-					finish();
+				
 					    Intent intent = new Intent(randomquote.this, ShareActivity.class);
 						//intent.putExtra("token",act);
 						startActivity(intent);
 						
 						overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-					
+						finish();
 					//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 					
 				}
 				 
 				else if(act.equals("ShareActivity1")){
 					ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-					finish();
+					
 					    Intent intent = new Intent(randomquote.this, ShareActivity1.class);
 						//intent.putExtra("token",act);
 						startActivity(intent);
 						
 						overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-					
+						finish();
 					//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 					
 				}	
 				else if(act.equals("HelpActivity")){
 					ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-					finish();
+					
 					    Intent intent = new Intent(randomquote.this, HelpActivity.class);
 						//intent.putExtra("token",act);
 						startActivity(intent);
 						
 						overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-					
+						finish();
 					//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 					
 				}
@@ -524,7 +580,7 @@ public class randomquote extends Activity {
 
 					String sql = "SELECT * FROM fav1 WHERE movie == '"
 							+ rando_arr[1] + "' and quote=='"
-							+ rando_arr[0].replaceAll("'", "`")
+							+ (rando_arr[0].replaceAll("'", "`"))
 							+ "' and year=='" + rando_arr[2] + "'";
 					Cursor data = db.rawQuery(sql, null);
 					if (data.moveToFirst()) {
@@ -601,7 +657,7 @@ public class randomquote extends Activity {
 				if(ActivityContext.myList.get((ActivityContext.myList.size()-1))!="randomquotes")
 				ActivityContext.myList.add("randomquotes");
 				// Log.v("DATA",data+"");
-				finish();
+				
 				
 			
 			
@@ -611,7 +667,7 @@ public class randomquote extends Activity {
 				
 				startActivity(i);
 				overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
-				
+				finish();
 
 			}
 
@@ -626,12 +682,12 @@ public class randomquote extends Activity {
 				// .show();
 				if(ActivityContext.myList.get((ActivityContext.myList.size()-1))!="randomquotes")
 				ActivityContext.myList.add("randomquotes");
-				finish();
+				
 				Intent intent = new Intent(randomquote.this, UpgradeActivity.class);
 			
 				startActivity(intent);
 				overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
-
+				finish();
 			}
 		});
 	}
@@ -668,158 +724,174 @@ public class randomquote extends Activity {
 	    super.onPause();
 	  }
 	  public void onBackPressed() {
-		  String act=ActivityContext.myList.get(ActivityContext.myList.size()-1);
+			 String act=ActivityContext.myList.get(ActivityContext.myList.size()-1);
 			 Log.v("hello back class", act+",");
-			if(act.equals("UIActivity")){
+			 
+			
+			 if(act.equals("UIActivity")){
 				//ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-				finish();
+				
 				    Intent intent = new Intent(randomquote.this, UIActivity.class);
 					//intent.putExtra("token",act);
 					startActivity(intent);
 					
 					overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-				
+					finish();
 				//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 				
 			}
 			else if(act.equals("ListActivity")){
 				ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-				finish();
+				
 				    Intent intent = new Intent(randomquote.this, ListActivity.class);
 					//intent.putExtra("token",act);
 					startActivity(intent);
 					
 					overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-				
+					finish();
 				//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 				
 			}
 			else if(act.equals("SearchActivity")){
 				ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-				finish();
+				
 				    Intent intent = new Intent(randomquote.this, SearchActivity.class);
 					//intent.putExtra("token",act);
 					startActivity(intent);
 					
 					overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-				
+					finish();
 				//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 				
 			}
 			else if(act.equals("FavActivity")){
 				ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-				finish();
+				
 				    Intent intent = new Intent(randomquote.this, FavActivity.class);
 					//intent.putExtra("token",act);
 					startActivity(intent);
 					
 					overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-				
+					finish();
 				//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 				
 			}
 			else if(act.equals("MoreActivity")){
 				ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-				finish();
+				
 				    Intent intent = new Intent(randomquote.this, MoreActivity.class);
 					//intent.putExtra("token",act);
 					startActivity(intent);
 					
 					overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-				
+					finish();
 				//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 				
 			}
 			else if(act.equals("InfoActivity")){
 				ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-				finish();
+				
 				    Intent intent = new Intent(randomquote.this, InfoActivity.class);
 					//intent.putExtra("token",act);
 					startActivity(intent);
 					
 					overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-				
+					finish();
 				//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 				
 			}
 			else if(act.equals("UpgradeSearch")){
 				ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-				finish();
+				
 				    Intent intent = new Intent(randomquote.this, searchUgrade.class);
+				    intent.putExtra("mode", searchUgrade.searchmode);
 					//intent.putExtra("token",act);
 					startActivity(intent);
 					
 					overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-				
+					finish();
 				//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 				
 			}
 			else if(act.equals("UpgradeActivity")){
 				ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-				finish();
+				
 				    Intent intent = new Intent(randomquote.this, UpgradeActivity.class);
 					//intent.putExtra("token",act);
 					startActivity(intent);
 					
 					overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-				
+					finish();
 				//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 				
 			}
 			else if(act.equals("RevealActivity")){
 				ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-				finish();
+				
 				    Intent intent = new Intent(randomquote.this, RevealInfo.class);
 					//intent.putExtra("token",act);
 					startActivity(intent);
 					
 					overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-				
+					finish();
 				//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 				
 			}
 			else if(act.equals("ShareActivity")){
 				ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-				finish();
+			
 				    Intent intent = new Intent(randomquote.this, ShareActivity.class);
 					//intent.putExtra("token",act);
 					startActivity(intent);
 					
 					overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-				
+					finish();
 				//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 				
 			}
 			 
 			else if(act.equals("ShareActivity1")){
 				ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-				finish();
+				
 				    Intent intent = new Intent(randomquote.this, ShareActivity1.class);
 					//intent.putExtra("token",act);
 					startActivity(intent);
 					
 					overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-				
+					finish();
 				//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 				
-			}
+			}	
 			else if(act.equals("HelpActivity")){
 				ActivityContext.myList.remove(ActivityContext.myList.size()-1);
-				finish();
+				
 				    Intent intent = new Intent(randomquote.this, HelpActivity.class);
 					//intent.putExtra("token",act);
 					startActivity(intent);
 					
 					overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-				
+					finish();
 				//Toast.makeText(getApplicationContext(), "fdf", 500).show();
 				
 			}
-					
+
+			else if (act.equals("InfoActivity2")) {
+				ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
 				
-			 
-          return;
-      }   
+				Intent intent = new Intent(randomquote.this,
+						Info_reveal.class);
+				// intent.putExtra("token",act);
+				startActivity(intent);
+
+				overridePendingTransition(R.anim.slide_in_right,
+						R.anim.slide_out_right);
+				finish();
+				// Toast.makeText(getApplicationContext(), "fdf",
+				// 500).show();
+
+			}	
+
+		}   
 	private void unbindDrawables(View view) {
 		try {
 			if (view.getBackground() != null) {

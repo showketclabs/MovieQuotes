@@ -4,6 +4,7 @@ package awesome.app.moviequotes;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -52,19 +53,48 @@ public class dance extends Activity {
   			public void run() {
   				// anim.stop();
 				
+  				Log.i("in side dance", ""+ActivityContext.revealflag);
   				
   				
-  				
-  				finish();
-  Intent i=new Intent(dance.this,randomquote.class);
-
-  startActivity(i);
-  overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-  				/*
-  				 * Intent i=new Intent(getApplicationContext(),rematch.class);
-  				 * startActivity(i); overridePendingTransition(R.anim.flip,
-  				 * R.anim.flip_rev);
-  				 */
+  				SharedPreferences sharedPreferences = getSharedPreferences("MY",
+  						MODE_PRIVATE);
+  				String strSavedMem1 = sharedPreferences.getString("MEM2", "");
+  				// Toast.makeText(UIActivity.this, strSavedMem1, Toast.LENGTH_LONG)
+  				// .show();
+  				//if (ActivityContext.revealflag==false) {
+  				if (strSavedMem1=="") {
+					
+//  					String act = ActivityContext.myList.get(ActivityContext.myList
+//  							.size() - 1);
+//  					Log.v("hello back class", act + ",");
+//  					if (!act.equals("randomquotes")) {
+//  						
+//  						ActivityContext.myList.add("randomquotes");
+//  					}
+  						//ActivityContext.myList.remove(ActivityContext.myList.size() - 1);
+					Intent i = new Intent(dance.this, randomquote.class);
+					startActivity(i);
+					overridePendingTransition(R.anim.slide_in_right,
+							R.anim.slide_out_right);
+					finish();
+				
+				}
+  				else{
+//  					String act = ActivityContext.myList.get(ActivityContext.myList.size() - 1);
+//  					Log.v("hello back class", act + ",");
+//  					if (!act.equals("RevealActivity")) {
+//  						
+//  						ActivityContext.myList.add("RevealActivity");
+//  					}
+					Intent i = new Intent(dance.this, RevealInfo.class);
+					startActivity(i);
+					
+					overridePendingTransition(R.anim.slide_in_right,
+							R.anim.slide_out_right);
+					finish();
+					
+  					
+  				}
   			}
   		}, 2000);
           imageView.post(new Starter());

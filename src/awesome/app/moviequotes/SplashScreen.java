@@ -17,7 +17,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Document;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -37,9 +36,9 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import clabs.androidscreenlibrary.AndroidScreenSize;
 
 import com.example.android.trivialdrivesample.util.IabHelper;
 import com.example.android.trivialdrivesample.util.IabResult;
@@ -55,7 +54,7 @@ public class SplashScreen extends Activity {
 	boolean mIsPremium = false;
 
 	// inapp_product id
-	static final String SKU_PREMIUM = "remove_ads";
+	static final String SKU_PREMIUM = "remove";
 
 	// (arbitrary) request code for the purchase flow
 	static final int RC_REQUEST = 10001;
@@ -237,7 +236,7 @@ public class SplashScreen extends Activity {
 
 						if (!result.isSuccess()) {
 							// Oh noes, there was a problem.
-							complain("Problem setting up in-app billing: " + result);
+							//complain("Problem setting up in-app billing: " + result);
 							return;
 						}
 
@@ -257,7 +256,7 @@ public class SplashScreen extends Activity {
 				Inventory inventory) {
 			Log.d("TAG", "Query inventory finished.");
 			if (result.isFailure()) {
-				complain("Failed to query inventory: " + result);
+				//complain("Failed to query inventory: " + result);
 				return;
 			}
 
@@ -372,12 +371,12 @@ public class SplashScreen extends Activity {
 	       public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
 	           Log.d("TAG", "Purchase finished: " + result + ", purchase: " + purchase);
 	           if (result.isFailure()) {
-	               complain("Error purchasing: " + result);
+	              // complain("Error purchasing: " + result);
 	             //  setWaitScreen(false);
 	               return;
 	           }
 	           if (!verifyDeveloperPayload(purchase)) {
-	               complain("Error purchasing. Authenticity verification failed.");
+	             //  complain("Error purchasing. Authenticity verification failed.");
 	             //  setWaitScreen(false);
 	               return;
 	           }
@@ -387,7 +386,7 @@ public class SplashScreen extends Activity {
 	          if (purchase.getSku().equals(SKU_PREMIUM)) {
 	               // bought the premium upgrade!
 	               Log.d("TAG", "Purchase is premium upgrade. Congratulating user.");
-	               alert("Thank you for upgrading to premium!");
+	             //  alert("Thank you for upgrading to premium!");
 	               mIsPremium = true;
 	               updateUi();
 	            //   setWaitScreen(false);
@@ -536,9 +535,10 @@ public class SplashScreen extends Activity {
 				 {
 					 ActivityContext.myList.add("UIActivity");
 					    parse();
-						finish();
+						
 						startActivity(new Intent(SplashScreen.this, UIActivity.class));
 						overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
+						finish();
 					
 			}else{
 				 

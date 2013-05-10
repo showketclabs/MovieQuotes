@@ -36,7 +36,7 @@ android:layout_height="1184px" >
 
     </RelativeLayout>
         <RelativeLayout
-            android:layout_width="wrap_content"
+            android:layout_width="720px"
             android:layout_height="220px"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true" >
